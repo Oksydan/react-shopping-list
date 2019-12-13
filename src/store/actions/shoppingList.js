@@ -8,4 +8,13 @@ export const addProduct = (productName, id) => {
         dateAdd: Date.now(),
         dateEdit: Date.now()
     }
-} 
+};
+
+export const updateProduct = (productName, id) => {
+    return {
+        type: actionTypes.UPDATE_PRODUCT,
+        productName,
+        id,
+        dateEdit: Date.now()
+    }
+}

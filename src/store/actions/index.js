@@ -1,3 +1,4 @@
 export {
-    addProduct
+    addProduct,
+    updateProduct
 } from './shoppingList';

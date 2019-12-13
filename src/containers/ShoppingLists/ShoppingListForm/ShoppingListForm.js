@@ -13,21 +13,24 @@ class shoppingListForm extends Component {
 
 
     onInputChange = (e) => {
-        const input = e.target;
-        const value = input.value.trim();
-
-        console.log(value.length);
+        const inputVal = e.target.value;
 
         this.setState({
-            inputVal: value,
-            isInputValid: value.length > 0 ? true : false
+            ...this.state,
+            inputVal,
+            isInputValid: inputVal.length > 0 ? true : false
         });
     }
 
     onSubmit = (e) => {
         e.preventDefault();
-        this.props.onProductAdd(this.state.inputVal, getUniqueId());
+        const state = {...this.state};
+        const valueFormated = state.inputVal.trim();
+        if (valueFormated.length > 0) {
+            this.props.onProductAdd(this.state.inputVal, getUniqueId());
+        } 
         this.setState({
+            ...this.state,
             inputVal: '',
             isInputValid: false
         })

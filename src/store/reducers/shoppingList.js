@@ -12,6 +12,25 @@ const addListElement = (productName, id, dateAdd, dateEdit, checked = false) => 
     checked
 });
 
+const updateListElement = (productName, id, dateEdit, list) => {
+    const elemIndex = list.findIndex(elem => elem.id === id ? true : false);
+
+    const listUpdated = list;
+
+    console.log(productName);
+
+    listUpdated[elemIndex] = {
+        ...listUpdated[elemIndex],
+        productName,
+        dateEdit
+    };
+    
+
+    return [
+        ...listUpdated
+    ]
+}
+
 
 const reducer = (state = initialState, actions) => {
     switch (actions.type) {
@@ -22,6 +41,11 @@ const reducer = (state = initialState, actions) => {
                     ...state.list,
                     addListElement(actions.productName, actions.id, actions.dateAdd, actions.dateEdit)
                 ]
+            };
+        case (actionTypes.UPDATE_PRODUCT):
+            return {
+                ...state,
+                list: updateListElement(actions.productName, actions.id, actions.dateEdit, [...state.list])
             };
 
         default: 

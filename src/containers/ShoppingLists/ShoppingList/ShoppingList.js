@@ -1,22 +1,18 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import ShoppingListElement from '../ShoppingList/ShoppingListElement/ShoppingListElement';
 
 const shoppingLists = (props) => {
-    console.log(props.shopList);
     let list = null;
 
     if (props.shopList.length > 0) {
         list = props.shopList.map((prod) => {
-            console.log(prod);
-            return <p key={prod.id}>{prod.productName}</p>;
+            return <ShoppingListElement name={prod.productName} key={prod.id} id={prod.id} />;
         });
-        console.log(list);
     }
     return (
         <ul>
-            <li>
-                {list}
-            </li>
+            {list}
         </ul>
     )
 }

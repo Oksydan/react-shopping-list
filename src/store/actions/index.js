@@ -1,0 +1,3 @@
+export {
+    addProduct
+} from './shoppingList';

@@ -1,10 +1,17 @@
 import React, { Component } from 'react';
+import ShoppingListForm from './ShoppingListForm/ShoppingListForm';
+import ShoppingList from './ShoppingList/ShoppingList';
 
 class ShoppingLists extends Component {
 
     render() {
         return (
-            <p>Shopping lists</p>
+            
+            <div>
+                <ShoppingListForm />
+                <ShoppingList />
+                
+            </div>
         )
     }
 }

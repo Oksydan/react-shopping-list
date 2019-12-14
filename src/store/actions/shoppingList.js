@@ -18,3 +18,10 @@ export const updateProduct = (productName, id) => {
         dateEdit: Date.now()
     }
 }
+
+export const deleteProduct = (id) => {
+    return {
+        type: actionTypes.REMOVE_PRODUCT,
+        id
+    }
+}

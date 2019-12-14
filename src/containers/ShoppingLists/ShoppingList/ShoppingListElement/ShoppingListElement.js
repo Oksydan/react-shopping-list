@@ -18,7 +18,7 @@ class ShoppingListElement extends Component {
         prevValue: ''
     }
 
-    onListElementEdit = (e) => {
+    handleElementEdit = (e) => {
         e.preventDefault();
 
         this.setState({
@@ -62,8 +62,12 @@ class ShoppingListElement extends Component {
         })
     }
 
+    handeDeleteElement = (e) => {
+        e.preventDefault();
+        this.props.listElementDelete(this.props.id);
+    }
+
     render() {
-        console.log(this.state.isEditing);
         return (
             <li>
                 <form>
@@ -74,8 +78,8 @@ class ShoppingListElement extends Component {
                         value={this.state.touched ? this.value : this.props.name}
                         onBlur={this.onEditValue}
                         onChange={this.handleInputChange} />
-                    <button onClick={this.onListElementEdit}>edit</button>
-                    <button>remove</button>
+                    <button onClick={this.handleElementEdit}>edit</button>
+                    <button onClick={this.handeDeleteElement}>remove</button>
                 </form>
             </li>
         )
@@ -84,7 +88,8 @@ class ShoppingListElement extends Component {
 
 const mapDispatchToProps = dispatch => {
     return {
-        listElementUpdate: (name, id) => dispatch(action.updateProduct(name, id))
+        listElementUpdate: (name, id) => dispatch(action.updateProduct(name, id)),
+        listElementDelete: (id) => dispatch(action.deleteProduct(id))
     }
 }
 

@@ -17,8 +17,6 @@ const updateListElement = (productName, id, dateEdit, list) => {
 
     const listUpdated = list;
 
-    console.log(productName);
-
     listUpdated[elemIndex] = {
         ...listUpdated[elemIndex],
         productName,
@@ -28,6 +26,17 @@ const updateListElement = (productName, id, dateEdit, list) => {
 
     return [
         ...listUpdated
+    ]
+}
+
+const deleteListElement = (id, list) => {
+    const elemIndex = list.findIndex(elem => elem.id === id ? true : false);
+
+    list.splice(elemIndex, 1);
+    
+    
+    return [
+        ...list
     ]
 }
 
@@ -46,6 +55,11 @@ const reducer = (state = initialState, actions) => {
             return {
                 ...state,
                 list: updateListElement(actions.productName, actions.id, actions.dateEdit, [...state.list])
+            };
+        case (actionTypes.REMOVE_PRODUCT):
+            return {
+                ...state,
+                list: deleteListElement(actions.id, [...state.list])
             };
 
         default: 

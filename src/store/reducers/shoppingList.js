@@ -72,6 +72,12 @@ const uncheckListElement = (id, list) => {
     ]
 }
 
+const removeCheckedProducts = (list) => {
+    const filteredList = list.filter(prod => !prod.checked);
+
+    return filteredList;
+}
+
 
 const reducer = (state = initialState, actions) => {
     switch (actions.type) {
@@ -102,6 +108,11 @@ const reducer = (state = initialState, actions) => {
             return {
                 ...state,
                 list: uncheckListElement(actions.id, [...state.list])
+            };
+        case (actionTypes.REMOVE_CHECKED):
+            return {
+                ...state,
+                list: removeCheckedProducts([...state.list])
             };
 
         default: 

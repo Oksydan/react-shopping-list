@@ -39,3 +39,8 @@ export const uncheckProduct = (id) => {
         id
     }
 }
+export const removeCheckedProducts = () => {
+    return {
+        type: actionTypes.REMOVE_CHECKED
+    }
+}

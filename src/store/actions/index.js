@@ -3,5 +3,6 @@ export {
     updateProduct,
     deleteProduct,
     checkProduct,
-    uncheckProduct
+    uncheckProduct,
+    removeCheckedProducts
 } from './shoppingList';

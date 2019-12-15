@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import ShoppingListElement from '../ShoppingList/ShoppingListElement/ShoppingListElement';
+import * as action from '../../../store/actions';
 
 const shoppingLists = (props) => {
     let list = null;
@@ -11,9 +12,12 @@ const shoppingLists = (props) => {
         });
     }
     return (
-        <ul>
-            {list}
-        </ul>
+        <div>
+            <button onClick={props.removeCheckedProducts}>Remove checked</button>
+            <ul>
+                {list}
+            </ul>
+        </div>
     )
 }
 
@@ -23,5 +27,11 @@ const mapStateToProps = state => {
     }
 }
 
+const mapDispatchToProps = dispatch => {
+    return {
+        removeCheckedProducts: () => dispatch(action.removeCheckedProducts())
+    }
+}
 
-export default connect(mapStateToProps)(shoppingLists);
+
+export default connect(mapStateToProps, mapDispatchToProps)(shoppingLists);

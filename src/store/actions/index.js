@@ -1,5 +1,7 @@
 export {
     addProduct,
     updateProduct,
-    deleteProduct
+    deleteProduct,
+    checkProduct,
+    uncheckProduct
 } from './shoppingList';

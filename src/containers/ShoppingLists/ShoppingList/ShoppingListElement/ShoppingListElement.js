@@ -67,10 +67,22 @@ class ShoppingListElement extends Component {
         this.props.listElementDelete(this.props.id);
     }
 
+    handleProductCheck = (e) => {
+        if(e.target.checked) {
+            this.props.listElementCheck(this.props.id);
+        } else {
+            this.props.listElementUncheck(this.props.id);
+        }
+    }
+
     render() {
         return (
             <li>
                 <form>
+                    <input
+                        checked={this.props.checked}
+                        onChange={this.handleProductCheck}
+                        type="checkbox" />
                     <input 
                         ref={this.input}
                         type='text'
@@ -89,7 +101,9 @@ class ShoppingListElement extends Component {
 const mapDispatchToProps = dispatch => {
     return {
         listElementUpdate: (name, id) => dispatch(action.updateProduct(name, id)),
-        listElementDelete: (id) => dispatch(action.deleteProduct(id))
+        listElementDelete: (id) => dispatch(action.deleteProduct(id)),
+        listElementCheck: (id) => dispatch(action.checkProduct(id)),
+        listElementUncheck: (id) => dispatch(action.uncheckProduct(id)),
     }
 }
 

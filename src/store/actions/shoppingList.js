@@ -25,3 +25,17 @@ export const deleteProduct = (id) => {
         id
     }
 }
+
+export const checkProduct = (id) => {
+    return {
+        type: actionTypes.CHECK_PRODUCT,
+        id
+    }
+}
+
+export const uncheckProduct = (id) => {
+    return {
+        type: actionTypes.UNCHECK_PRODUCT,
+        id
+    }
+}

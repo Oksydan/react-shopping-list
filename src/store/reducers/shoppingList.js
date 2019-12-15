@@ -40,6 +40,38 @@ const deleteListElement = (id, list) => {
     ]
 }
 
+const checkListElement = (id, list) => {
+    const elemIndex = list.findIndex(elem => elem.id === id ? true : false);
+
+    const listUpdated = list;
+
+    listUpdated[elemIndex] = {
+        ...listUpdated[elemIndex],
+        checked: true
+    };
+
+
+    return [
+        ...listUpdated
+    ]
+}
+
+const uncheckListElement = (id, list) => {
+    const elemIndex = list.findIndex(elem => elem.id === id ? true : false);
+
+    const listUpdated = list;
+
+    listUpdated[elemIndex] = {
+        ...listUpdated[elemIndex],
+        checked: false
+    };
+
+
+    return [
+        ...listUpdated
+    ]
+}
+
 
 const reducer = (state = initialState, actions) => {
     switch (actions.type) {
@@ -60,6 +92,16 @@ const reducer = (state = initialState, actions) => {
             return {
                 ...state,
                 list: deleteListElement(actions.id, [...state.list])
+            };
+        case (actionTypes.CHECK_PRODUCT):
+            return {
+                ...state,
+                list: checkListElement(actions.id, [...state.list])
+            };
+        case (actionTypes.UNCHECK_PRODUCT):
+            return {
+                ...state,
+                list: uncheckListElement(actions.id, [...state.list])
             };
 
         default: 

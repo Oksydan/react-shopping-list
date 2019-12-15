@@ -2,6 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import ShoppingListElement from './ShoppingListElement/ShoppingListElement';
 import * as action from '../../store/actions';
+import PropTypes from 'prop-types';
+
+
 
 const shoppingLists = (props) => {
     let list = null;
@@ -32,6 +35,11 @@ const mapDispatchToProps = dispatch => {
         removeCheckedProducts: () => dispatch(action.removeCheckedProducts())
     }
 }
+
+shoppingLists.propTypes = {
+    shopList: PropTypes.array.isRequired,
+    removeCheckedProducts: PropTypes.func
+};
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(shoppingLists);

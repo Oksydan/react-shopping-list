@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as action from '../../store/actions/index';
 import { getUniqueId } from '../../utils/utils';
+import PropTypes from 'prop-types';
 
 
 
-class shoppingListForm extends Component {
+class ShoppingListForm extends Component {
     state = {
         isInputValid: false,
         inputVal: ''
@@ -55,4 +56,8 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(null, mapDispatchToProps)(shoppingListForm);
+ShoppingListForm.propTypes = {
+    onProductAdd: PropTypes.func,
+}
+
+export default connect(null, mapDispatchToProps)(ShoppingListForm);

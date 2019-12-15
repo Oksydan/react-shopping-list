@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as action from '../../../store/actions';
+import PropTypes from 'prop-types';
 
 class ShoppingListElement extends Component {
 
@@ -111,6 +112,16 @@ const mapDispatchToProps = dispatch => {
         listElementCheck: (id) => dispatch(action.checkProduct(id)),
         listElementUncheck: (id) => dispatch(action.uncheckProduct(id)),
     }
+}
+
+ShoppingListElement.propTypes = {
+    listElementUpdate: PropTypes.func,
+    listElementDelete: PropTypes.func,
+    listElementCheck: PropTypes.func,
+    listElementUncheck: PropTypes.func,
+    checked: PropTypes.bool.isRequired,
+    name: PropTypes.string.isRequired,
+    id: PropTypes.string.isRequired
 }
 
 export default connect(null, mapDispatchToProps)(ShoppingListElement);

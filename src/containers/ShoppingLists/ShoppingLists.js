@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import ShoppingListForm from './ShoppingListForm/ShoppingListForm';
-import ShoppingList from './ShoppingList/ShoppingList';
+import ShoppingListForm from '../ShoppingListForm/ShoppingListForm';
+import ShoppingList from '../../components/ShoppingList/ShoppingList';
 
 class ShoppingLists extends Component {
 

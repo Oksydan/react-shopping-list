@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import ShoppingListElement from '../ShoppingList/ShoppingListElement/ShoppingListElement';
-import * as action from '../../../store/actions';
+import ShoppingListElement from './ShoppingListElement/ShoppingListElement';
+import * as action from '../../store/actions';
 
 const shoppingLists = (props) => {
     let list = null;

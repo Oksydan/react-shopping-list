@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import * as action from '../../../../store/actions';
+import * as action from '../../../store/actions';
 
 class ShoppingListElement extends Component {
 

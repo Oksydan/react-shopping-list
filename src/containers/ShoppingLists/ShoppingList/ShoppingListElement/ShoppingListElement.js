@@ -32,11 +32,16 @@ class ShoppingListElement extends Component {
         this.input.current.focus();
     }
 
-    onEditValue = () => {
+    handleInputSubmit = (e) => {
+        if(e.keyCode === 13) {
+            this.input.current.blur();
+        }
+    }
+
+    handleEditValue = () => {
 
         const state = {...this.state};
         const value = state.value;
-        console.log(state);
 
         if(value.length > 0) {
             this.setState({
@@ -88,7 +93,8 @@ class ShoppingListElement extends Component {
                         type='text'
                         readOnly={!this.state.isEditing ? true : false}
                         value={this.state.touched ? this.value : this.props.name}
-                        onBlur={this.onEditValue}
+                        onBlur={this.handleEditValue}
+                        onKeyUp={this.handleInputSubmit}
                         onChange={this.handleInputChange} />
                     <button onClick={this.handleElementEdit}>edit</button>
                     <button onClick={this.handeDeleteElement}>remove</button>

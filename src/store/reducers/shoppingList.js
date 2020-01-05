@@ -4,12 +4,12 @@ const initialState = {
     list: []
 }
 
-const addListElement = (productName, id, dateAdd, dateEdit, checked = false) => ({
+const addListElement = (productName, id, dateAdd, dateEdit) => ({
     productName,
     id,
     dateAdd,
     dateEdit,
-    checked
+    checked: false
 });
 
 const updateListElement = (productName, id, dateEdit, list) => {

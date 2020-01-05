@@ -11,7 +11,7 @@ const shoppingLists = (props) => {
 
     if (props.shopList.length > 0) {
         list = props.shopList.map((prod) => {
-            return <ShoppingListElement name={prod.productName} key={prod.id} id={prod.id} />;
+            return <ShoppingListElement name={prod.productName} checked={prod.checked} key={prod.id} id={prod.id} />;
         });
     }
     return (

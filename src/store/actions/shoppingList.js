@@ -1,14 +1,43 @@
 import * as actionTypes from './actionTypes';
+import firebase from  '../../config/fbConfig';
+
 
 export const addProduct = (productName, id) => {
+    return (dispatch, getState) => {
+        const   dateAdd = Date.now(),
+                dateEdit = Date.now(),
+                checked = false,
+                order = getState().shoppingList.list.length + 1;
+
+        firebase.collection("list").doc(id).set({
+            productName,
+            id,
+            dateAdd,
+            dateEdit,
+            checked,
+            order
+        })
+        .then(function () {
+            dispatch(productAdded(productName, id, dateAdd, dateEdit, checked, order));
+        })
+        .catch(function (error) {
+            console.error(error);
+        });
+    }
+
+};
+
+const productAdded = (productName, id, dateAdd, dateEdit, checked, order) => {
     return {
-        type: actionTypes.ADD_PRODUCT,
+        type: actionTypes.PRODUCT_ADDED,
         productName,
         id,
-        dateAdd: Date.now(),
-        dateEdit: Date.now()
+        dateAdd,
+        dateEdit,
+        checked,
+        order
     }
-};
+}
 
 export const updateProduct = (productName, id) => {
     return {

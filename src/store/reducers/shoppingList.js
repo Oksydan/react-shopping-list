@@ -82,12 +82,12 @@ const removeCheckedProducts = (list) => {
 
 const reducer = (state = initialState, actions) => {
     switch (actions.type) {
-        case (actionTypes.ADD_PRODUCT):
+        case (actionTypes.PRODUCT_ADDED):
             return {
                 ...state,
                 list: [
                     ...state.list,
-                    addListElement(actions.productName, actions.id, actions.dateAdd, actions.dateEdit, state.list)
+                    addListElement(actions.productName, actions.id, actions.dateAdd, actions.dateEdit, actions.order)
                 ]
             };
         case (actionTypes.UPDATE_PRODUCT):

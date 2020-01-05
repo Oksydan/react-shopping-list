@@ -8,7 +8,6 @@ import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import authReducer from './store/reducers/auth';
 import shoppingListReducer from './store/reducers/shoppingList';
-import { FIRESTORE } from './firebase/firebase';
 
 
 const combinedReducers = combineReducers({

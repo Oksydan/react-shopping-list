@@ -4,11 +4,12 @@ const initialState = {
     list: []
 }
 
-const addListElement = (productName, id, dateAdd, dateEdit) => ({
+const addListElement = (productName, id, dateAdd, dateEdit, list) => ({
     productName,
     id,
     dateAdd,
     dateEdit,
+    order: list.length + 1,
     checked: false
 });
 
@@ -86,7 +87,7 @@ const reducer = (state = initialState, actions) => {
                 ...state,
                 list: [
                     ...state.list,
-                    addListElement(actions.productName, actions.id, actions.dateAdd, actions.dateEdit)
+                    addListElement(actions.productName, actions.id, actions.dateAdd, actions.dateEdit, state.list)
                 ]
             };
         case (actionTypes.UPDATE_PRODUCT):

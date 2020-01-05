@@ -10,7 +10,7 @@ const shoppingLists = (props) => {
     let list = null;
 
     if (props.shopList.length > 0) {
-        list = props.shopList.map((prod) => {
+        list = props.shopList.sort((a, b) => a.order - b.order).sort((a, b) => a.checked - b.checked).map((prod) => {
             return <ShoppingListElement name={prod.productName} checked={prod.checked} key={prod.id} id={prod.id} />;
         });
     }

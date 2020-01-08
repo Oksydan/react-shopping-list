@@ -16,7 +16,7 @@ export const fetchProducts = () => {
    return dispatch => {
        dispatch(fetchProductsStart);
        firebase.collection("list").get()
-           .then(function (doc) {
+           .then(doc => {
                 const   data = doc.docs;
                 let dataList = [];
 
@@ -28,18 +28,50 @@ export const fetchProducts = () => {
                }
                dispatch(updateProductsList(dataList));
                dispatch(fetchProductsEnd());
+               setupListenToChanges();
            })
-           .catch(function (error) {
+           .catch(error => {
                console.error(error);
            });
 
    }
 }
 
+
+// SETUP FOR FEATURE USE
+export const setupListenToChanges = () => {
+    firebase.collection("list")
+        .onSnapshot(snapshot => {
+            snapshot.docChanges().forEach(function (change) {
+                // if (change.type === "added") {
+                //     console.log("New product element: ", change.doc.data());
+                // }
+                // if (change.type === "modified") {
+                //     console.log("Modified product element: ", change.doc.data());
+                // }
+                // if (change.type === "removed") {
+                //     console.log("Removed product element: ", change.doc.data());
+                // }
+            });
+            // return dispatch => {
+
+            // }
+        });
+
+}
+
 export const updateProductsList = (list) => {
     return {
         type: actionTypes.UPDATE_PRODUCTS_LIST,
         list
+    }
+}
+
+// SETUP FOR FEATURE USE
+export const updateProductsListElement = (product) => {
+    return {
+        type: actionTypes.UPDATE_PRODUCTS_LIST_ELEMENT,
+        product
     }
 }
 
@@ -59,10 +91,10 @@ export const addProduct = (productName, id) => {
             checked,
             order
         })
-        .then(function () {
+        .then(() => {
             dispatch(productAdded(productName, id, dateAdd, dateEdit, checked, order));
         })
-        .catch(function (error) {
+        .catch(error => {
             console.error(error);
         });
     }
@@ -90,10 +122,24 @@ export const updateProduct = (productName, id) => {
     }
 }
 
-export const deleteProduct = (id) => {
+export const deleteProductData = (id) => {
     return {
         type: actionTypes.REMOVE_PRODUCT,
         id
+    }
+}
+
+export const deleteProduct = (id) => {
+    return dispatch => {
+        dispatch(deleteProductData(id));
+
+        firebase.collection('list').doc(id).delete()
+            .then(() => {
+                console.log('succesufly deleted');
+            })
+            .catch(error => {
+                console.error(error);
+            })
     }
 }
 

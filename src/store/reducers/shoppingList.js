@@ -1,7 +1,8 @@
 import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
-    list: []
+    list: [],
+    loading: false
 }
 
 const addListElement = (productName, id, dateAdd, dateEdit, list) => ({
@@ -114,6 +115,21 @@ const reducer = (state = initialState, actions) => {
             return {
                 ...state,
                 list: removeCheckedProducts([...state.list])
+            };
+        case (actionTypes.UPDATE_PRODUCTS_LIST):
+            return {
+                ...state,
+                list: actions.list
+            };
+        case (actionTypes.FETCH_PRODUCTS_START):
+            return {
+                ...state,
+                loading: true
+            };
+        case (actionTypes.FETCH_PRODUCTS_END):
+            return {
+                ...state,
+                loading: false
             };
 
         default: 

@@ -4,5 +4,6 @@ export {
     deleteProduct,
     checkProduct,
     uncheckProduct,
-    removeCheckedProducts
+    removeCheckedProducts,
+    fetchProducts
 } from './shoppingList';

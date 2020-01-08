@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import ShoppingListElement from './ShoppingListElement/ShoppingListElement';
 import * as action from '../../store/actions';
@@ -6,22 +6,31 @@ import PropTypes from 'prop-types';
 
 
 
-const shoppingLists = (props) => {
-    let list = null;
+class shoppingLists extends Component {
 
-    if (props.shopList.length > 0) {
-        list = props.shopList.sort((a, b) => a.order - b.order).sort((a, b) => a.checked - b.checked).map((prod) => {
-            return <ShoppingListElement name={prod.productName} checked={prod.checked} key={prod.id} id={prod.id} />;
-        });
+
+    componentDidMount() {
+        this.props.fetchProductsList();
     }
-    return (
-        <div>
-            <button onClick={props.removeCheckedProducts}>Remove checked</button>
-            <ul>
-                {list}
-            </ul>
-        </div>
-    )
+
+    render() {
+        let list = null;
+
+        if (this.props.shopList.length > 0) {
+            list = this.props.shopList.sort((a, b) => a.order - b.order).sort((a, b) => a.checked - b.checked).map((prod) => {
+                return <ShoppingListElement name={prod.productName} checked={prod.checked} key={prod.id} id={prod.id} />;
+            });
+        }
+        return (
+            <div>
+                <button onClick={this.props.removeCheckedProducts}>Remove checked</button>
+                <ul>
+                    {list}
+                </ul>
+            </div>
+        )
+    }
+    
 }
 
 const mapStateToProps = state => {
@@ -32,13 +41,15 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        removeCheckedProducts: () => dispatch(action.removeCheckedProducts())
+        removeCheckedProducts: () => dispatch(action.removeCheckedProducts()),
+        fetchProductsList: () => dispatch(action.fetchProducts())
     }
 }
 
 shoppingLists.propTypes = {
     shopList: PropTypes.array.isRequired,
-    removeCheckedProducts: PropTypes.func
+    removeCheckedProducts: PropTypes.func,
+    fetchProductsList: PropTypes.func
 };
 
 

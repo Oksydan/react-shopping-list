@@ -1,6 +1,48 @@
 import * as actionTypes from './actionTypes';
 import firebase from  '../../config/fbConfig';
 
+export const fetchProductsStart = () => {
+    return {
+        type: actionTypes.FETCH_PRODUCTS_START
+    }
+}
+export const fetchProductsEnd = () => {
+    return {
+        type: actionTypes.FETCH_PRODUCTS_START
+    }
+}
+
+export const fetchProducts = () => {
+   return dispatch => {
+       dispatch(fetchProductsStart);
+       firebase.collection("list").get()
+           .then(function (doc) {
+                const   data = doc.docs;
+                let dataList = [];
+
+               if (data.length > 0) {
+                   for (let doc in data) {
+                       const product = data[doc].data();
+                       dataList = [...dataList, product];
+                   }
+               }
+               dispatch(updateProductsList(dataList));
+               dispatch(fetchProductsEnd());
+           })
+           .catch(function (error) {
+               console.error(error);
+           });
+
+   }
+}
+
+export const updateProductsList = (list) => {
+    return {
+        type: actionTypes.UPDATE_PRODUCTS_LIST,
+        list
+    }
+}
+
 
 export const addProduct = (productName, id) => {
     return (dispatch, getState) => {

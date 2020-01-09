@@ -101,12 +101,12 @@ const reducer = (state = initialState, actions) => {
                 ...state,
                 list: deleteListElement(actions.id, [...state.list])
             };
-        case (actionTypes.CHECK_PRODUCT):
+        case (actionTypes.CHECK_PRODUCT_ELEM):
             return {
                 ...state,
                 list: checkListElement(actions.id, [...state.list])
             };
-        case (actionTypes.UNCHECK_PRODUCT):
+        case (actionTypes.UNCHECK_PRODUCT_ELEM):
             return {
                 ...state,
                 list: uncheckListElement(actions.id, [...state.list])

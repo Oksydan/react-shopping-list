@@ -161,15 +161,45 @@ export const deleteProduct = (id) => {
 }
 
 export const checkProduct = (id) => {
+    return dispatch => {
+        dispatch(checkProductElem(id));
+        firebase.collection("list").doc(id).set({
+            checked: true
+        }, { merge: true })
+            .then(() => {
+                console.log('element checked');
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    }
+}
+
+export const checkProductElem = (id) => {
     return {
-        type: actionTypes.CHECK_PRODUCT,
+        type: actionTypes.CHECK_PRODUCT_ELEM,
         id
     }
 }
 
 export const uncheckProduct = (id) => {
+    return dispatch => {
+        dispatch(uncheckProductElem(id));
+        firebase.collection("list").doc(id).set({
+            checked: false
+        }, { merge: true })
+            .then(() => {
+                console.log('element unchecked');
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    }
+}
+
+export const uncheckProductElem = (id) => {
     return {
-        type: actionTypes.UNCHECK_PRODUCT,
+        type: actionTypes.UNCHECK_PRODUCT_ELEM,
         id
     }
 }

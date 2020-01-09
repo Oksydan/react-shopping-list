@@ -9,32 +9,32 @@ class ShoppingListElement extends Component {
         super(props);
 
         this.input = React.createRef();
+        this.state = {
+            value: this.props.name,
+            touched: false,
+            isEditing: false,
+            editingState: '',
+            prevValue: ''
+        }
     }
 
-    state = {
-        touched: false,
-        value: '',
-        isEditing: false,
-        editingState: '',
-        prevValue: ''
-    }
 
     handleElementEdit = (e) => {
         e.preventDefault();
 
+        const state = {...this.state};
+
         this.setState({
-            ...this.state,
             isEditing: true,
             touched: true,
-            value: this.props.name,
-            prevValue: this.props.name
+            prevValue: state.value
         })
 
         this.input.current.focus();
     }
 
     handleInputSubmit = (e) => {
-        if(e.keyCode === 13) {
+        if (e.keyCode === 13) {
             this.input.current.blur();
         }
     }
@@ -46,14 +46,13 @@ class ShoppingListElement extends Component {
 
         if(value.length > 0) {
             this.setState({
-                ...state,
                 isEditing: false
-            })
+            });
+
             this.props.listElementUpdate(value, this.props.id);
 
         } else {
             this.setState({
-                ...state,
                 isEditing: false,
                 value: state.prevValue
             })
@@ -61,11 +60,10 @@ class ShoppingListElement extends Component {
     }
 
     handleInputChange = () => {
-
         this.setState({
-            ...this.state,
             value: this.input.current.value
         })
+        console.log(this.state);
     }
 
     handeDeleteElement = (e) => {
@@ -93,7 +91,7 @@ class ShoppingListElement extends Component {
                         ref={this.input}
                         type='text'
                         readOnly={!this.state.isEditing ? true : false}
-                        value={this.state.touched ? this.value : this.props.name}
+                        value={this.state.value}
                         onBlur={this.handleEditValue}
                         onKeyUp={this.handleInputSubmit}
                         onChange={this.handleInputChange} />

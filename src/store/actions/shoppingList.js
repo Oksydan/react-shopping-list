@@ -38,7 +38,7 @@ export const fetchProducts = () => {
 }
 
 
-// SETUP FOR FEATURE USE
+// ADDED FOR FUTURE USE
 export const setupListenToChanges = () => {
     firebase.collection("list")
         .onSnapshot(snapshot => {
@@ -67,7 +67,7 @@ export const updateProductsList = (list) => {
     }
 }
 
-// SETUP FOR FEATURE USE
+// ADDED FOR FUTURE USE
 export const updateProductsListElement = (product) => {
     return {
         type: actionTypes.UPDATE_PRODUCTS_LIST_ELEMENT,
@@ -114,11 +114,28 @@ const productAdded = (productName, id, dateAdd, dateEdit, checked, order) => {
 }
 
 export const updateProduct = (productName, id) => {
+    return dispatch => {
+        const dateEdit = Date.now();
+
+        firebase.collection("list").doc(id).set({
+            productName,
+            dateEdit
+        }, { merge: true })
+        .then(() => {
+            dispatch(updateProductData(productName, id, dateEdit));
+        })
+        .catch(error => {
+            console.error(error);
+        });
+    }
+}
+
+export const updateProductData = (productName, id, dateEdit) => {
     return {
         type: actionTypes.UPDATE_PRODUCT,
         productName,
         id,
-        dateEdit: Date.now()
+        dateEdit
     }
 }
 

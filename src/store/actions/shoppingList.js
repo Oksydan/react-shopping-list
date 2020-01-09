@@ -203,7 +203,28 @@ export const uncheckProductElem = (id) => {
         id
     }
 }
+
 export const removeCheckedProducts = () => {
+    return (dispatch, getState) => {
+        const checkedElementsId = getState().shoppingList.list.filter(prod => prod.checked).map(prod => prod.id);
+        const batch = firebase.batch();
+
+        for (let i in checkedElementsId) {
+            const docRef = firebase.collection('list').doc(checkedElementsId[i]);
+            batch.delete(docRef)
+        }
+
+        batch.commit()
+            .then(() => {
+                dispatch(removeCheckedProductsElems());
+            })
+            .catch(error => {
+                console.log(error);
+            })
+    }
+}
+
+export const removeCheckedProductsElems = () => {
     return {
         type: actionTypes.REMOVE_CHECKED
     }

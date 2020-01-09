@@ -91,7 +91,7 @@ const reducer = (state = initialState, actions) => {
                     addListElement(actions.productName, actions.id, actions.dateAdd, actions.dateEdit, actions.order)
                 ]
             };
-        case (actionTypes.UPDATE_PRODUCT):
+        case (actionTypes.UPDATE_PRODUCT_DATA):
             return {
                 ...state,
                 list: updateListElement(actions.productName, actions.id, actions.dateEdit, [...state.list])

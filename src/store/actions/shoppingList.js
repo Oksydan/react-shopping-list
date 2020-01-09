@@ -132,7 +132,7 @@ export const updateProduct = (productName, id) => {
 
 export const updateProductData = (productName, id, dateEdit) => {
     return {
-        type: actionTypes.UPDATE_PRODUCT,
+        type: actionTypes.UPDATE_PRODUCT_DATA,
         productName,
         id,
         dateEdit

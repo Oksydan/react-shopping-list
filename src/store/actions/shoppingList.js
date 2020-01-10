@@ -32,6 +32,7 @@ export const fetchProducts = () => {
            })
            .catch(error => {
                console.error(error);
+               dispatch(fetchProductsEnd());
            });
 
    }
@@ -148,11 +149,9 @@ export const deleteProductData = (id) => {
 
 export const deleteProduct = (id) => {
     return dispatch => {
-        dispatch(deleteProductData(id));
-
         firebase.collection('list').doc(id).delete()
             .then(() => {
-                console.log('succesufly deleted');
+                dispatch(deleteProductData(id));
             })
             .catch(error => {
                 console.error(error);
@@ -162,12 +161,11 @@ export const deleteProduct = (id) => {
 
 export const checkProduct = (id) => {
     return dispatch => {
-        dispatch(checkProductElem(id));
         firebase.collection("list").doc(id).set({
             checked: true
         }, { merge: true })
             .then(() => {
-                console.log('element checked');
+                dispatch(checkProductElem(id));
             })
             .catch(error => {
                 console.error(error);
@@ -184,12 +182,11 @@ export const checkProductElem = (id) => {
 
 export const uncheckProduct = (id) => {
     return dispatch => {
-        dispatch(uncheckProductElem(id));
         firebase.collection("list").doc(id).set({
             checked: false
         }, { merge: true })
             .then(() => {
-                console.log('element unchecked');
+                dispatch(uncheckProductElem(id));
             })
             .catch(error => {
                 console.error(error);

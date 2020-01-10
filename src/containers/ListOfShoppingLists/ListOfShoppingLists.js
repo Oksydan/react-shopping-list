@@ -18,6 +18,7 @@ class ListOfShoppingLists extends Component {
             <ShoppingListElem 
                 title={list.listName}
                 key={list.id}
+                id={list.id}
                 handleDelete={() => this.removeList(list.id)}
         />);
         

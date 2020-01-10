@@ -15,3 +15,4 @@ export const ADD_LIST = 'ADD_LIST';
 export const FETCH_LIST_START = 'FETCH_LIST_START';
 export const FETCH_LIST_END = 'FETCH_LIST_END';
 export const SET_LIST = 'SET_LIST';
+export const REMOVE_LIST = 'REMOVE_LIST';

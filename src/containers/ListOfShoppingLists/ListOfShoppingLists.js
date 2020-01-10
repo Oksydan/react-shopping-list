@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as action from '../../store/actions/index';
+import ShoppingListElem from '../../components/ListOfLists/ShoppingListsElem';
 
 class ListOfShoppingLists extends Component {
 
@@ -8,13 +9,21 @@ class ListOfShoppingLists extends Component {
         this.props.fetchShopplingLists();
     }
 
+    removeList = (id) => {
+        this.props.removeListEleme(id);
+    }
+
     render() {
-        console.log(this.props.list);
+        const shoppingLists = this.props.list.map(list => 
+            <ShoppingListElem 
+                title={list.listName}
+                key={list.id}
+                handleDelete={() => this.removeList(list.id)}
+        />);
+        
         return (
-            
             <div>
-                list
-                
+                {shoppingLists}
             </div>
         )
     }
@@ -29,7 +38,8 @@ const mapStateToPros = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        fetchShopplingLists: () => dispatch(action.fetchList())
+        fetchShopplingLists: () => dispatch(action.fetchList()),
+        removeListEleme: (id) => dispatch(action.removeList(id))
     }
 }
 

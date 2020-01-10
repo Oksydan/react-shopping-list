@@ -12,6 +12,17 @@ const addList = (listName, id, dateAdd, dateEdit) => ({
     dateEdit
 });
 
+const deleteListElement = (id, list) => {
+    const elemIndex = list.findIndex(elem => elem.id === id ? true : false);
+
+    list.splice(elemIndex, 1);
+
+
+    return [
+        ...list
+    ]
+}
+
 
 
 const reducer = (state = initialState, actions) => {
@@ -30,6 +41,11 @@ const reducer = (state = initialState, actions) => {
                 shoppingLists: [
                     ...actions.list
                 ]
+            };
+        case (actionTypes.REMOVE_LIST):
+            return {
+                ...state,
+                shoppingLists: deleteListElement(actions.id, [...state.shoppingLists])
             };
 
         default:

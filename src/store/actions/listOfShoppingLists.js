@@ -75,3 +75,23 @@ export const setList = (list) => {
         list
     }
 }
+
+
+export const removeListData = (id) => {
+    return {
+        type: actionTypes.REMOVE_LIST,
+        id
+    }
+}
+
+export const removeList = (id) => {
+    return dispatch => {
+        firebase.collection('shoppingList').doc(id).delete()
+            .then(() => {
+                dispatch(removeListData(id));
+            })
+            .catch(error => {
+                console.error(error);
+            })
+    }
+}

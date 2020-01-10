@@ -10,5 +10,6 @@ export {
 
 export {
     addList,
-    fetchList
+    fetchList,
+    removeList
 } from './listOfShoppingLists';

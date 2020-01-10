@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import * as action from '../../store/actions/index';
 import { getUniqueId } from '../../utils/utils';
 import PropTypes from 'prop-types';
+import AddElementForm from '../../components/AddElementForm/AddElementForm';
 
 
 
@@ -40,10 +41,12 @@ class ShoppingListForm extends Component {
 
     render() {
         return (
-            <form onSubmit={this.onSubmit}>
-                <input type="text" onChange={this.onInputChange} value={this.state.inputVal} />
-                <button type="submit" disabled={!this.state.isInputValid}>Add</button>
-            </form>
+            <AddElementForm 
+                handleSubmit={this.onSubmit} 
+                handleInputChange={this.onInputChange} 
+                isInputValid={this.state.isInputValid}
+                inputVal={this.state.inputVal}
+                />
         );
     }
 }

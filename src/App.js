@@ -1,6 +1,6 @@
 import React from 'react';
 import Header from './components/Header/Header';
-import ShoppingLists from './containers/ShoppingLists/ShoppingLists';
+import ShoppingList from './components/ShoppingList/ShoppingList';
 import Authentication from './containers/Authentication/Authentication';
 import NotFound from './components/NotFound/NotFound';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
@@ -12,7 +12,7 @@ function App() {
         <Header />
         <Switch>
           <Route path="/auth" exact component={Authentication} />
-          <Route path="/" exact component={ShoppingLists} />
+          <Route path="/" exact component={ShoppingList} />
           <Route path="/" component={NotFound} />
         </Switch>
       </div>

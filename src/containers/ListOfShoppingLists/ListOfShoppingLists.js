@@ -1,19 +1,36 @@
 import React, { Component } from 'react';
-import ShoppingListForm from '../ShoppingListForm/ShoppingListForm';
-import ShoppingList from '../ShoppingList/ShoppingList';
+import { connect } from 'react-redux';
+import * as action from '../../store/actions/index';
 
-class ShoppingLists extends Component {
+class ListOfShoppingLists extends Component {
+
+    componentDidMount() {
+        this.props.fetchShopplingLists();
+    }
 
     render() {
+        console.log(this.props.list);
         return (
             
             <div>
-                <ShoppingListForm />
-                <ShoppingList />
+                list
                 
             </div>
         )
     }
 }
 
-export default ShoppingLists;
+const mapStateToPros = state => {
+    return {
+        list: state.listOfShoppingLists.shoppingLists
+    }
+}
+
+
+const mapDispatchToProps = dispatch => {
+    return {
+        fetchShopplingLists: () => dispatch(action.fetchList())
+    }
+}
+
+export default connect(mapStateToPros, mapDispatchToProps)(ListOfShoppingLists);

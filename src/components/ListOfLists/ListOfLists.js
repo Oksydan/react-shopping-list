@@ -1,11 +1,11 @@
 import React, { Fragment } from 'react';
 import List from '../../containers/ListOfShoppingLists/ListOfShoppingLists';
-import Form from '../../containers/ListOfShoppingLists/ListOfShoppingListsForm/ListOfShoppingListsForm';
+import Form from '../../containers/ListOfShoppingLists/ListOfShoppingListsForm/ListOFShoppingListsForm';
 
 const shoppingList = () => (
     <Fragment>
-        <List />
         <Form />
+        <List />
     </Fragment>
 );
 

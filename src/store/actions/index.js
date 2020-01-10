@@ -7,3 +7,8 @@ export {
     removeCheckedProducts,
     fetchProducts
 } from './shoppingList';
+
+export {
+    addList,
+    fetchList
+} from './listOfShoppingLists';

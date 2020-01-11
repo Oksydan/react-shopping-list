@@ -2,7 +2,8 @@ import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
     list: [],
-    loading: false
+    loading: false,
+    listId: null
 }
 
 const addListElement = (productName, id, dateAdd, dateEdit, list) => ({
@@ -119,7 +120,8 @@ const reducer = (state = initialState, actions) => {
         case (actionTypes.UPDATE_PRODUCTS_LIST):
             return {
                 ...state,
-                list: actions.list
+                list: actions.list,
+                listId: actions.id
             };
         case (actionTypes.FETCH_PRODUCTS_START):
             return {

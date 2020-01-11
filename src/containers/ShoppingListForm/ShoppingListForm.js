@@ -55,12 +55,12 @@ class ShoppingListForm extends Component {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onListAdd: (name, id) => dispatch(action.addList(name, id))
+        onProductAdd: (name, id) => dispatch(action.addProduct(name, id))
     }
 }
 
 ShoppingListForm.propTypes = {
-    onListAdd: PropTypes.func,
+    onProductAdd: PropTypes.func,
 }
 
 export default connect(null, mapDispatchToProps)(ShoppingListForm);

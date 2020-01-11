@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import ShoppingListElement from './ShoppingListElement/ShoppingListElement';
 import * as action from '../../store/actions';
 import PropTypes from 'prop-types';
+import { withRouter } from "react-router";
 
 
 
@@ -10,7 +11,12 @@ class ShoppingLists extends Component {
 
 
     componentDidMount() {
-        this.props.fetchProductsList();
+        const id = this.props.match.params.id;
+        if (id) {
+            this.props.fetchProductsList(id);
+        } else {
+            this.props.history.push('/');
+        }
     }
 
     render() {
@@ -20,6 +26,8 @@ class ShoppingLists extends Component {
             list = this.props.shopList.sort((a, b) => a.order - b.order).sort((a, b) => a.checked - b.checked).map((prod) => {
                 return <ShoppingListElement name={prod.productName} checked={prod.checked} key={prod.id} id={prod.id} />;
             });
+        } else {
+            list = 'Add product to your shopping list'
         }
         return (
             <div>
@@ -42,7 +50,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         removeCheckedProducts: () => dispatch(action.removeCheckedProducts()),
-        fetchProductsList: () => dispatch(action.fetchProducts())
+        fetchProductsList: (id) => dispatch(action.fetchProducts(id))
     }
 }
 
@@ -53,4 +61,4 @@ ShoppingLists.propTypes = {
 };
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(ShoppingLists);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ShoppingLists));

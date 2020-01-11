@@ -23,7 +23,7 @@ class ShoppingLists extends Component {
         let list = null;
 
         if (this.props.shopList.length > 0) {
-            list = this.props.shopList.sort((a, b) => a.order - b.order).sort((a, b) => a.checked - b.checked).map((prod) => {
+            list = this.props.shopList.sort((a, b) => a.dateAdd - b.dateAdd).sort((a, b) => a.checked - b.checked).map((prod) => {
                 return <ShoppingListElement name={prod.productName} checked={prod.checked} key={prod.id} id={prod.id} />;
             });
         } else {

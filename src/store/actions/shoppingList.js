@@ -83,7 +83,6 @@ export const addProduct = (productName, id) => {
         const   dateAdd = Date.now(),
                 dateEdit = Date.now(),
                 checked = false,
-                order = getState().shoppingList.list.length + 1,
                 listId = getState().shoppingList.listId;
 
         firebase.collection("shoppingList").doc(listId).collection("list").doc(id).set({
@@ -91,11 +90,10 @@ export const addProduct = (productName, id) => {
             id,
             dateAdd,
             dateEdit,
-            checked,
-            order
+            checked
         })
         .then(() => {
-            dispatch(productAdded(productName, id, dateAdd, dateEdit, checked, order));
+            dispatch(productAdded(productName, id, dateAdd, dateEdit, checked));
         })
         .catch(error => {
             console.error(error);
@@ -104,15 +102,14 @@ export const addProduct = (productName, id) => {
 
 };
 
-const productAdded = (productName, id, dateAdd, dateEdit, checked, order) => {
+const productAdded = (productName, id, dateAdd, dateEdit, checked) => {
     return {
         type: actionTypes.PRODUCT_ADDED,
         productName,
         id,
         dateAdd,
         dateEdit,
-        checked,
-        order
+        checked
     }
 }
 

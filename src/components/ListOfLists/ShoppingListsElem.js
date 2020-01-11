@@ -7,6 +7,9 @@ const shoppingListsElem = (props) => {
     return (
     <div>
         <Link to={link}>{props.title}</Link>
+        <button onClick={props.handleEdit}>
+            Edit
+        </button>
         <button onClick={props.handleDelete}>
             Remove
         </button>
@@ -16,6 +19,7 @@ const shoppingListsElem = (props) => {
 shoppingListsElem.propTypes = {
     title: PropTypes.string.isRequired,
     handleDelete: PropTypes.func.isRequired,
+    handleEdit: PropTypes.func.isRequired,
     id: PropTypes.string.isRequired
 }
 

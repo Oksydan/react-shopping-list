@@ -2,8 +2,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as action from '../../store/actions/index';
 import ShoppingListElem from '../../components/ListOfLists/ShoppingListsElem';
+import Modal from '../../components/UI/Modal/Modal';
 
 class ListOfShoppingLists extends Component {
+
+    state = {
+        modalVisible: false
+    }
 
     componentDidMount() {
         this.props.fetchShopplingLists();
@@ -13,6 +18,19 @@ class ListOfShoppingLists extends Component {
         this.props.removeListEleme(id);
     }
 
+    editListTitle = (id) => {
+        this.setState({
+            modalVisible: true
+        })
+    }
+
+    handleHideModal = () => {
+        this.setState({
+            modalVisible: false
+        })
+    }
+    
+
     render() {
         const shoppingLists = this.props.list.map(list => 
             <ShoppingListElem 
@@ -20,11 +38,18 @@ class ListOfShoppingLists extends Component {
                 key={list.id}
                 id={list.id}
                 handleDelete={() => this.removeList(list.id)}
+                handleEdit={() => this.editListTitle(list.id)}
         />);
         
         return (
             <div>
                 {shoppingLists}
+                <Modal 
+                    show={this.state.modalVisible}
+                    modalClosed={this.handleHideModal}
+                >
+                    CHILDREN
+                </Modal>
             </div>
         )
     }

@@ -23,6 +23,21 @@ const deleteListElement = (id, list) => {
     ]
 }
 
+const editTitle = (id, listName, list) => {
+    const elemIndex = list.findIndex(elem => elem.id === id ? true : false);
+
+    const listUpdated = list;
+
+    listUpdated[elemIndex] = {
+        ...listUpdated[elemIndex],
+        listName
+    };
+
+
+    return [
+        ...listUpdated
+    ]
+}
 
 
 const reducer = (state = initialState, actions) => {
@@ -46,6 +61,11 @@ const reducer = (state = initialState, actions) => {
             return {
                 ...state,
                 shoppingLists: deleteListElement(actions.id, [...state.shoppingLists])
+            };
+        case (actionTypes.LIST_TITLE_EDITED):
+            return {
+                ...state,
+                shoppingLists: editTitle(actions.id, actions.listName, [...state.shoppingLists])
             };
 
         default:

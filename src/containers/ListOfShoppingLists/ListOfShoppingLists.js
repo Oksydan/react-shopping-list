@@ -3,11 +3,15 @@ import { connect } from 'react-redux';
 import * as action from '../../store/actions/index';
 import ShoppingListElem from '../../components/ListOfLists/ShoppingListsElem';
 import Modal from '../../components/UI/Modal/Modal';
+import Form from '../../components/AddElementForm/AddElementForm';
 
 class ListOfShoppingLists extends Component {
 
     state = {
-        modalVisible: false
+        modalVisible: false,
+        editListId: null,
+        editTitle: '',
+        isTtileValid: true
     }
 
     componentDidMount() {
@@ -18,16 +22,39 @@ class ListOfShoppingLists extends Component {
         this.props.removeListEleme(id);
     }
 
-    editListTitle = (id) => {
+    editListTitle = (id, title) => {
         this.setState({
-            modalVisible: true
+            modalVisible: true,
+            editListId: id,
+            editTitle: title,
         })
     }
 
     handleHideModal = () => {
         this.setState({
-            modalVisible: false
+            modalVisible: false,
+            editListId: null,
+            editTitle: ''
         })
+    }
+
+    handleTitleChange = (e) => {
+        const inputVal = e.target.value;
+
+        this.setState({
+            editTitle: inputVal
+        });
+    }
+
+    handleTitleEditSubmit = (e) => {
+        e.preventDefault();
+        const state = { ...this.state };
+        const valueFormated = state.editTitle.trim();
+        if (valueFormated.length > 0) {
+            this.props.listTitleEdit(this.state.editListId, this.state.editTitle);
+            this.handleHideModal();
+        }
+        
     }
     
 
@@ -38,18 +65,25 @@ class ListOfShoppingLists extends Component {
                 key={list.id}
                 id={list.id}
                 handleDelete={() => this.removeList(list.id)}
-                handleEdit={() => this.editListTitle(list.id)}
+                handleEdit={() => this.editListTitle(list.id, list.listName)}
         />);
         
         return (
             <div>
                 {shoppingLists}
-                <Modal 
+                {this.state.editListId !== null ? 
+                <Modal
                     show={this.state.modalVisible}
                     modalClosed={this.handleHideModal}
                 >
-                    CHILDREN
-                </Modal>
+                    <Form 
+                        inputVal={this.state.editTitle}
+                        isInputValid={this.state.isTtileValid}
+                        handleInputChange={this.handleTitleChange}
+                        handleSubmit={this.handleTitleEditSubmit}
+                    />
+                </Modal> : null}
+                
             </div>
         )
     }
@@ -65,7 +99,8 @@ const mapStateToPros = state => {
 const mapDispatchToProps = dispatch => {
     return {
         fetchShopplingLists: () => dispatch(action.fetchList()),
-        removeListEleme: (id) => dispatch(action.removeList(id))
+        removeListEleme: (id) => dispatch(action.removeList(id)),
+        listTitleEdit: (id, title) => dispatch(action.editListTitle(id, title))
     }
 }
 

@@ -95,3 +95,30 @@ export const removeList = (id) => {
             })
     }
 }
+
+
+export const editListTitle = (id, listName) => {
+    return dispatch => {
+        const dateEdit = Date.now();
+
+        firebase.collection("shoppingList").doc(id).set({
+            listName,
+            dateEdit
+        }, { merge: true })
+            .then(() => {
+                dispatch(listTitleEdited(id, listName, dateEdit));
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    }
+};
+
+export const listTitleEdited = (id, listName, dateEdit) => {
+    return {
+        type: actionTypes.LIST_TITLE_EDITED,
+        listName,
+        id,
+        dateEdit
+    }
+}

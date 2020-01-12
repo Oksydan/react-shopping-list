@@ -18,7 +18,6 @@ class ShoppingListForm extends Component {
         const inputVal = e.target.value;
 
         this.setState({
-            ...this.state,
             inputVal,
             isInputValid: inputVal.length > 0 ? true : false
         });
@@ -32,7 +31,6 @@ class ShoppingListForm extends Component {
             this.props.onProductAdd(this.state.inputVal, getUniqueId());
         } 
         this.setState({
-            ...this.state,
             inputVal: '',
             isInputValid: false
         })

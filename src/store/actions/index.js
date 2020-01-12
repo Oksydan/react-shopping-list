@@ -11,5 +11,6 @@ export {
 export {
     addList,
     fetchList,
-    removeList
+    removeList,
+    editListTitle
 } from './listOfShoppingLists';

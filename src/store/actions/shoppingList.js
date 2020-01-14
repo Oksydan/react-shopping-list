@@ -1,5 +1,5 @@
 import * as actionTypes from './actionTypes';
-import firebase from  '../../config/fbConfig';
+import {firestore} from  '../../config/fbConfig';
 
 export const fetchProductsStart = () => {
     return {
@@ -15,7 +15,7 @@ export const fetchProductsEnd = () => {
 export const fetchProducts = (id) => {
    return dispatch => {
        dispatch(fetchProductsStart);
-       firebase.collection("shoppingList").doc(id).collection("list").get()
+       firestore.collection("shoppingList").doc(id).collection("list").get()
            .then(doc => {
                const   data = doc.docs;
                let dataList = [];
@@ -41,7 +41,7 @@ export const fetchProducts = (id) => {
 
 // ADDED FOR FUTURE USE
 export const setupListenToChanges = () => {
-    firebase.collection("list")
+    firestore.collection("list")
         .onSnapshot(snapshot => {
             snapshot.docChanges().forEach(function (change) {
                 // if (change.type === "added") {
@@ -85,7 +85,7 @@ export const addProduct = (productName, id) => {
                 checked = false,
                 listId = getState().shoppingList.listId;
 
-        firebase.collection("shoppingList").doc(listId).collection("list").doc(id).set({
+        firestore.collection("shoppingList").doc(listId).collection("list").doc(id).set({
             productName,
             id,
             dateAdd,
@@ -118,7 +118,7 @@ export const updateProduct = (productName, id) => {
         const   dateEdit = Date.now(),
                 listId = getState().shoppingList.listId;
 
-        firebase.collection("shoppingList").doc(listId).collection("list").doc(id).set({
+        firestore.collection("shoppingList").doc(listId).collection("list").doc(id).set({
             productName,
             dateEdit
         }, { merge: true })
@@ -150,7 +150,7 @@ export const deleteProductData = (id) => {
 export const deleteProduct = (id) => {
     return (dispatch, getState) => {
         const listId = getState().shoppingList.listId;
-        firebase.collection("shoppingList").doc(listId).collection("list").doc(id).delete()
+        firestore.collection("shoppingList").doc(listId).collection("list").doc(id).delete()
             .then(() => {
                 dispatch(deleteProductData(id));
             })
@@ -163,7 +163,7 @@ export const deleteProduct = (id) => {
 export const checkProduct = (id) => {
     return (dispatch, getState) => {
         const listId = getState().shoppingList.listId;
-        firebase.collection("shoppingList").doc(listId).collection("list").doc(id).set({
+        firestore.collection("shoppingList").doc(listId).collection("list").doc(id).set({
             checked: true
         }, { merge: true })
             .then(() => {
@@ -185,7 +185,7 @@ export const checkProductElem = (id) => {
 export const uncheckProduct = (id) => {
     return (dispatch, getState) => {
         const listId = getState().shoppingList.listId;
-        firebase.collection("shoppingList").doc(listId).collection("list").doc(id).set({
+        firestore.collection("shoppingList").doc(listId).collection("list").doc(id).set({
             checked: false
         }, { merge: true })
             .then(() => {
@@ -207,11 +207,11 @@ export const uncheckProductElem = (id) => {
 export const removeCheckedProducts = () => {
     return (dispatch, getState) => {
         const   checkedElementsId = getState().shoppingList.list.filter(prod => prod.checked).map(prod => prod.id),
-                batch = firebase.batch(),
+                batch = firestore.batch(),
                 listId = getState().shoppingList.listId;
 
         for (let i in checkedElementsId) {
-            const docRef = firebase.collection("shoppingList").doc(listId).collection("list").doc(checkedElementsId[i]);
+            const docRef = firestore.collection("shoppingList").doc(listId).collection("list").doc(checkedElementsId[i]);
             batch.delete(docRef)
         }
 

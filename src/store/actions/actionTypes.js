@@ -21,4 +21,4 @@ export const LIST_TITLE_EDITED = 'LIST_TITLE_EDITED';
 
 export const AUTH_START = 'AUTH_START';
 export const AUTH_ERROR = 'AUTH_ERROR';
-export const AUTH_END = 'AUTH_END';
+export const AUTH_SUCCESSFULLY = 'AUTH_SUCCESSFULLY';

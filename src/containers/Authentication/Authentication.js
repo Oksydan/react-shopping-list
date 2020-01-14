@@ -15,7 +15,8 @@ class Authentication extends Component {
                 label: 'Your email',
                 value: '',
                 validation: {
-                    isEmail: true
+                    isEmail: true,
+                    isRequired: true
                 },
                 hasError: false
             },
@@ -25,7 +26,8 @@ class Authentication extends Component {
                 label: 'Your passowrd',
                 value: '',
                 validation: {
-                    minLength: 6
+                    minLength: 6,
+                    isRequired: true
                 },
                 hasError: false
             }
@@ -34,18 +36,31 @@ class Authentication extends Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
-        console.log('submit')
+        
+        const fields = this.state.fields;
+        let areInputsValid = true;
+
+        for (const i in fields) {
+            console.log(!fields[i].hasError);
+            areInputsValid = areInputsValid && !fields[i].hasError;
+        }
+
+        if (areInputsValid) {
+            this.props.register(fields[0].value, fields[1].value);
+        }
+
     }
 
     validateField = elem => {
-        const rules = elem.validation;
-        let field = elem,
-            valid = true;
+        const   field = elem,
+                rules = field.validation;
+
+        let valid = true;
 
         for (const rule in rules) {
-            valid = this.validate(field, rule, rules[rule]);
+            valid = valid && this.validate(field, rule, rules[rule]);
         }
-
+        
         return !valid;
     }
 
@@ -56,6 +71,8 @@ class Authentication extends Component {
                 return elem.value.length >= ruleValue;
             case 'isEmail':
                 return isEmail(elem.value);
+            case 'isRequired':
+                return elem.value.length > 0;
             default: 
                 return true;
         }
@@ -76,10 +93,15 @@ class Authentication extends Component {
 
         const index = state.fields.findIndex(field => field.name === name ? true : false);
 
-        const field = state.fields[index];
+        const field = {...state.fields[index]};
 
         field.value = value;
         field.hasError = this.validateField(field);
+
+        state.fields[index] = {
+            ...state.fields[index],
+            ...field
+        }
         
         this.setState({
             fields: [

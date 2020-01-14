@@ -1,5 +1,5 @@
 import * as actionTypes from './actionTypes';
-import firebase from '../../config/fbConfig';
+import {firebaseAuth} from '../../config/fbConfig';
 
 export const authStart = () => {
     return {
@@ -14,15 +14,10 @@ export const authError = error => {
     }
 }
 
-export const authEnd = () => {
-    return {
-        type: actionTypes.AUTH_END
-    }
-}
 
 export const authSuccessfully = uid => {
     return {
-        type: actionTypes.AUTH_END,
+        type: actionTypes.AUTH_SUCCESSFULLY,
         uid
     }
 }
@@ -31,17 +26,15 @@ export const auth = (email, password) => {
     return dispatch => {
         dispatch(authStart());
 
-        firebase.auth().createUserWithEmailAndPassword(email, password)
+        firebaseAuth.createUserWithEmailAndPassword(email, password)
             .then(res => {
-                console.log(res);
-                dispatch(authEnd());
-                dispatch(authSuccessfully());
+                console.log(res.user.uid);
+                dispatch(authSuccessfully(res.user.uid));
             })
             .catch(error => {
                 console.log(error);
                 
                 dispatch(authError());
-                dispatch(authEnd());
             });
 
     }

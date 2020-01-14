@@ -1,12 +1,12 @@
 import * as actionTypes from './actionTypes';
-import firebase from '../../config/fbConfig';
+import {firestore} from '../../config/fbConfig';
 
 export const addList = (listName, id) => {
     return dispatch => {
         const   dateAdd = Date.now(),
                 dateEdit = Date.now();
 
-        firebase.collection("shoppingList").doc(id).set({
+        firestore.collection("shoppingList").doc(id).set({
             listName,
             id,
             dateAdd,
@@ -46,7 +46,7 @@ export const fetchListEnd = () => {
 export const fetchList = () => {
     return dispatch => {
         dispatch(fetchListStart);
-        firebase.collection("shoppingList").get()
+        firestore.collection("shoppingList").get()
             .then(doc => {
                 const data = doc.docs;
                 let listArry = [];
@@ -86,7 +86,7 @@ export const removeListData = (id) => {
 
 export const removeList = (id) => {
     return dispatch => {
-        firebase.collection('shoppingList').doc(id).delete()
+        firestore.collection('shoppingList').doc(id).delete()
             .then(() => {
                 dispatch(removeListData(id));
             })
@@ -101,7 +101,7 @@ export const editListTitle = (id, listName) => {
     return dispatch => {
         const dateEdit = Date.now();
 
-        firebase.collection("shoppingList").doc(id).set({
+        firestore.collection("shoppingList").doc(id).set({
             listName,
             dateEdit
         }, { merge: true })

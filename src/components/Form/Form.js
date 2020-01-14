@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 const form = props => (
     <form onSubmit={props.handleSubmit}>
         {props.children}
+        <button type='submit' onClick={props.handleSubmit}>SUBMIT</button>
     </form>
 );
 

@@ -17,3 +17,8 @@ export const FETCH_LIST_END = 'FETCH_LIST_END';
 export const SET_LIST = 'SET_LIST';
 export const REMOVE_LIST = 'REMOVE_LIST';
 export const LIST_TITLE_EDITED = 'LIST_TITLE_EDITED';
+
+
+export const AUTH_START = 'AUTH_START';
+export const AUTH_ERROR = 'AUTH_ERROR';
+export const AUTH_END = 'AUTH_END';

@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import * as actions from '../../store/actions/index';
+import { isEmail } from '../../utils/validation';
 import Form from '../../components/Form/Form';
 import FormField from '../../components/Form/FormField/FormField'; 
 
@@ -12,10 +15,9 @@ class Authentication extends Component {
                 label: 'Your email',
                 value: '',
                 validation: {
-                    isEmail: true,
-                    isRequired: true
+                    isEmail: true
                 },
-                hasError: []
+                hasError: false
             },
             {
                 name: 'password',
@@ -23,10 +25,9 @@ class Authentication extends Component {
                 label: 'Your passowrd',
                 value: '',
                 validation: {
-                    minLength: 6,
-                    isRequired: true
+                    minLength: 6
                 },
-                hasError: []
+                hasError: false
             }
         ]
     }
@@ -36,9 +37,56 @@ class Authentication extends Component {
         console.log('submit')
     }
 
+    validateField = elem => {
+        const rules = elem.validation;
+        let field = elem,
+            valid = true;
+
+        for (const rule in rules) {
+            valid = this.validate(field, rule, rules[rule]);
+        }
+
+        return !valid;
+    }
+
+    validate = (elem, rule, ruleValue) => {
+
+        switch(rule) {
+            case 'minLength':
+                return elem.value.length >= ruleValue;
+            case 'isEmail':
+                return isEmail(elem.value);
+            default: 
+                return true;
+        }
+
+    }
+
     handleFieldChange = (e) => {
+        const   target = e.target,
+                value = target.value,
+                name = target.attributes.name.value;
+
+        const state = {
+            ...this.state,
+            fields: [
+                ...this.state.fields
+            ]
+        };
+
+        const index = state.fields.findIndex(field => field.name === name ? true : false);
+
+        const field = state.fields[index];
+
+        field.value = value;
+        field.hasError = this.validateField(field);
         
-        console.log('change');
+        this.setState({
+            fields: [
+                ...state.fields
+            ]
+        })
+
     }
 
     render() {
@@ -63,4 +111,10 @@ class Authentication extends Component {
     }
 }
 
-export default Authentication;
+const mapDispatchToProps = dispatch => {
+    return {
+        register: (email, pass) => dispatch(actions.auth(email, pass))
+    }
+}
+
+export default connect(null, mapDispatchToProps)(Authentication);

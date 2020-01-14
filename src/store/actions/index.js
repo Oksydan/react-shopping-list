@@ -14,3 +14,7 @@ export {
     removeList,
     editListTitle
 } from './listOfShoppingLists';
+
+export {
+    auth
+} from './auth';

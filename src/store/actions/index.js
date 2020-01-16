@@ -16,5 +16,6 @@ export {
 } from './listOfShoppingLists';
 
 export {
-    auth
+    register,
+    login
 } from './auth';

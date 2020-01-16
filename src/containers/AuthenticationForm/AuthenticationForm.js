@@ -42,12 +42,15 @@ class Authentication extends Component {
         let areInputsValid = true;
 
         for (const i in fields) {
-            console.log(!fields[i].hasError);
             areInputsValid = areInputsValid && !fields[i].hasError;
         }
 
         if (areInputsValid) {
-            this.props.register(fields[0].value, fields[1].value);
+            if (this.props.isRegisterForm) {
+                this.props.register(fields[0].value, fields[1].value);
+            } else {
+                this.props.login(fields[0].value, fields[1].value);
+            }
         }
 
     }
@@ -149,7 +152,8 @@ class Authentication extends Component {
 
 const mapDispatchToProps = dispatch => {
     return {
-        register: (email, pass) => dispatch(actions.auth(email, pass))
+        register: (email, pass) => dispatch(actions.register(email, pass)),
+        login: (email, pass) => dispatch(actions.login(email, pass))
     }
 }
 

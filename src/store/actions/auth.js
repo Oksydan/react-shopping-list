@@ -22,11 +22,29 @@ export const authSuccessfully = uid => {
     }
 }
 
-export const auth = (email, password) => {
+export const register = (email, password) => {
     return dispatch => {
         dispatch(authStart());
 
         firebaseAuth.createUserWithEmailAndPassword(email, password)
+            .then(res => {
+                console.log(res.user.uid);
+                dispatch(authSuccessfully(res.user.uid));
+            })
+            .catch(error => {
+                console.log(error);
+                
+                dispatch(authError());
+            });
+
+    }
+}
+
+export const login = (email, password) => {
+    return dispatch => {
+        dispatch(authStart());
+
+        firebaseAuth.signInWithEmailAndPassword(email, password)
             .then(res => {
                 console.log(res.user.uid);
                 dispatch(authSuccessfully(res.user.uid));

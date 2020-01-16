@@ -2,7 +2,7 @@ import React from 'react';
 import Header from './components/Header/Header';
 import ListOfLists from './components/ListOfLists/ListOfLists';
 import ShoppingList from './components/ShoppingList/ShoppingList';
-import Authentication from './containers/Authentication/Authentication';
+import Authentication from './components/Authentication/Authentication';
 import NotFound from './components/NotFound/NotFound';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 

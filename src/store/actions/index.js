@@ -17,5 +17,6 @@ export {
 
 export {
     register,
-    login
+    login,
+    signOut
 } from './auth';

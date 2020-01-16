@@ -1,14 +1,24 @@
 import React from 'react';
 import NavigationLink from './NavigationLink/NavigationLink';
+import { connect } from 'react-redux';
 
 
-const navigation = (props) => {
+const navigation = props => {
 
-    const links = [
+    let links = [
         {
             path: '/',
             title: 'Home'
-        },
+        }
+        
+    ];
+
+    const loggedInLinks = [{
+        path: '/logout',
+        title: 'Logout'
+    }];
+
+    const notLoggedInLinks = [
         {
             path: '/auth',
             title: 'Login'
@@ -19,6 +29,9 @@ const navigation = (props) => {
         }
     ];
 
+
+    links = props.userId ? [...links, ...loggedInLinks] : [...links, ...notLoggedInLinks];
+
     const linkList = links.map((link, i) => <NavigationLink key={i} title={link.title} path={link.path} />);
     
     return (
@@ -28,5 +41,11 @@ const navigation = (props) => {
     )
 }
 
+const mapStateToProps = state => {
+    return {
+        userId: state.auth.uId
+    }
+}
 
-export default navigation;
+
+export default connect(mapStateToProps)(navigation);

@@ -1,7 +1,7 @@
 import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
-    uId: '',
+    uId: null,
     loading: false,
     error: ''
 }
@@ -27,6 +27,13 @@ const reducer = (state = initialState, actions) => {
                 loading: false,
                 error: '',
                 uId: actions.uid
+            }
+        case (actionTypes.SIGN_OUT_SUCCESSFULLY):
+            return {
+                ...state,
+                loading: false,
+                error: '',
+                uId: null
             }
         default: 
             return state;

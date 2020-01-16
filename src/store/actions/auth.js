@@ -56,6 +56,27 @@ export const login = (email, password) => {
             });
 
     }
+}
+
+export const signOut = (email, password) => {
+    return dispatch => {
+        dispatch(authStart());
+
+        firebaseAuth.signOut()
+            .then(() => {
+                dispatch(signOutSuccessfully());
+            })
+            .catch(error => {
+                console.log(error);
+                dispatch(authError());
+            });
+
+    }
+}
 
 
+export const signOutSuccessfully = () => {
+    return {
+        type: actionTypes.SIGN_OUT_SUCCESSFULLY
+    }
 }

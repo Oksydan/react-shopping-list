@@ -4,8 +4,10 @@ import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 const authentication = props => {
-    const content = props.userID ? <Redirect to="/" /> : <AuthenticationForm />;
-    
+    const isRegisterForm = new URLSearchParams(props.location.search).get('newaccount');
+
+    const content = props.userID ? <Redirect to="/" /> : <AuthenticationForm isRegisterForm={isRegisterForm ? true : false} />;
+
     return content;
 }
 

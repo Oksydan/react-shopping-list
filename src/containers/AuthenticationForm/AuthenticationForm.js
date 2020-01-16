@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import * as actions from '../../store/actions/index';
 import { isEmail } from '../../utils/validation';
 import Form from '../../components/Form/Form';
@@ -125,10 +126,23 @@ class Authentication extends Component {
              />;
         });
 
+        const isRegisterForm = this.props.isRegisterForm;
+
+        const headingText = isRegisterForm ? 'Create new account' : 'Login to your account';
+
+        const footerLink = isRegisterForm ? <Link to="/auth">Already have an account? Log in!</Link> : <Link to="/auth?newaccount=1">Don't have an account? Create one!</Link>;
+
         return (
-            <Form handleSubmit={this.handleSubmit}>
-                {fields}
-            </Form>
+            <div>
+                <h1>{headingText}</h1>
+                <Form handleSubmit={this.handleSubmit}>
+                    {fields}
+                </Form>
+                <div>
+                    {footerLink}
+                </div>
+            </div>
+            
         )
     }
 }

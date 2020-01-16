@@ -11,7 +11,11 @@ const navigation = (props) => {
         },
         {
             path: '/auth',
-            title: 'Authentication'
+            title: 'Login'
+        },
+        {
+            path: '/auth?newaccount=1',
+            title: 'Register'
         }
     ];
 

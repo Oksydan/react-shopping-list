@@ -1,4 +1,5 @@
 import * as actionTypes from './actionTypes';
+import * as firebase from 'firebase';
 import {firebaseAuth} from '../../config/fbConfig';
 
 export const authStart = () => {
@@ -20,6 +21,36 @@ export const authSuccessfully = uid => {
         type: actionTypes.AUTH_SUCCESSFULLY,
         uid
     }
+}
+
+export const loginIfUserDataPersist = () => {
+    return dispatch => {
+        firebaseAuth.onAuthStateChanged(user => {
+            if (user) {
+                dispatch(authSuccessfully(user.uid));
+            } 
+        });
+    }
+}
+
+
+
+export const auth = (email, password, type) => {
+
+    return dispatch => {
+        firebaseAuth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+            .then(() => {
+                console.log('persistance');
+                if (type === 'register') {
+                    return dispatch(register(email, password));
+                } else {
+                    return dispatch(login(email, password));
+                }
+            })
+            .catch(error => {
+                console.log(error);
+            });
+        }
 }
 
 export const register = (email, password) => {
@@ -46,7 +77,7 @@ export const login = (email, password) => {
 
         firebaseAuth.signInWithEmailAndPassword(email, password)
             .then(res => {
-                console.log(res.user.uid);
+                console.log(res);
                 dispatch(authSuccessfully(res.user.uid));
             })
             .catch(error => {

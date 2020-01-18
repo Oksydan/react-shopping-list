@@ -16,7 +16,7 @@ export {
 } from './listOfShoppingLists';
 
 export {
-    register,
-    login,
-    signOut
+    auth,
+    signOut,
+    loginIfUserDataPersist
 } from './auth';

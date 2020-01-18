@@ -46,11 +46,11 @@ class Authentication extends Component {
         }
 
         if (areInputsValid) {
-            if (this.props.isRegisterForm) {
-                this.props.register(fields[0].value, fields[1].value);
-            } else {
-                this.props.login(fields[0].value, fields[1].value);
-            }
+            this.props.auth(
+                    fields[0].value,
+                    fields[1].value,
+                    this.props.isRegisterForm ? 'register' : 'login'
+                );
         }
 
     }
@@ -152,8 +152,7 @@ class Authentication extends Component {
 
 const mapDispatchToProps = dispatch => {
     return {
-        register: (email, pass) => dispatch(actions.register(email, pass)),
-        login: (email, pass) => dispatch(actions.login(email, pass))
+        auth: (email, pass, type) => dispatch(actions.auth(email, pass, type))
     }
 }
 

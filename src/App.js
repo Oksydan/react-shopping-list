@@ -23,19 +23,46 @@ class App extends Component {
 
 
     routers = [
-      <Route path="/auth" exact component={Authentication} />,
-      <Route path="/logout" exact component={SignOut} />,
-      <Route path="/" exact component={ListOfLists} />,
-      <Route path="/" component={NotFound} />
+      {
+        path: '/auth',
+        exact: true,
+        component: Authentication
+      },
+      {
+        path: '/logout',
+        exact: true,
+        component: SignOut
+      },
+      {
+        path: '/',
+        exact: true,
+        component: ListOfLists
+      },
+      {
+        path: '/',
+        exact: false,
+        component: NotFound
+      }
     ];
 
 
     if (this.props.userID != null) {
       routers = [
-        <Route path="/list/:id" exact component={ShoppingList} />,
+        {
+          path: '/list/:id',
+          exact: true,
+          component: ShoppingList
+        },
         ...routers
       ]
     }
+
+    routers = routers.map((route, i) => <Route 
+      path={route.path} 
+      component={route.component} 
+      exact={route.exact}
+      key={i}
+      />)
 
     return (
       <BrowserRouter>

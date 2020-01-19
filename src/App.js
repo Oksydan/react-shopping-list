@@ -17,16 +17,36 @@ class App extends Component {
  
 
   render() {
+
+    let routers;
+
+
+
+    routers = [
+      <Route path="/auth" exact component={Authentication} />,
+      <Route path="/logout" exact component={SignOut} />,
+      <Route path="/" exact component={ListOfLists} />,
+      <Route path="/" component={NotFound} />
+    ];
+
+
+    if (this.props.userID != null) {
+      routers = [
+        <Route path="/list/:id" exact component={ShoppingList} />,
+        ...routers
+      ]
+    }
+
+
+    console.log(this.props.userID);
+    console.log(routers);
+    
     return (
       <BrowserRouter>
         <div className="App">
           <Header />
           <Switch>
-            <Route path="/list/:id" exact component={ShoppingList} />
-            <Route path="/auth" exact component={Authentication} />
-            <Route path="/logout" exact component={SignOut} />
-            <Route path="/" exact component={ListOfLists} />
-            <Route path="/" component={NotFound} />
+            {routers}
           </Switch>
         </div>
 
@@ -41,5 +61,10 @@ const mapDispatchToProps = dispatch => {
     loginUserIfDataExist: () =>  dispatch(action.loginIfUserDataPersist()),
   }
 }
+const mapStateToProps = state => {
+  return {
+    userID: state.auth.uId
+  }
+}
 
-export default connect(null, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);

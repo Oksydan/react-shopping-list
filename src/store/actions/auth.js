@@ -40,7 +40,6 @@ export const auth = (email, password, type) => {
     return dispatch => {
         firebaseAuth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
             .then(() => {
-                console.log('persistance');
                 if (type === 'register') {
                     return dispatch(register(email, password));
                 } else {

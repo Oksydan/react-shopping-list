@@ -15,7 +15,9 @@ class ListOfShoppingLists extends Component {
     }
 
     componentDidMount() {
-        this.props.fetchShopplingLists();
+        if (this.props.userID !== null) {
+            this.props.fetchShopplingLists();
+        }
     }
 
     removeList = (id) => {
@@ -91,7 +93,8 @@ class ListOfShoppingLists extends Component {
 
 const mapStateToPros = state => {
     return {
-        list: state.listOfShoppingLists.shoppingLists
+        list: state.listOfShoppingLists.shoppingLists,
+        userID: state.auth.uId
     }
 }
 

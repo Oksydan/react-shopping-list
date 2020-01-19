@@ -40,14 +40,17 @@ class ListOFShoppingListsForm extends Component {
     
 
     render() {
-        return (
-            <AddElementForm 
-                handleSubmit={this.onSubmit} 
-                handleInputChange={this.onInputChange} 
+
+        const conent = (
+            this.props.userID !== null ? <AddElementForm
+                handleSubmit={this.onSubmit}
+                handleInputChange={this.onInputChange}
                 isInputValid={this.state.isInputValid}
                 inputVal={this.state.inputVal}
-                />
-        );
+            /> : <p>Login to your account to start adding products to your shopping list</p>
+        )
+
+        return conent;
     }
 }
 
@@ -58,9 +61,14 @@ const mapDispatchToProps = dispatch => {
         onListAdd: (name, id) => dispatch(action.addList(name, id))
     }
 }
+const mapStateToProps = state => {
+    return {
+        userID: state.auth.uId
+    }
+}
 
 ListOFShoppingListsForm.propTypes = {
     onListAdd: PropTypes.func,
 }
 
-export default connect(null, mapDispatchToProps)(ListOFShoppingListsForm);
+export default connect(mapStateToProps, mapDispatchToProps)(ListOFShoppingListsForm);

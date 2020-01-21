@@ -230,3 +230,9 @@ export const removeCheckedProductsElems = () => {
         type: actionTypes.REMOVE_CHECKED
     }
 }
+
+export const eraseList = () => {
+    return {
+        type: actionTypes.ERASE_LIST
+    }
+}

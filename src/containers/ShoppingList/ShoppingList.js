@@ -19,6 +19,10 @@ class ShoppingLists extends Component {
         }
     }
 
+    componentWillUnmount() {
+        this.props.clearList();
+    }
+
     render() {
         let list = null;
 
@@ -50,7 +54,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         removeCheckedProducts: () => dispatch(action.removeCheckedProducts()),
-        fetchProductsList: (id) => dispatch(action.fetchProducts(id))
+        fetchProductsList: (id) => dispatch(action.fetchProducts(id)),
+        clearList: () => dispatch(action.eraseList())
     }
 }
 

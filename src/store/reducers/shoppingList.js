@@ -132,6 +132,12 @@ const reducer = (state = initialState, actions) => {
                 ...state,
                 loading: false
             };
+        case (actionTypes.ERASE_LIST):
+            return {
+                list: [],
+                loading: false,
+                listId: null
+            };
 
         default: 
             return state;

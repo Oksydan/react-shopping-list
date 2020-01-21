@@ -5,7 +5,7 @@ import * as actions from '../../../store/actions/index';
 
 const signOut = props => {
     props.logOut();
-    return <Redirect to="/" />;
+    return props.userID != null ? 'Logging out' :<Redirect to="/" />;
 }
 
 const mapDispatchToProps = dispatch => {
@@ -13,6 +13,11 @@ const mapDispatchToProps = dispatch => {
         logOut: () => dispatch(actions.signOut())
     }
 }
+const mapStateToProps = state => {
+    return {
+        userID: state.auth.uId
+    }
+}
 
 
-export default connect(null, mapDispatchToProps)(signOut); 
+export default connect(mapStateToProps, mapDispatchToProps)(signOut); 

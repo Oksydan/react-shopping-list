@@ -68,6 +68,11 @@ const reducer = (state = initialState, actions) => {
                 ...state,
                 shoppingLists: editTitle(actions.id, actions.listName, [...state.shoppingLists])
             };
+        case (actionTypes.ERASE_SHOPPING_LISTS):
+            return {
+                shoppingLists: [],
+                loading: false
+            };
 
         default:
             return state;

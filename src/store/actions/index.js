@@ -13,7 +13,8 @@ export {
     addList,
     fetchList,
     removeList,
-    editListTitle
+    editListTitle,
+    eraseShoppingLists
 } from './listOfShoppingLists';
 
 export {

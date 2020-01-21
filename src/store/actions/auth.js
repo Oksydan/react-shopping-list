@@ -1,6 +1,7 @@
 import * as actionTypes from './actionTypes';
 import * as firebase from 'firebase';
 import {firebaseAuth} from '../../config/fbConfig';
+import * as action from './index';
 
 export const authStart = () => {
     return {
@@ -95,6 +96,8 @@ export const signOut = (email, password) => {
         firebaseAuth.signOut()
             .then(() => {
                 dispatch(signOutSuccessfully());
+                dispatch(action.eraseList());
+                dispatch(action.eraseShoppingLists());
             })
             .catch(error => {
                 console.log(error);

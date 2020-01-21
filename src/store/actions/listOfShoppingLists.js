@@ -127,3 +127,9 @@ export const listTitleEdited = (id, listName, dateEdit) => {
         dateEdit
     }
 }
+
+export const eraseShoppingLists = () => {
+    return {
+        type: actionTypes.ERASE_SHOPPING_LISTS
+    }
+}

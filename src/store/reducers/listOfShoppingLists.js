@@ -5,11 +5,12 @@ const initialState = {
     loading: false
 }
 
-const addList = (listName, id, dateAdd, dateEdit) => ({
+const addList = (listName, id, dateAdd, dateEdit, authorID) => ({
     listName,
     id,
     dateAdd,
-    dateEdit
+    dateEdit,
+    authorID
 });
 
 const deleteListElement = (id, list) => {
@@ -47,7 +48,7 @@ const reducer = (state = initialState, actions) => {
                 ...state,
                 shoppingLists: [
                     ...state.shoppingLists, 
-                    addList(actions.listName, actions.id, actions.dateAdd, actions.dateEdit)
+                    addList(actions.listName, actions.id, actions.dateAdd, actions.dateEdit, actions.authorID)
                 ]
             };
         case (actionTypes.SET_LIST):

@@ -28,7 +28,7 @@ export const fetchProducts = (id) => {
                }
                dispatch(updateProductsList(dataList, id));
                dispatch(fetchProductsEnd());
-               setupListenToChanges();
+            //    setupListenToChanges();
            })
            .catch(error => {
                console.error(error);

@@ -29,7 +29,7 @@ class ListOFShoppingListsForm extends Component {
         const state = {...this.state};
         const valueFormated = state.inputVal.trim();
         if (valueFormated.length > 0) {
-            this.props.onListAdd(this.state.inputVal, getUniqueId());
+            this.props.onListAdd(this.state.inputVal, getUniqueId(), this.props.userID);
         } 
         this.setState({
             ...this.state,
@@ -58,7 +58,7 @@ class ListOFShoppingListsForm extends Component {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onListAdd: (name, id) => dispatch(action.addList(name, id))
+        onListAdd: (name, id, authorID) => dispatch(action.addList(name, id, authorID))
     }
 }
 const mapStateToProps = state => {

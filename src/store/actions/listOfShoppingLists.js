@@ -1,7 +1,7 @@
 import * as actionTypes from './actionTypes';
-import {firestore} from '../../config/fbConfig';
+import {firestore, firebaseAuth} from '../../config/fbConfig';
 
-export const addList = (listName, id) => {
+export const addList = (listName, id, authorID) => {
     return dispatch => {
         const   dateAdd = Date.now(),
                 dateEdit = Date.now();
@@ -10,10 +10,11 @@ export const addList = (listName, id) => {
             listName,
             id,
             dateAdd,
-            dateEdit
+            dateEdit,
+            authorID
         })
             .then(() => {
-                dispatch(listAdded(listName, id, dateAdd, dateEdit));
+                dispatch(listAdded(listName, id, dateAdd, dateEdit, authorID));
             })
             .catch(error => {
                 console.error(error);
@@ -21,13 +22,14 @@ export const addList = (listName, id) => {
     }
 };
 
-export const listAdded = (listName, id, dateAdd, dateEdit) => {
+export const listAdded = (listName, id, dateAdd, dateEdit, authorID) => {
     return {
         type: actionTypes.ADD_LIST,
         listName,
         id,
         dateAdd,
-        dateEdit
+        dateEdit,
+        authorID
     }
 }
 
@@ -46,9 +48,11 @@ export const fetchListEnd = () => {
 export const fetchList = () => {
     return dispatch => {
         dispatch(fetchListStart);
-        firestore.collection("shoppingList").get()
-            .then(doc => {
-                const data = doc.docs;
+        const userid = firebaseAuth.currentUser.uid;
+        
+        firestore.collection("shoppingList").where("authorID", "==", userid).get()
+            .then(querySnapshot => {
+                const data = querySnapshot.docs;
                 let listArry = [];
 
                 if (data.length > 0) {
@@ -86,6 +90,7 @@ export const removeListData = (id) => {
 
 export const removeList = (id) => {
     return dispatch => {
+
         firestore.collection('shoppingList').doc(id).delete()
             .then(() => {
                 dispatch(removeListData(id));
@@ -99,7 +104,7 @@ export const removeList = (id) => {
 
 export const editListTitle = (id, listName) => {
     return dispatch => {
-        const dateEdit = Date.now();
+        const   dateEdit = Date.now();
 
         firestore.collection("shoppingList").doc(id).set({
             listName,

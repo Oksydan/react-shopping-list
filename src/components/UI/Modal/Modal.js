@@ -11,23 +11,15 @@ class Modal extends Component {
 
 
     render() {
+        const classes = ['modal'];
+
+        if (this.props.show) {
+            classes.push('modal--shown');
+        }
+
         return (
             <Fragment>
-                <div
-                    style={{
-                        position: 'fixed',
-                        zIndex: '500',
-                        backgroundColor: 'white',
-                        width: '70%',
-                        border: '1px solid #ccc',
-                        boxShadow: '1px 1px 1px black',
-                        padding: '16px',
-                        left: '15%',
-                        top: '30%',
-                        boxSizing: 'border-box',
-                        transform: this.props.show ? 'translateY(0)' : 'translateY(-100vh)',
-                        opacity: this.props.show ? '1' : '0'
-                    }}>
+                <div className={classes.join(' ')}>
                     <button onClick={this.props.modalClosed}>Close</button>
                     {this.props.children}
                 </div>

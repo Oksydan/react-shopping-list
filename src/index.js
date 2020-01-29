@@ -10,6 +10,8 @@ import authReducer from './store/reducers/auth';
 import shoppingListReducer from './store/reducers/shoppingList';
 import listOfShoppingListsReducer from './store/reducers/listOfShoppingLists';
 
+import './scss/main.scss';
+
 
 const combinedReducers = combineReducers({
     shoppingList: shoppingListReducer,

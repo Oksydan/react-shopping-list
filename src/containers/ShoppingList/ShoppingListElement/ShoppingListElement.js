@@ -19,43 +19,53 @@ class ShoppingListElement extends Component {
     }
 
 
-    handleElementEdit = (e) => {
-        e.preventDefault();
-
+    handleElementEdit = () => {
         const state = {...this.state};
 
         this.setState({
             isEditing: true,
             touched: true,
             prevValue: state.value
-        })
-
-        this.input.current.focus();
+        });
     }
 
     handleInputSubmit = (e) => {
-        if (e.keyCode === 13) {
-            this.input.current.blur();
+        e.preventDefault();
+        const { value, prevValue } = { ...this.state };
+
+        if (value !== prevValue) {
+            if (value.length > 0) {
+                this.setState({
+                    isEditing: false,
+                    prevValue: value
+                }, () => {
+                    this.props.listElementUpdate(value, this.props.id);
+                    this.input.current.blur();
+                });
+
+
+            } else {
+                this.setState({
+                    isEditing: false,
+                    value: prevValue
+                }, () => {
+                    this.input.current.blur();
+                })
+            }
         }
+       
     }
 
-    handleEditValue = () => {
-
-        const state = {...this.state};
-        const value = state.value;
-
-        if(value.length > 0) {
-            this.setState({
-                isEditing: false
-            });
-
-            this.props.listElementUpdate(value, this.props.id);
-
-        } else {
+    hanldeInputBlur = () => {
+        const { value, prevValue } = {...this.state};
+        
+        if (value !== prevValue) {
+            console.log('diffrent');
             this.setState({
                 isEditing: false,
-                value: state.prevValue
-            })
+                value: prevValue,
+                prevValue: ''
+            });
         }
     }
 
@@ -63,7 +73,6 @@ class ShoppingListElement extends Component {
         this.setState({
             value: this.input.current.value
         })
-        console.log(this.state);
     }
 
     handeDeleteElement = (e) => {
@@ -82,7 +91,7 @@ class ShoppingListElement extends Component {
     render() {
         return (
             <li>
-                <form>
+                <form onSubmit={this.handleInputSubmit}>
                     <input
                         checked={this.props.checked}
                         onChange={this.handleProductCheck}
@@ -90,12 +99,11 @@ class ShoppingListElement extends Component {
                     <input 
                         ref={this.input}
                         type='text'
-                        readOnly={!this.state.isEditing ? true : false}
                         value={this.state.value}
-                        onBlur={this.handleEditValue}
-                        onKeyUp={this.handleInputSubmit}
+                        onBlur={this.hanldeInputBlur}
+                        onFocus={this.handleElementEdit}
                         onChange={this.handleInputChange} />
-                    <button onClick={this.handleElementEdit}>edit</button>
+                    <input type="submit"/>
                     <button onClick={this.handeDeleteElement}>remove</button>
                 </form>
             </li>

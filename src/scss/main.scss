@@ -2,6 +2,10 @@
 
 @import './base/reset';
 
+//LAYOUT
+
+@import './layout/body';
+
 // UTILS
 
 @import './utils/mixins';
@@ -13,4 +17,5 @@
 @import './components/backdrop';
 @import './components/spinner';
 @import './components/mobileNav';
+@import './components/desktopNav'; 
 

@@ -74,11 +74,13 @@ class App extends Component {
 
     return (
       <BrowserRouter>
-        <div className="App">
+        <div className="app">
           <Header />
-          <Switch>
-            {routers}
-          </Switch>
+          <div className="app__body">
+            <Switch>
+              {routers}
+            </Switch>
+          </div>
           <MobileNav />
         </div>
 

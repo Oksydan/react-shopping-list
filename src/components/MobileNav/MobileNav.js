@@ -33,9 +33,9 @@ const mobileNav = props => {
     
     return (
         <div className="mobileNav">
-            <div className="mobileNav__list">
+            <nav className="mobileNav__list">
                 {links}
-            </div>
+            </nav>
         </div>
     );
 }

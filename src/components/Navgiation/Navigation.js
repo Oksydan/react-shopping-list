@@ -35,7 +35,7 @@ const navigation = props => {
     const linkList = links.map((link, i) => <NavigationLink key={i} title={link.title} path={link.path} />);
     
     return (
-        <nav>
+        <nav className="desktopNav">
             {linkList}
         </nav>
     )

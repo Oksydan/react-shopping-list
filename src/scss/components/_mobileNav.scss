@@ -1,0 +1,28 @@
+.mobileNav {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #fff;
+    padding: .5rem;
+    border-radius: $border-radius $border-radius 0 0;
+    box-shadow: $light-shadow-drop;
+    transition: .4s ease-in;
+    &__list {
+        display: flex;
+        justify-content: space-evenly;
+    }
+    &__link {
+        text-align: center;
+        font-size: 36px;
+        flex: 1 1 auto;
+        padding: 1rem 0;
+        color: $gray-80;
+        &--active,
+        &:active,
+        &:focus,
+        &:hover {
+            color: $gray-darker;
+        }   
+    }
+}

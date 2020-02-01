@@ -8,6 +8,9 @@ import Authentication from './components/Authentication/Authentication';
 import NotFound from './components/NotFound/NotFound';
 import SignOut from './components/Authentication/SignOut/SignOut';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import MobileNav from './components/MobileNav/MobileNav';
+import MyAccount from './components/MyAccount/MyAccount';
+import FriendsList from './components/FriendsList/FriendsList';
 
 class App extends Component {
   constructor(props) {
@@ -24,14 +27,19 @@ class App extends Component {
 
     routers = [
       {
-        path: '/auth',
+        path: this.props.userID != null ? '/myaccount' : '/auth',
         exact: true,
-        component: Authentication
+        component: this.props.userID != null ? MyAccount : Authentication
       },
       {
         path: '/logout',
         exact: true,
         component: SignOut
+      },
+      {
+        path: '/friendslist',
+        exact: true,
+        component: FriendsList
       },
       {
         path: '/',
@@ -57,10 +65,10 @@ class App extends Component {
       ]
     }
 
-    routers = routers.map((route, i) => <Route 
-      path={route.path} 
-      component={route.component} 
-      exact={route.exact}
+    routers = routers.map(({ path, component, exact }, i) => <Route 
+      path={path} 
+      component={component} 
+      exact={exact}
       key={i}
       />)
 
@@ -71,6 +79,7 @@ class App extends Component {
           <Switch>
             {routers}
           </Switch>
+          <MobileNav />
         </div>
 
       </BrowserRouter>

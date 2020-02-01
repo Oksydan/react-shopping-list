@@ -7,16 +7,16 @@ import { Provider } from 'react-redux';
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import authReducer from './store/reducers/auth';
+import productListReducer from './store/reducers/productList';
 import shoppingListReducer from './store/reducers/shoppingList';
-import listOfShoppingListsReducer from './store/reducers/listOfShoppingLists';
 
 import './scss/main.scss';
 
 
 const combinedReducers = combineReducers({
-    shoppingList: shoppingListReducer,
+    productList: productListReducer,
     auth: authReducer,
-    listOfShoppingLists: listOfShoppingListsReducer
+    shoppingList: shoppingListReducer
 });
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

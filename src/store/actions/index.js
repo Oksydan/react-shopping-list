@@ -7,7 +7,7 @@ export {
     removeCheckedProducts,
     fetchProducts,
     eraseList
-} from './shoppingList';
+} from './productList';
 
 export {
     addList,
@@ -15,7 +15,7 @@ export {
     removeList,
     editListTitle,
     eraseShoppingLists
-} from './listOfShoppingLists';
+} from './shoppingList';
 
 export {
     auth,

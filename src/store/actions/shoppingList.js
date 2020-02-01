@@ -1,238 +1,135 @@
 import * as actionTypes from './actionTypes';
-import {firestore} from  '../../config/fbConfig';
+import {firestore, firebaseAuth} from '../../config/fbConfig';
 
-export const fetchProductsStart = () => {
-    return {
-        type: actionTypes.FETCH_PRODUCTS_START
-    }
-}
-export const fetchProductsEnd = () => {
-    return {
-        type: actionTypes.FETCH_PRODUCTS_START
-    }
-}
+export const addList = (listName, id, authorID) => {
+    return dispatch => {
+        const   dateAdd = Date.now(),
+                dateEdit = Date.now();
 
-export const fetchProducts = (id) => {
-   return dispatch => {
-       dispatch(fetchProductsStart);
-       firestore.collection("shoppingList").doc(id).collection("list").get()
-           .then(doc => {
-               const   data = doc.docs;
-               let dataList = [];
-               
-               if (data && data.length > 0) {
-                   for (let doc in data) {
-                       const product = data[doc].data();
-                       dataList = [...dataList, product];
-                   }
-               }
-               dispatch(updateProductsList(dataList, id));
-               dispatch(fetchProductsEnd());
-            //    setupListenToChanges();
-           })
-           .catch(error => {
-               console.error(error);
-               dispatch(fetchProductsEnd());
-           });
-
-   }
-}
-
-
-// ADDED FOR FUTURE USE
-export const setupListenToChanges = () => {
-    firestore.collection("list")
-        .onSnapshot(snapshot => {
-            snapshot.docChanges().forEach(function (change) {
-                // if (change.type === "added") {
-                //     console.log("New product element: ", change.doc.data());
-                // }
-                // if (change.type === "modified") {
-                //     console.log("Modified product element: ", change.doc.data());
-                // }
-                // if (change.type === "removed") {
-                //     console.log("Removed product element: ", change.doc.data());
-                // }
+        firestore.collection("shoppingList").doc(id).set({
+            listName,
+            id,
+            dateAdd,
+            dateEdit,
+            authorID
+        })
+            .then(() => {
+                dispatch(listAdded(listName, id, dateAdd, dateEdit, authorID));
+            })
+            .catch(error => {
+                console.error(error);
             });
-            // return dispatch => {
+    }
+};
 
-            // }
-        });
-
+export const listAdded = (listName, id, dateAdd, dateEdit, authorID) => {
+    return {
+        type: actionTypes.ADD_LIST,
+        listName,
+        id,
+        dateAdd,
+        dateEdit,
+        authorID
+    }
 }
 
-export const updateProductsList = (list, id) => {
+export const fetchListStart = () => {
     return {
-        type: actionTypes.UPDATE_PRODUCTS_LIST,
-        list,
+        type: actionTypes.FETCH_LIST_START
+    }
+}
+
+export const fetchListEnd = () => {
+    return {
+        type: actionTypes.FETCH_LIST_END
+    }
+}
+
+export const fetchList = () => {
+    return dispatch => {
+        dispatch(fetchListStart);
+        const userid = firebaseAuth.currentUser.uid;
+        
+        firestore.collection("shoppingList").where("authorID", "==", userid).get()
+            .then(querySnapshot => {
+                const data = querySnapshot.docs;
+                let listArry = [];
+
+                if (data.length > 0) {
+                    for (let doc in data) {
+                        const list = data[doc].data();
+                        listArry = [...listArry, list];
+                    }
+                }
+                
+                dispatch(setList(listArry));
+                dispatch(fetchListEnd());
+            })
+            .catch(error => {
+                console.error(error);
+                dispatch(fetchListEnd());
+            });
+
+    }
+}
+
+export const setList = (list) => {
+    return {
+        type: actionTypes.SET_LIST,
+        list
+    }
+}
+
+
+export const removeListData = (id) => {
+    return {
+        type: actionTypes.REMOVE_LIST,
         id
     }
 }
 
-// ADDED FOR FUTURE USE
-export const updateProductsListElement = (product) => {
-    return {
-        type: actionTypes.UPDATE_PRODUCTS_LIST_ELEMENT,
-        product
+export const removeList = (id) => {
+    return dispatch => {
+
+        firestore.collection('shoppingList').doc(id).delete()
+            .then(() => {
+                dispatch(removeListData(id));
+            })
+            .catch(error => {
+                console.error(error);
+            })
     }
 }
 
 
-export const addProduct = (productName, id) => {
-    return (dispatch, getState) => {
-        const   dateAdd = Date.now(),
-                dateEdit = Date.now(),
-                checked = false,
-                listId = getState().shoppingList.listId;
+export const editListTitle = (id, listName) => {
+    return dispatch => {
+        const   dateEdit = Date.now();
 
-        firestore.collection("shoppingList").doc(listId).collection("list").doc(id).set({
-            productName,
-            id,
-            dateAdd,
-            dateEdit,
-            checked
-        })
-        .then(() => {
-            dispatch(productAdded(productName, id, dateAdd, dateEdit, checked));
-        })
-        .catch(error => {
-            console.error(error);
-        });
-    }
-
-};
-
-const productAdded = (productName, id, dateAdd, dateEdit, checked) => {
-    return {
-        type: actionTypes.PRODUCT_ADDED,
-        productName,
-        id,
-        dateAdd,
-        dateEdit,
-        checked
-    }
-}
-
-export const updateProduct = (productName, id) => {
-    return (dispatch, getState) => {
-        const   dateEdit = Date.now(),
-                listId = getState().shoppingList.listId;
-
-        firestore.collection("shoppingList").doc(listId).collection("list").doc(id).set({
-            productName,
+        firestore.collection("shoppingList").doc(id).set({
+            listName,
             dateEdit
         }, { merge: true })
-        .then(() => {
-            dispatch(updateProductData(productName, id, dateEdit));
-        })
-        .catch(error => {
-            console.error(error);
-        });
+            .then(() => {
+                dispatch(listTitleEdited(id, listName, dateEdit));
+            })
+            .catch(error => {
+                console.error(error);
+            });
     }
-}
+};
 
-export const updateProductData = (productName, id, dateEdit) => {
+export const listTitleEdited = (id, listName, dateEdit) => {
     return {
-        type: actionTypes.UPDATE_PRODUCT_DATA,
-        productName,
+        type: actionTypes.LIST_TITLE_EDITED,
+        listName,
         id,
         dateEdit
     }
 }
 
-export const deleteProductData = (id) => {
+export const eraseShoppingLists = () => {
     return {
-        type: actionTypes.REMOVE_PRODUCT,
-        id
-    }
-}
-
-export const deleteProduct = (id) => {
-    return (dispatch, getState) => {
-        const listId = getState().shoppingList.listId;
-        firestore.collection("shoppingList").doc(listId).collection("list").doc(id).delete()
-            .then(() => {
-                dispatch(deleteProductData(id));
-            })
-            .catch(error => {
-                console.error(error);
-            })
-    }
-}
-
-export const checkProduct = (id) => {
-    return (dispatch, getState) => {
-        const listId = getState().shoppingList.listId;
-        firestore.collection("shoppingList").doc(listId).collection("list").doc(id).set({
-            checked: true
-        }, { merge: true })
-            .then(() => {
-                dispatch(checkProductElem(id));
-            })
-            .catch(error => {
-                console.error(error);
-            });
-    }
-}
-
-export const checkProductElem = (id) => {
-    return {
-        type: actionTypes.CHECK_PRODUCT_ELEM,
-        id
-    }
-}
-
-export const uncheckProduct = (id) => {
-    return (dispatch, getState) => {
-        const listId = getState().shoppingList.listId;
-        firestore.collection("shoppingList").doc(listId).collection("list").doc(id).set({
-            checked: false
-        }, { merge: true })
-            .then(() => {
-                dispatch(uncheckProductElem(id));
-            })
-            .catch(error => {
-                console.error(error);
-            });
-    }
-}
-
-export const uncheckProductElem = (id) => {
-    return {
-        type: actionTypes.UNCHECK_PRODUCT_ELEM,
-        id
-    }
-}
-
-export const removeCheckedProducts = () => {
-    return (dispatch, getState) => {
-        const   checkedElementsId = getState().shoppingList.list.filter(prod => prod.checked).map(prod => prod.id),
-                batch = firestore.batch(),
-                listId = getState().shoppingList.listId;
-
-        for (let i in checkedElementsId) {
-            const docRef = firestore.collection("shoppingList").doc(listId).collection("list").doc(checkedElementsId[i]);
-            batch.delete(docRef)
-        }
-
-        batch.commit()
-            .then(() => {
-                dispatch(removeCheckedProductsElems());
-            })
-            .catch(error => {
-                console.log(error);
-            })
-    }
-}
-
-export const removeCheckedProductsElems = () => {
-    return {
-        type: actionTypes.REMOVE_CHECKED
-    }
-}
-
-export const eraseList = () => {
-    return {
-        type: actionTypes.ERASE_LIST
+        type: actionTypes.ERASE_SHOPPING_LISTS
     }
 }

@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as action from './store/actions/index';
 import Header from './components/Header/Header';
-import ListOfLists from './components/ListOfLists/ListOfLists';
-import ShoppingList from './components/ShoppingList/ShoppingList';
+import ListOfLists from './components/ShoppingList/ShoppingList';
+import ProductList from './components/ProductList/ProductList';
 import Authentication from './components/Authentication/Authentication';
 import NotFound from './components/NotFound/NotFound';
 import SignOut from './components/Authentication/SignOut/SignOut';
@@ -59,7 +59,7 @@ class App extends Component {
         {
           path: '/list/:id',
           exact: true,
-          component: ShoppingList
+          component: ProductList
         },
         ...routers
       ]

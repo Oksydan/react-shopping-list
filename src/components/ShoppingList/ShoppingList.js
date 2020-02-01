@@ -1,14 +1,11 @@
 import React, { Fragment } from 'react';
-import ShoppingListForm from '../../containers/ShoppingListForm/ShoppingListForm';
-import ShoppingList from '../../containers/ShoppingList/ShoppingList';
-import { Link } from 'react-router-dom';
-
+import List from '../../containers/ShoppingList/ShoppingList';
+import Form from '../../containers/ShoppingList/ShoppingListForm/ShoppingListForm';
 
 const shoppingList = () => (
     <Fragment>
-        <Link to="/">Back to list</Link>
-        <ShoppingListForm />
-        <ShoppingList />
+        <Form />
+        <List />
     </Fragment>
 );
 

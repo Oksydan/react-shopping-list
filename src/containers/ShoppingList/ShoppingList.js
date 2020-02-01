@@ -1,69 +1,110 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import ShoppingListElement from './ShoppingListElement/ShoppingListElement';
-import * as action from '../../store/actions';
-import PropTypes from 'prop-types';
-import { withRouter } from "react-router";
+import * as action from '../../store/actions/index';
+import ShoppingListElem from '../../components/ShoppingList/ShoppingListElem/ShoppingListsElem';
+import Modal from '../../components/UI/Modal/Modal';
+import Form from '../../components/AddElementForm/AddElementForm';
 
+class ShoppingList extends Component {
 
-
-class ShoppingLists extends Component {
-
+    state = {
+        modalVisible: false,
+        editListId: null,
+        editTitle: '',
+        isTtileValid: true
+    }
 
     componentDidMount() {
-        const id = this.props.match.params.id;
-        if (id) {
-            this.props.fetchProductsList(id);
-        } else {
-            this.props.history.push('/');
+        if (this.props.userID !== null) {
+            this.props.fetchShopplingLists();
         }
     }
 
-    componentWillUnmount() {
-        this.props.clearList();
+    removeList = (id) => {
+        this.props.removeListEleme(id);
     }
+
+    editListTitle = (id, title) => {
+        this.setState({
+            modalVisible: true,
+            editListId: id,
+            editTitle: title,
+        })
+    }
+
+    handleHideModal = () => {
+        this.setState({
+            modalVisible: false,
+            editListId: null,
+            editTitle: ''
+        })
+    }
+
+    handleTitleChange = (e) => {
+        const inputVal = e.target.value;
+
+        this.setState({
+            editTitle: inputVal
+        });
+    }
+
+    handleTitleEditSubmit = (e) => {
+        e.preventDefault();
+        const state = { ...this.state };
+        const valueFormated = state.editTitle.trim();
+        if (valueFormated.length > 0) {
+            this.props.listTitleEdit(this.state.editListId, this.state.editTitle);
+            this.handleHideModal();
+        }
+        
+    }
+    
 
     render() {
-        let list = null;
-
-        if (this.props.shopList.length > 0) {
-            list = this.props.shopList.sort((a, b) => a.dateAdd - b.dateAdd).sort((a, b) => a.checked - b.checked).map((prod) => {
-                return <ShoppingListElement name={prod.productName} checked={prod.checked} key={prod.id} id={prod.id} />;
-            });
-        } else {
-            list = 'Add product to your shopping list'
-        }
+        const shoppingLists = this.props.list.map(list => 
+            <ShoppingListElem 
+                title={list.listName}
+                key={list.id}
+                id={list.id}
+                handleDelete={() => this.removeList(list.id)}
+                handleEdit={() => this.editListTitle(list.id, list.listName)}
+        />);
+        
         return (
             <div>
-                <button onClick={this.props.removeCheckedProducts}>Remove checked</button>
-                <ul>
-                    {list}
-                </ul>
+                {shoppingLists}
+                {this.state.editListId !== null ? 
+                <Modal
+                    show={this.state.modalVisible}
+                    modalClosed={this.handleHideModal}
+                >
+                    <Form 
+                        inputVal={this.state.editTitle}
+                        isInputValid={this.state.isTtileValid}
+                        handleInputChange={this.handleTitleChange}
+                        handleSubmit={this.handleTitleEditSubmit}
+                    />
+                </Modal> : null}
+                
             </div>
         )
     }
-    
 }
 
 const mapStateToProps = state => {
     return {
-        shopList: state.shoppingList.list
+        list: state.shoppingList.shoppingLists,
+        userID: state.auth.uId
     }
 }
+
 
 const mapDispatchToProps = dispatch => {
     return {
-        removeCheckedProducts: () => dispatch(action.removeCheckedProducts()),
-        fetchProductsList: (id) => dispatch(action.fetchProducts(id)),
-        clearList: () => dispatch(action.eraseList())
+        fetchShopplingLists: () => dispatch(action.fetchList()),
+        removeListEleme: (id) => dispatch(action.removeList(id)),
+        listTitleEdit: (id, title) => dispatch(action.editListTitle(id, title))
     }
 }
 
-ShoppingLists.propTypes = {
-    shopList: PropTypes.array.isRequired,
-    removeCheckedProducts: PropTypes.func,
-    fetchProductsList: PropTypes.func
-};
-
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ShoppingLists));
+export default connect(mapStateToProps, mapDispatchToProps)(ShoppingList);

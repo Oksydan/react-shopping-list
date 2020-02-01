@@ -1,145 +1,80 @@
 import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
-    list: [],
-    loading: false,
-    listId: null
+    shoppingLists: [],
+    loading: false
 }
 
-const addListElement = (productName, id, dateAdd, dateEdit) => ({
-    productName,
+const addList = (listName, id, dateAdd, dateEdit, authorID) => ({
+    listName,
     id,
     dateAdd,
     dateEdit,
-    checked: false
+    authorID
 });
-
-const updateListElement = (productName, id, dateEdit, list) => {
-    const elemIndex = list.findIndex(elem => elem.id === id ? true : false);
-
-    const listUpdated = list;
-
-    listUpdated[elemIndex] = {
-        ...listUpdated[elemIndex],
-        productName,
-        dateEdit
-    };
-    
-
-    return [
-        ...listUpdated
-    ]
-}
 
 const deleteListElement = (id, list) => {
     const elemIndex = list.findIndex(elem => elem.id === id ? true : false);
 
     list.splice(elemIndex, 1);
-    
-    
+
+
     return [
         ...list
     ]
 }
 
-const checkListElement = (id, list) => {
+const editTitle = (id, listName, list) => {
     const elemIndex = list.findIndex(elem => elem.id === id ? true : false);
 
     const listUpdated = list;
 
     listUpdated[elemIndex] = {
         ...listUpdated[elemIndex],
-        checked: true
+        listName
     };
 
 
     return [
         ...listUpdated
     ]
-}
-
-const uncheckListElement = (id, list) => {
-    const elemIndex = list.findIndex(elem => elem.id === id ? true : false);
-
-    const listUpdated = list;
-
-    listUpdated[elemIndex] = {
-        ...listUpdated[elemIndex],
-        checked: false
-    };
-
-
-    return [
-        ...listUpdated
-    ]
-}
-
-const removeCheckedProducts = (list) => {
-    const filteredList = list.filter(prod => !prod.checked);
-
-    return filteredList;
 }
 
 
 const reducer = (state = initialState, actions) => {
     switch (actions.type) {
-        case (actionTypes.PRODUCT_ADDED):
+        case (actionTypes.ADD_LIST):
             return {
                 ...state,
-                list: [
-                    ...state.list,
-                    addListElement(actions.productName, actions.id, actions.dateAdd, actions.dateEdit)
+                shoppingLists: [
+                    ...state.shoppingLists, 
+                    addList(actions.listName, actions.id, actions.dateAdd, actions.dateEdit, actions.authorID)
                 ]
             };
-        case (actionTypes.UPDATE_PRODUCT_DATA):
+        case (actionTypes.SET_LIST):
             return {
                 ...state,
-                list: updateListElement(actions.productName, actions.id, actions.dateEdit, [...state.list])
+                shoppingLists: [
+                    ...actions.list
+                ]
             };
-        case (actionTypes.REMOVE_PRODUCT):
+        case (actionTypes.REMOVE_LIST):
             return {
                 ...state,
-                list: deleteListElement(actions.id, [...state.list])
+                shoppingLists: deleteListElement(actions.id, [...state.shoppingLists])
             };
-        case (actionTypes.CHECK_PRODUCT_ELEM):
+        case (actionTypes.LIST_TITLE_EDITED):
             return {
                 ...state,
-                list: checkListElement(actions.id, [...state.list])
+                shoppingLists: editTitle(actions.id, actions.listName, [...state.shoppingLists])
             };
-        case (actionTypes.UNCHECK_PRODUCT_ELEM):
+        case (actionTypes.ERASE_SHOPPING_LISTS):
             return {
-                ...state,
-                list: uncheckListElement(actions.id, [...state.list])
-            };
-        case (actionTypes.REMOVE_CHECKED):
-            return {
-                ...state,
-                list: removeCheckedProducts([...state.list])
-            };
-        case (actionTypes.UPDATE_PRODUCTS_LIST):
-            return {
-                ...state,
-                list: actions.list,
-                listId: actions.id
-            };
-        case (actionTypes.FETCH_PRODUCTS_START):
-            return {
-                ...state,
-                loading: true
-            };
-        case (actionTypes.FETCH_PRODUCTS_END):
-            return {
-                ...state,
+                shoppingLists: [],
                 loading: false
             };
-        case (actionTypes.ERASE_LIST):
-            return {
-                list: [],
-                loading: false,
-                listId: null
-            };
 
-        default: 
+        default:
             return state;
 
     }

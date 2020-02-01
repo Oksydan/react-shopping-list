@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import * as action from '../../../store/actions';
 import PropTypes from 'prop-types';
 
-class ShoppingListElement extends Component {
+class ProductListElement extends Component {
 
     constructor(props) {
         super(props);
@@ -120,7 +120,7 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-ShoppingListElement.propTypes = {
+ProductListElement.propTypes = {
     listElementUpdate: PropTypes.func,
     listElementDelete: PropTypes.func,
     listElementCheck: PropTypes.func,
@@ -130,4 +130,4 @@ ShoppingListElement.propTypes = {
     id: PropTypes.string.isRequired
 }
 
-export default connect(null, mapDispatchToProps)(ShoppingListElement);
+export default connect(null, mapDispatchToProps)(ProductListElement);

@@ -7,7 +7,7 @@ import AddElementForm from '../../../components/AddElementForm/AddElementForm';
 
 
 
-class ListOFShoppingListsForm extends Component {
+class ProductListForm extends Component {
     state = {
         isInputValid: false,
         inputVal: ''
@@ -18,7 +18,6 @@ class ListOFShoppingListsForm extends Component {
         const inputVal = e.target.value;
 
         this.setState({
-            ...this.state,
             inputVal,
             isInputValid: inputVal.length > 0 ? true : false
         });
@@ -29,10 +28,9 @@ class ListOFShoppingListsForm extends Component {
         const state = {...this.state};
         const valueFormated = state.inputVal.trim();
         if (valueFormated.length > 0) {
-            this.props.onListAdd(this.state.inputVal, getUniqueId(), this.props.userID);
+            this.props.onProductAdd(this.state.inputVal, getUniqueId());
         } 
         this.setState({
-            ...this.state,
             inputVal: '',
             isInputValid: false
         })
@@ -40,17 +38,14 @@ class ListOFShoppingListsForm extends Component {
     
 
     render() {
-
-        const conent = (
-            this.props.userID !== null ? <AddElementForm
-                handleSubmit={this.onSubmit}
-                handleInputChange={this.onInputChange}
+        return (
+            <AddElementForm 
+                handleSubmit={this.onSubmit} 
+                handleInputChange={this.onInputChange} 
                 isInputValid={this.state.isInputValid}
                 inputVal={this.state.inputVal}
-            /> : <p>Login to your account to start adding products to your shopping list</p>
-        )
-
-        return conent;
+                />
+        );
     }
 }
 
@@ -58,17 +53,12 @@ class ListOFShoppingListsForm extends Component {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onListAdd: (name, id, authorID) => dispatch(action.addList(name, id, authorID))
-    }
-}
-const mapStateToProps = state => {
-    return {
-        userID: state.auth.uId
+        onProductAdd: (name, id) => dispatch(action.addProduct(name, id))
     }
 }
 
-ListOFShoppingListsForm.propTypes = {
-    onListAdd: PropTypes.func,
+ProductListForm.propTypes = {
+    onProductAdd: PropTypes.func,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ListOFShoppingListsForm);
+export default connect(null, mapDispatchToProps)(ProductListForm);

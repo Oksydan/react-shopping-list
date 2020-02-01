@@ -8,13 +8,13 @@ export const fetchProductsStart = () => {
 }
 export const fetchProductsEnd = () => {
     return {
-        type: actionTypes.FETCH_PRODUCTS_START
+        type: actionTypes.FETCH_PRODUCTS_END
     }
 }
 
 export const fetchProducts = (id) => {
    return dispatch => {
-       dispatch(fetchProductsStart);
+       dispatch(fetchProductsStart());
        firestore.collection("shoppingList").doc(id).collection("list").get()
            .then(doc => {
                const   data = doc.docs;
@@ -83,7 +83,7 @@ export const addProduct = (productName, id) => {
         const   dateAdd = Date.now(),
                 dateEdit = Date.now(),
                 checked = false,
-                listId = getState().shoppingList.listId;
+                listId = getState().productList.listId;
 
         firestore.collection("shoppingList").doc(listId).collection("list").doc(id).set({
             productName,

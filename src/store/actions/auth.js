@@ -24,12 +24,21 @@ export const authSuccessfully = uid => {
     }
 }
 
+export const authInitialized = uid => {
+    return {
+        type: actionTypes.AUTH_INITIALIZED
+    }
+}
+
+
+
 export const loginIfUserDataPersist = () => {
     return dispatch => {
         firebaseAuth.onAuthStateChanged(user => {
             if (user) {
                 dispatch(authSuccessfully(user.uid));
             } 
+            dispatch(authInitialized());
         });
     }
 }

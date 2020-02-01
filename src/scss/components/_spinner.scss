@@ -8,7 +8,8 @@
     right: 0;
     top: 0;
     bottom: 0;
-    z-index: 101;
+    z-index: 1;
+    background: #fff;
     &__inner {
         display: inline-block;
         position: relative;

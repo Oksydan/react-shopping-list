@@ -73,6 +73,16 @@ const reducer = (state = initialState, actions) => {
                 shoppingLists: [],
                 loading: false
             };
+        case (actionTypes.FETCH_LIST_START):
+            return {
+                ...state,
+                loading: true
+            };
+        case (actionTypes.FETCH_LIST_END):
+            return {
+                ...state,
+                loading: false
+            };
 
         default:
             return state;

@@ -47,7 +47,7 @@ export const fetchListEnd = () => {
 
 export const fetchList = () => {
     return dispatch => {
-        dispatch(fetchListStart);
+        dispatch(fetchListStart());
         const userid = firebaseAuth.currentUser.uid;
         
         firestore.collection("shoppingList").where("authorID", "==", userid).get()

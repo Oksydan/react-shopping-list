@@ -2,7 +2,7 @@ import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
     uId: null,
-    loading: false,
+    loading: true,
     error: ''
 }
 

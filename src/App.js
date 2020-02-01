@@ -2,15 +2,16 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as action from './store/actions/index';
 import Header from './components/Header/Header';
-import ListOfLists from './components/ShoppingList/ShoppingList';
+import ShoppingList from './components/ShoppingList/ShoppingList';
 import ProductList from './components/ProductList/ProductList';
 import Authentication from './components/Authentication/Authentication';
-import NotFound from './components/NotFound/NotFound';
+// import NotFound from './components/NotFound/NotFound';
 import SignOut from './components/Authentication/SignOut/SignOut';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import MobileNav from './components/MobileNav/MobileNav';
 import MyAccount from './components/MyAccount/MyAccount';
 import FriendsList from './components/FriendsList/FriendsList';
+import Spinner from './components/UI/Spinner/Spinner';
 
 class App extends Component {
   constructor(props) {
@@ -43,14 +44,14 @@ class App extends Component {
       },
       {
         path: '/',
-        exact: true,
-        component: ListOfLists
-      },
-      {
-        path: '/',
         exact: false,
-        component: NotFound
-      }
+        component: ShoppingList
+      },
+      // {
+      //   path: '/',
+      //   exact: false,
+      //   component: NotFound
+      // }
     ];
 
 
@@ -72,6 +73,8 @@ class App extends Component {
       key={i}
       />)
 
+    const loading = this.props.loadingAuth || this.props.shopplingListLoading || this.props.productListLoading; 
+
     return (
       <BrowserRouter>
         <div className="app">
@@ -80,6 +83,8 @@ class App extends Component {
             <Switch>
               {routers}
             </Switch>
+            {loading ? <Spinner /> : null} 
+            
           </div>
           <MobileNav />
         </div>
@@ -97,7 +102,10 @@ const mapDispatchToProps = dispatch => {
 }
 const mapStateToProps = state => {
   return {
-    userID: state.auth.uId
+    userID: state.auth.uId,
+    loadingAuth: state.auth.loading,
+    shopplingListLoading: state.shoppingList.loading,
+    productListLoading: state.productList.loading
   }
 }
 

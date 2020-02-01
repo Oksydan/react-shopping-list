@@ -9,6 +9,12 @@ export const authStart = () => {
     }
 }
 
+export const authEnd = () => {
+    return {
+        type: actionTypes.AUTH_END
+    }
+}
+
 export const authError = error => {
     return {
         type: actionTypes.AUTH_ERROR,
@@ -24,12 +30,6 @@ export const authSuccessfully = uid => {
     }
 }
 
-export const authInitialized = uid => {
-    return {
-        type: actionTypes.AUTH_INITIALIZED
-    }
-}
-
 
 
 export const loginIfUserDataPersist = () => {
@@ -37,8 +37,9 @@ export const loginIfUserDataPersist = () => {
         firebaseAuth.onAuthStateChanged(user => {
             if (user) {
                 dispatch(authSuccessfully(user.uid));
-            } 
-            dispatch(authInitialized());
+            } else {
+                dispatch(authEnd());
+            }
         });
     }
 }

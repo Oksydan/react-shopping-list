@@ -1,7 +1,8 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const myAccount = () => (
-    <p>my account</p>
+    <Link to="/logout">Logout</Link>
 );
 
 export default myAccount;

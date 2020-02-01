@@ -15,6 +15,11 @@ const reducer = (state = initialState, actions) => {
                 loading: true,
                 error: ''
             }
+        case (actionTypes.AUTH_END):
+            return {
+                ...state,
+                loading: false
+            }
         case (actionTypes.AUTH_ERROR):
             return {
                 ...state,

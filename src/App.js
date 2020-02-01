@@ -28,9 +28,9 @@ class App extends Component {
 
     routers = [
       {
-        path: this.props.userID != null ? '/myaccount' : '/auth',
+        path: '/auth',
         exact: true,
-        component: this.props.userID != null ? MyAccount : Authentication
+        component: Authentication
       },
       {
         path: '/logout',
@@ -61,6 +61,11 @@ class App extends Component {
           path: '/list/:id',
           exact: true,
           component: ProductList
+        },
+        {
+          path: '/myaccount',
+          exact: true,
+          component: MyAccount
         },
         ...routers
       ]

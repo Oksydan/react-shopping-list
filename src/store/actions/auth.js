@@ -35,7 +35,7 @@ export const authInitialized = uid => {
 export const loginIfUserDataPersist = () => {
     return dispatch => {
         firebaseAuth.onAuthStateChanged(user => {
-            if (user) {
+            if (user) {\
                 dispatch(authSuccessfully(user.uid));
             } 
             dispatch(authInitialized());

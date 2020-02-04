@@ -1,0 +1,37 @@
+.shoppingList {
+    margin: 0;
+    &__elem {
+        position: relative;
+        margin: 1.5rem 0;
+    }
+    &__link {
+        padding: 1.5rem 2rem 1.5rem 1.5rem;
+        display: block;
+        box-shadow: $light-shadow-drop;
+        border-radius: $border-radius;
+    }
+    &__title {
+        font-size: 16px;
+        font-weight: 500;
+        color: $gray-80;
+        margin: 0 0 .5rem;
+    }
+    &__date {
+        font-size: 13px;
+        font-weight: 400;
+        color: $gray-60;
+    }
+    &__btn {
+        @extend %reset-button;
+        position: absolute;
+        right: 15px;
+        width: 20px;
+        &--edit {
+            top: 10px;
+        }
+        &--delete {
+            top: 35px;
+        }
+    }
+
+}

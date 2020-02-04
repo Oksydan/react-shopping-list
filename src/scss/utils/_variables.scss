@@ -3,17 +3,16 @@
 $brand-primary: #FFCE10;
 $brand-secondary: #00A17C;
 
-$gray-darker: #212121;
+$gray-100: #212121;
+$gray-80: lighten($gray-100, 20%);
+$gray-60: lighten($gray-100, 40%);
+$gray-40: lighten($gray-100, 60%);
+$gray-20: lighten($gray-100, 80%);
 
-$gray-100: #aaaaaa;
-$gray-80: #bbbbbb ;
-$gray-60: #cccccc ;
-$gray-40: #dddddd ;
-$gray-20: #eeeeee  ;
-$gray-00: #f8f8f8;
+$font-family: 'Roboto', sans-serif;
 
 $border-radius: .8rem;
 
 $backdrop: rgba(#000, .4);
 
-$light-shadow-drop: 0 0 20px 2px rgba(#000, .08);
+$light-shadow-drop: 0 0 1rem .2rem rgba(#000, .05);

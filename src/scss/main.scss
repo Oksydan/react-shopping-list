@@ -1,15 +1,18 @@
-//BASE 
-
-@import './base/reset';
-
-//LAYOUT
-
-@import './layout/body';
-
 // UTILS
 
 @import './utils/mixins';
 @import './utils/variables';
+@import './utils/placeholders';
+
+//BASE 
+
+@import './base/fonts';
+@import './base/reset';
+@import './base/typography';
+
+//LAYOUT
+
+@import './layout/body';
 
 // COMPONENTS 
 
@@ -18,4 +21,5 @@
 @import './components/spinner';
 @import './components/mobileNav';
 @import './components/desktopNav'; 
+@import './components/shoppingList'; 
 

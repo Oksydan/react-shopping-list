@@ -18,12 +18,12 @@
         font-size: 30px;
         flex: 1 1 auto;
         padding: .5rem 0;
-        color: $gray-80;
+        color: $gray-60;
         &--active,
         &:active,
         &:focus,
         &:hover {
-            color: $gray-darker;
+            color: $gray-100;
         }   
     }
 }

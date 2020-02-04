@@ -66,13 +66,20 @@ class ShoppingList extends Component {
                 title={list.listName}
                 key={list.id}
                 id={list.id}
+                date={list.dateAdd}
                 handleDelete={() => this.removeList(list.id)}
                 handleEdit={() => this.editListTitle(list.id, list.listName)}
         />);
+
+
         
         return (
             <div>
-                {shoppingLists}
+                {shoppingLists.length > 0 ? 
+                    <ul className="shoppingList">
+                        {shoppingLists}
+                    </ul> : null
+                }
                 {this.state.editListId !== null ? 
                 <Modal
                     show={this.state.modalVisible}

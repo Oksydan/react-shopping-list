@@ -1,7 +1,11 @@
 import React, { Component, Fragment } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTimes } from '@fortawesome/pro-regular-svg-icons';
 
 import Backdrop from '../Backdrop/Backdrop';
 import PropTypes from 'prop-types';
+
+
 
 class Modal extends Component {
 
@@ -20,8 +24,10 @@ class Modal extends Component {
         return (
             <Fragment>
                 <div className={classes.join(' ')}>
-                    <button onClick={this.props.modalClosed}>Close</button>
-                    {this.props.children}
+                    <div className="modal__content">
+                        <button className="modal__close" onClick={this.props.modalClosed}><FontAwesomeIcon icon={faTimes}/></button>
+                        {this.props.children}
+                    </div>
                 </div>
                 <Backdrop clicked={this.props.modalClosed} show={this.props.show}></Backdrop>
             </Fragment>

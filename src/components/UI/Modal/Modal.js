@@ -21,12 +21,21 @@ class Modal extends Component {
             classes.push('modal--shown');
         }
 
+        const modalHeader = this.props.title ? 
+            <div className="modal__header">
+                <h5 className="modal__title">{this.props.title}</h5>
+            </div>
+            : null;
+
         return (
             <Fragment>
                 <div className={classes.join(' ')}>
                     <div className="modal__content">
                         <button className="modal__close" onClick={this.props.modalClosed}><FontAwesomeIcon icon={faTimes}/></button>
-                        {this.props.children}
+                        {modalHeader}
+                        <div className="modal__body">
+                            {this.props.children}
+                        </div>
                     </div>
                 </div>
                 <Backdrop clicked={this.props.modalClosed} show={this.props.show}></Backdrop>
@@ -38,6 +47,7 @@ class Modal extends Component {
 Modal.propTypes = {
     modalClosed: PropTypes.func.isRequired,
     show: PropTypes.bool.isRequired,
+    title: PropTypes.string,
     children: PropTypes.oneOfType([
         PropTypes.arrayOf(PropTypes.node),
         PropTypes.node

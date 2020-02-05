@@ -14,8 +14,36 @@
         opacity: 1;
     }
     &__content {
-        padding: 1.5rem;
+        padding: 1.5rem 2rem;
         background-color: white;
         border-radius: $border-radius;
+        position: relative;
+    }
+    &__close {
+        @extend %reset-button;
+        position: absolute;
+        top: -6px;
+        right: -6px;
+        background: $brand-secondary;
+        width: 2rem;
+        height: 2rem;
+        line-height: 1.3rem;
+        border-radius: 50%;
+        color: #fff;
+        font-size: 1.4rem;
+        text-align: center;
+        &:hover,
+        &:focus {
+            background: darken($brand-secondary, 5%);
+        }
+    }
+    &__header {
+        margin: 0 0 1.5rem;
+    }
+
+    &__title {
+        font-size: 1.8rem;
+        font-weight: 600;
+        color: $gray-100;
     }
 }

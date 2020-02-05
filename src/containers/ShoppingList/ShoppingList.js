@@ -84,6 +84,7 @@ class ShoppingList extends Component {
                 <Modal
                     show={this.state.modalVisible}
                     modalClosed={this.handleHideModal}
+                    title={this.state.editListId !== null ? 'Edit shopping list' : 'Add new shopping lsit'}
                 >
                     <Form 
                         inputVal={this.state.editTitle}

@@ -6,4 +6,13 @@
     left: 0;
     top: 0;
     background-color: $backdrop;
+    transition: .4s;
+    &--hidden,
+    &--show {
+        opacity: 0;
+    }
+    &--hide,
+    &--shown {
+        opacity: 1;
+    }
 }

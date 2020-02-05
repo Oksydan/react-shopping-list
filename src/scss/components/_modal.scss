@@ -3,15 +3,20 @@
     overflow-y: scroll;
     position: fixed;
     z-index: 500;
-    transform: translateY(-100vh);
-    opacity: 0;
     left: 0;
     right: 0;
     top: 0;
-    bottom: 0;
+    max-height: 100vh;
+    transition: .4s;
+    &--hide,
     &--shown {
-        transform: translateY(0);
         opacity: 1;
+        transform: translateY(0);
+    }
+    &--hidden,
+    &--show {
+        opacity: 0;
+        transform: translateY(-100%);
     }
     &__content {
         padding: 1.5rem 2rem;

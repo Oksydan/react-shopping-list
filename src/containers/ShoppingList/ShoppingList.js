@@ -80,7 +80,6 @@ class ShoppingList extends Component {
                         {shoppingLists}
                     </ul> : null
                 }
-                {this.state.editListId !== null ? 
                 <Modal
                     show={this.state.modalVisible}
                     modalClosed={this.handleHideModal}
@@ -92,7 +91,7 @@ class ShoppingList extends Component {
                         handleInputChange={this.handleTitleChange}
                         handleSubmit={this.handleTitleEditSubmit}
                     />
-                </Modal> : null}
+                </Modal>
                 
             </div>
         )

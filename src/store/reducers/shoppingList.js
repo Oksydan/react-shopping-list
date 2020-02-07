@@ -2,7 +2,8 @@ import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
     shoppingLists: [],
-    loading: false
+    loading: false,
+    dataFetched: false
 }
 
 const addList = (listName, id, dateAdd, dateEdit, authorID) => ({
@@ -81,7 +82,8 @@ const reducer = (state = initialState, actions) => {
         case (actionTypes.FETCH_LIST_END):
             return {
                 ...state,
-                loading: false
+                loading: false,
+                dataFetched: true
             };
 
         default:

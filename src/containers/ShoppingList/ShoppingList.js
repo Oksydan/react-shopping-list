@@ -15,7 +15,7 @@ class ShoppingList extends Component {
     }
 
     componentDidMount() {
-        if (this.props.userID !== null) {
+        if (this.props.userID !== null && !this.props.dataAlreadyFetched) {
             this.props.fetchShopplingLists();
         }
     }
@@ -101,7 +101,8 @@ class ShoppingList extends Component {
 const mapStateToProps = state => {
     return {
         list: state.shoppingList.shoppingLists,
-        userID: state.auth.uId
+        userID: state.auth.uId,
+        dataAlreadyFetched: state.shoppingList.dataFetched
     }
 }
 

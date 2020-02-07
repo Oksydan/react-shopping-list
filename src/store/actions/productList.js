@@ -116,7 +116,7 @@ const productAdded = (productName, id, dateAdd, dateEdit, checked) => {
 export const updateProduct = (productName, id) => {
     return (dispatch, getState) => {
         const   dateEdit = Date.now(),
-                listId = getState().shoppingList.listId;
+                listId = getState().productList.listId;
 
         firestore.collection("shoppingList").doc(listId).collection("list").doc(id).set({
             productName,
@@ -149,7 +149,7 @@ export const deleteProductData = (id) => {
 
 export const deleteProduct = (id) => {
     return (dispatch, getState) => {
-        const listId = getState().shoppingList.listId;
+        const listId = getState().productList.listId;
         firestore.collection("shoppingList").doc(listId).collection("list").doc(id).delete()
             .then(() => {
                 dispatch(deleteProductData(id));
@@ -162,7 +162,7 @@ export const deleteProduct = (id) => {
 
 export const checkProduct = (id) => {
     return (dispatch, getState) => {
-        const listId = getState().shoppingList.listId;
+        const listId = getState().productList.listId;
         firestore.collection("shoppingList").doc(listId).collection("list").doc(id).set({
             checked: true
         }, { merge: true })
@@ -184,7 +184,7 @@ export const checkProductElem = (id) => {
 
 export const uncheckProduct = (id) => {
     return (dispatch, getState) => {
-        const listId = getState().shoppingList.listId;
+        const listId = getState().productList.listId;
         firestore.collection("shoppingList").doc(listId).collection("list").doc(id).set({
             checked: false
         }, { merge: true })
@@ -206,9 +206,9 @@ export const uncheckProductElem = (id) => {
 
 export const removeCheckedProducts = () => {
     return (dispatch, getState) => {
-        const   checkedElementsId = getState().shoppingList.list.filter(prod => prod.checked).map(prod => prod.id),
+        const   checkedElementsId = getState().productList.list.filter(prod => prod.checked).map(prod => prod.id),
                 batch = firestore.batch(),
-                listId = getState().shoppingList.listId;
+                listId = getState().productList.listId;
 
         for (let i in checkedElementsId) {
             const docRef = firestore.collection("shoppingList").doc(listId).collection("list").doc(checkedElementsId[i]);

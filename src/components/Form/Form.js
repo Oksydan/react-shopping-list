@@ -1,10 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Button from '../../components/UI/Button/Button';
 
 const form = props => (
     <form onSubmit={props.handleSubmit}>
         {props.children}
-        <button type='submit' onClick={props.handleSubmit}>SUBMIT</button>
+        <Button
+            type='submit'
+            clicked={props.handleSubmit}
+            displayType='primary'
+            classes={['button--block']}
+            >
+            Submit
+        </Button>
     </form>
 );
 

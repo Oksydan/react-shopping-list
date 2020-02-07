@@ -1,0 +1,34 @@
+.button {
+    @extend %button-reset;
+    padding: 10px 25px;
+    font-size: 15px;
+    line-height: 1.25;
+    border-radius: $border-radius;
+    font-weight: 600;
+    transition: .4s background;
+    @include buttonStyled(
+        'primary',
+        $gray-80,
+        $brand-primary,
+        lighten($brand-primary, 5%),
+        darken($brand-primary, 5%)
+    );
+    @include buttonStyled(
+        'secondary',
+        #fff,
+        $brand-secondary,
+        lighten($brand-secondary, 5%),
+        darken($brand-secondary, 5%)
+    );
+
+    &--block {
+        display: block;
+        text-align: center;
+        width: 100%;
+    }
+
+    &:disabled {
+        cursor: not-allowed;
+        opacity: .5;
+    }
+}

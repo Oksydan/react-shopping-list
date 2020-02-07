@@ -1,0 +1,15 @@
+@mixin buttonStyled($class, $color, $background, $focusHoverBackground, $activeBackground) {
+    &--#{$class} {
+        background: $background;
+        color: $color;
+        &:not(:disabled) {
+            &:focus,
+            &:hover {
+                background: $focusHoverBackground;
+            }
+        }
+        &:active {
+            background: $activeBackground;
+        }
+    }
+}

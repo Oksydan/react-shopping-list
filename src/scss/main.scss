@@ -1,7 +1,7 @@
 // UTILS
 
-@import './utils/mixins';
 @import './utils/variables';
+@import './utils/mixins';
 @import './utils/placeholders';
 
 //BASE 
@@ -22,4 +22,5 @@
 @import './components/mobileNav';
 @import './components/desktopNav'; 
 @import './components/shoppingList'; 
+@import './components/button'; 
 

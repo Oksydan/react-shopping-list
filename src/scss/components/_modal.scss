@@ -25,7 +25,7 @@
         position: relative;
     }
     &__close {
-        @extend %reset-button;
+        @extend %button-reset;
         position: absolute;
         top: -6px;
         right: -6px;

@@ -1,12 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Button from '../UI/Button/Button';
 
 
 
 const addElementForm = (props) => (
     <form onSubmit={props.handleSubmit}>
         <input type="text" onChange={props.handleInputChange} value={props.inputVal} />
-        <button type="submit" disabled={!props.isInputValid}>Add</button>
+        <Button 
+            clicked={props.handleSubmit}
+            type="submit"
+            displayType="primary"
+            disabled={!props.isInputValid}
+            >Add</Button>
     </form>
 );
 

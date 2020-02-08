@@ -1,0 +1,55 @@
+.formField  {
+    $self: &;
+    margin: 0 0 2rem;
+    position: relative;
+    &__input {
+        height: 3.8rem;
+        border: 1px solid $border-color;
+        border-radius: $border-radius;
+        display: block;
+        padding: 0 2rem 0 4.5rem;
+        width: 100%;
+        appearance: none;
+        font-family: $font-family;
+        font-size: 1.5rem;
+        background: #fff;
+        &--hasError {
+            background: red;
+        }
+    }
+
+    &__icon {
+       position: absolute;
+       color: $gray-60;
+       left: 1rem;
+       top: 1rem;
+       font-size: 1.8rem;
+       width: 1.5em;
+       text-align: center; 
+    }
+
+    &--field {
+        #{$self}__label {
+            position: absolute;
+            top: 50%;
+            font-size: 1.5rem;
+            line-height: 1.2em;
+            color: $gray-60;
+            left: 4rem;
+            margin-top: -.6em;
+            transition: .3s ease-in;
+            background: #fff;
+            padding: 0 .5rem;
+        }
+        #{$self}__input {
+            &:not([value=""]),
+            &:focus {
+                + #{$self}__label {
+                    top: 0;
+                    font-size: 1.3rem;
+                }
+            }
+        }
+        
+    }
+}

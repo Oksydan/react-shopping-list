@@ -5,29 +5,63 @@ const formFiled = props => {
 
     let field,
         formGroup = [],
-        label = props.label ? <label htmlFor={props.name}>{props.label}</label> : null;
+        label = props.label ? <label className='formField__label' htmlFor={props.name}>{props.label}</label> : null,
+        fieldClasses = ['formField'];
 
 
     if (props.type === 'text' || props.type === 'email' || props.type === 'password') {
-        field = <input style={{ background: props.hasError ? 'red' : 'white' }} type={props.type} value={props.value} id={props.name} name={props.name} onChange={props.fieldChange} />;
+
+        fieldClasses = [...fieldClasses, 'formField--field'];
+
+        let inputClass = ['formField__input'];
+
+        if (props.hasError) {
+            inputClass = [...inputClass, 'formField__input--hasError'];
+        }
+
+        field = <input
+            className={inputClass.join(' ')}
+            type={props.type}
+            value={props.value}
+            id={props.name}
+            name={props.name}
+            onChange={props.fieldChange} 
+            />;
         
-        formGroup = [label, field];
+        formGroup = [field, label];
 
     } else if (props.type === 'select') {
-        field = <select value={props.value} onChange={props.fieldChange} name={props.name} id={props.name}>
+
+        fieldClasses = [...fieldClasses, 'formField--select'];
+
+        field = <select className='formField__select' value={props.value} onChange={props.fieldChange} name={props.name} id={props.name}>
                     {props.options.map(option => <option value={option.value} checked={option.checked}>{option.name}</option>)}
                 </select>;
         formGroup = [label, field];
     } else if (props.type === 'checkbox' || props.type === 'radio') {
-        field = <input type={props.type} value={props.value} id={props.name} name={props.name} checked={props.checked} onChange={props.fieldChange} />;
+
+        fieldClasses = [...fieldClasses, `formField--${props.type}`];
+
+        field = <input
+            className={`formField__${props.type}`}
+            type={props.type} value={props.value}
+            id={props.name} name={props.name}
+            checked={props.checked}
+            onChange={props.fieldChange} 
+            />;
         formGroup = [field, label];
     }
 
-
+    console.log(props.icon);
 
     return (
-        <div>
+        <div className={fieldClasses.join(' ')}>
             {formGroup.map((elem, i) => <Fragment key={i}>{elem}</Fragment>)}
+            {(props.type !== 'checkbox' || props.type !== 'radio') && props.icon ? 
+                <label className='formField__icon' htmlFor={props.name}>{props.icon}</label>
+                :
+                null
+            }
         </div>
     );
 }
@@ -42,7 +76,7 @@ formFiled.propTypes = {
     checked: PropTypes.bool,
     hasError: PropTypes.bool,
     options: PropTypes.array,
-
+    icon: PropTypes.node
 }
 
 export default formFiled;

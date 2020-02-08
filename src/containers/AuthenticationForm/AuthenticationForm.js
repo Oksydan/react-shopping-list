@@ -5,6 +5,10 @@ import * as actions from '../../store/actions/index';
 import { isEmail } from '../../utils/validation';
 import Form from '../../components/Form/Form';
 import FormField from '../../components/Form/FormField/FormField'; 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEnvelope, faLockAlt } from '@fortawesome/pro-light-svg-icons';
+
+
 
 class Authentication extends Component {
 
@@ -19,7 +23,8 @@ class Authentication extends Component {
                     isEmail: true,
                     isRequired: true
                 },
-                hasError: false
+                hasError: false,
+                icon: <FontAwesomeIcon icon={faEnvelope} />
             },
             {
                 name: 'password',
@@ -30,7 +35,8 @@ class Authentication extends Component {
                     minLength: 6,
                     isRequired: true
                 },
-                hasError: false
+                hasError: false,
+                icon: <FontAwesomeIcon icon={faLockAlt} />
             }
         ]
     }
@@ -126,6 +132,7 @@ class Authentication extends Component {
                 label={field.label}
                 hasError={field.hasError}
                 checked={field.chekcked}
+                icon={field.icon || false}
              />;
         });
 

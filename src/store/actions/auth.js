@@ -23,10 +23,12 @@ export const authError = error => {
 }
 
 
-export const authSuccessfully = uid => {
+export const authSuccessfully = (uid, displayName) => {
+    console.log(displayName);
     return {
         type: actionTypes.AUTH_SUCCESSFULLY,
-        uid
+        uid,
+        displayName
     }
 }
 
@@ -36,7 +38,7 @@ export const loginIfUserDataPersist = () => {
     return dispatch => {
         firebaseAuth.onAuthStateChanged(user => {
             if (user) {
-                dispatch(authSuccessfully(user.uid));
+                dispatch(authSuccessfully(user.uid, user.displayName));
             } else {
                 dispatch(authEnd());
             }
@@ -76,7 +78,7 @@ export const register = (email, password, name) => {
                     user.updateProfile({
                         displayName: name
                     }).then(function () {
-                        dispatch(authSuccessfully(res.user.uid));
+                        dispatch(authSuccessfully(res.user.uid, name));
                     }).catch(function (error) {
                         console.log(error);
                     });
@@ -98,7 +100,7 @@ export const login = (email, password) => {
 
         firebaseAuth.signInWithEmailAndPassword(email, password)
             .then(res => {
-                dispatch(authSuccessfully(res.user.uid));
+                dispatch(authSuccessfully(res.user.uid, res.user.displayName));
             })
             .catch(error => {
                 console.log(error);

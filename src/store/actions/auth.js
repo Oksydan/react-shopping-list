@@ -69,7 +69,6 @@ export const register = (email, password) => {
 
         firebaseAuth.createUserWithEmailAndPassword(email, password)
             .then(res => {
-                console.log(res.user.uid);
                 dispatch(authSuccessfully(res.user.uid));
             })
             .catch(error => {
@@ -87,7 +86,6 @@ export const login = (email, password) => {
 
         firebaseAuth.signInWithEmailAndPassword(email, password)
             .then(res => {
-                console.log(res);
                 dispatch(authSuccessfully(res.user.uid));
             })
             .catch(error => {

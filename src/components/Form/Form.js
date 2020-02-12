@@ -3,16 +3,19 @@ import PropTypes from 'prop-types';
 import Button from '../../components/UI/Button/Button';
 
 const form = props => (
-    <form onSubmit={props.handleSubmit}>
+    <form onSubmit={props.handleSubmit} className="form">
         {props.children}
-        <Button
-            type='submit'
-            clicked={props.handleSubmit}
-            displayType='primary'
-            classes={['button--block']}
+        <div className="form__submit">
+            <Button
+                type='submit'
+                clicked={props.handleSubmit}
+                displayType='primary'
+                classes={['button--block']}
             >
-            Submit
-        </Button>
+                {props.submitText ? props.submitText : 'Submit'}
+            </Button>
+        </div>
+        
     </form>
 );
 
@@ -21,7 +24,8 @@ form.propTypes = {
     children: PropTypes.oneOfType([
         PropTypes.arrayOf(PropTypes.node),
         PropTypes.node
-    ]).isRequired
+    ]).isRequired,
+    submitText: PropTypes.string
 }
 
 

@@ -142,13 +142,16 @@ class Authentication extends Component {
 
         const footerLink = isRegisterForm ? <Link to="/auth">Already have an account? Log in!</Link> : <Link to="/auth?newaccount=1">Don't have an account? Create one!</Link>;
 
+        const submitText = isRegisterForm ? 'Register' : 'Sign in';
+
+
         return (
-            <div>
+            <div className="formBlock">
                 <h1>{headingText}</h1>
-                <Form handleSubmit={this.handleSubmit}>
+                <Form handleSubmit={this.handleSubmit} submitText={submitText}>
                     {fields}
                 </Form>
-                <div>
+                <div className="formBlock__footer">
                     {footerLink}
                 </div>
             </div>

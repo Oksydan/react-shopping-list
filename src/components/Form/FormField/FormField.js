@@ -52,7 +52,6 @@ const formFiled = props => {
         formGroup = [field, label];
     }
 
-    console.log(props.icon);
 
     return (
         <div className={fieldClasses.join(' ')}>

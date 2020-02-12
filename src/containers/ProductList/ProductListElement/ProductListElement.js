@@ -60,7 +60,6 @@ class ProductListElement extends Component {
         const { value, prevValue } = {...this.state};
         
         if (value !== prevValue) {
-            console.log('diffrent');
             this.setState({
                 isEditing: false,
                 value: prevValue,

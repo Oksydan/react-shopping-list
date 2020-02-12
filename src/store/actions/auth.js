@@ -46,13 +46,15 @@ export const loginIfUserDataPersist = () => {
 
 
 
-export const auth = (email, password, type) => {
+export const auth = (data, type) => {
 
     return dispatch => {
         firebaseAuth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
             .then(() => {
+                const { email, password, name} = data;
+
                 if (type === 'register') {
-                    return dispatch(register(email, password));
+                    return dispatch(register(email, password, name));
                 } else {
                     return dispatch(login(email, password));
                 }
@@ -63,13 +65,22 @@ export const auth = (email, password, type) => {
         }
 }
 
-export const register = (email, password) => {
+export const register = (email, password, name) => {
     return dispatch => {
         dispatch(authStart());
 
         firebaseAuth.createUserWithEmailAndPassword(email, password)
             .then(res => {
-                dispatch(authSuccessfully(res.user.uid));
+                const user = firebaseAuth.currentUser;
+                if (user) {
+                    user.updateProfile({
+                        displayName: name
+                    }).then(function () {
+                        dispatch(authSuccessfully(res.user.uid));
+                    }).catch(function (error) {
+                        console.log(error);
+                    });
+                }
             })
             .catch(error => {
                 console.log(error);
@@ -79,6 +90,7 @@ export const register = (email, password) => {
 
     }
 }
+
 
 export const login = (email, password) => {
     return dispatch => {

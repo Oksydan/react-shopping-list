@@ -1,12 +1,13 @@
 import React from 'react';
-import AuthenticationForm from '../../containers/AuthenticationForm/AuthenticationForm';
+import RegisterForm from '../../containers/RegisterForm/RegisterForm';
+import LoginForm from '../../containers/LoginForm/LoginForm';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 const authentication = props => {
     const isRegisterForm = new URLSearchParams(props.location.search).get('newaccount');
 
-    const content = props.userID ? <Redirect to="/" /> : <AuthenticationForm isRegisterForm={isRegisterForm ? true : false} />;
+    const content = props.userID ? <Redirect to="/" /> : isRegisterForm ? <RegisterForm /> : <LoginForm />;
 
     return content;
 }

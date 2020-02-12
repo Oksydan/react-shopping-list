@@ -6,14 +6,27 @@ import { isEmail } from '../../utils/validation';
 import Form from '../../components/Form/Form';
 import FormField from '../../components/Form/FormField/FormField'; 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEnvelope, faLockAlt } from '@fortawesome/pro-light-svg-icons';
+import { faEnvelope, faLockAlt, faUser } from '@fortawesome/pro-light-svg-icons';
 
 
+ 
+class RegisterFrom extends Component {
 
-class Authentication extends Component {
 
     state = {
         fields: [
+            {
+                name: 'name',
+                type: 'text',
+                label: 'Your name',
+                value: '',
+                validation: {
+                    minLength: 3,
+                    isRequired: true
+                },
+                hasError: false,
+                icon: <FontAwesomeIcon icon={faUser} />
+            },
             {
                 name: 'email',
                 type: 'email',
@@ -53,9 +66,12 @@ class Authentication extends Component {
 
         if (areInputsValid) {
             this.props.auth(
-                    fields[0].value,
-                    fields[1].value,
-                    this.props.isRegisterForm ? 'register' : 'login'
+                    {
+                        name: fields[0].value,
+                        email: fields[1].value,
+                        password: fields[2].value
+                    },
+                    'register'
                 );
         }
 
@@ -122,37 +138,30 @@ class Authentication extends Component {
     }
 
     render() {
+
         const fields = this.state.fields.map(field => {
             return <FormField
                 key={field.name}
                 fieldChange={this.handleFieldChange}
                 value={field.value}
-                name={field.name} 
+                name={field.name}
                 type={field.type}
                 label={field.label}
                 hasError={field.hasError}
                 checked={field.chekcked}
                 icon={field.icon || false}
-             />;
+            />;
         });
-
-        const isRegisterForm = this.props.isRegisterForm;
-
-        const headingText = isRegisterForm ? 'Create new account' : 'Login to your account';
-
-        const footerLink = isRegisterForm ? <Link to="/auth">Already have an account? Log in!</Link> : <Link to="/auth?newaccount=1">Don't have an account? Create one!</Link>;
-
-        const submitText = isRegisterForm ? 'Register' : 'Sign in';
 
 
         return (
             <div className="formBlock">
-                <h1>{headingText}</h1>
-                <Form handleSubmit={this.handleSubmit} submitText={submitText}>
+                <h1>Create new account</h1>
+                <Form handleSubmit={this.handleSubmit} submitText="Register">
                     {fields}
                 </Form>
                 <div className="formBlock__footer">
-                    {footerLink}
+                    <Link to="/auth">Already have an account? Log in!</Link>
                 </div>
             </div>
             
@@ -162,9 +171,9 @@ class Authentication extends Component {
 
 const mapDispatchToProps = dispatch => {
     return {
-        auth: (email, pass, type) => dispatch(actions.auth(email, pass, type))
+        auth: (data, type) => dispatch(actions.auth(data, type))
     }
 }
 
 
-export default connect(null, mapDispatchToProps)(Authentication);
+export default connect(null, mapDispatchToProps)(RegisterFrom);

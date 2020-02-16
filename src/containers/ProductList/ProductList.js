@@ -38,7 +38,7 @@ class ProductList extends Component {
             <div className="productsList">
                 <div className="productsList__top">
                     <Button
-                        classes={['productsList__btn']}
+                        classes={['productsList__btn','button--smaller']}
                         displayType="secondary"
                         clicked={this.props.removeCheckedProducts}
                         >Remove checked</Button>

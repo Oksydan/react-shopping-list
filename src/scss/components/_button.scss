@@ -28,6 +28,11 @@
         width: 100%;
     }
 
+    &--smaller {
+        padding: .8rem 1.5rem;
+        font-size: 1.3rem;
+    }
+
     &:disabled {
         cursor: not-allowed;
         opacity: .5;

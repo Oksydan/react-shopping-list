@@ -147,7 +147,7 @@ class ProductListElement extends Component {
 
 
         return (
-            <li className="productsList__elem productBlock">
+            <div className="productsList__elem productBlock">
                 <form onSubmit={this.handleInputSubmit} className={containerClasses.join(' ')} ref={this.form}>
                     <label htmlFor={'checkbox' + id} className={labelClasses.join(' ')}>
                         <input
@@ -178,7 +178,7 @@ class ProductListElement extends Component {
                         <FontAwesomeIcon icon={faTrashAlt} />
                     </button>
                 </form>
-            </li>
+            </div>
         )
     }
 }

@@ -1,14 +1,19 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import ShoppingListElement from './ProductListElement/ProductListElement';
+import ProductListElement from './ProductListElement/ProductListElement';
 import * as action from '../../store/actions';
 import PropTypes from 'prop-types';
 import { withRouter } from "react-router";
 import Button from '../../components/UI/Button/Button';
+import { Flipper, Flipped } from "react-flip-toolkit";
 
 
 
 class ProductList extends Component {
+
+    state = {
+        assd: 'asdsda'
+    }
 
 
     componentDidMount() {
@@ -24,16 +29,27 @@ class ProductList extends Component {
         this.props.clearList();
     }
 
+
     render() {
-        let list = null;
+        let list = null,
+            listData;
+        const information = 'Add product to your shopping list';
+
 
         if (this.props.shopList.length > 0) {
-            list = this.props.shopList.sort((a, b) => a.dateAdd - b.dateAdd).sort((a, b) => a.checked - b.checked).map((prod) => {
-                return <ShoppingListElement name={prod.productName} checked={prod.checked} key={prod.id} id={prod.id} />;
+            listData = this.props.shopList.sort((a, b) => a.dateAdd - b.dateAdd).sort((a, b) => a.checked - b.checked);
+            list = listData.map((prod) => {
+                return (
+                    <Flipped key={prod.id} flipId={prod.id}>
+                        {flippedProps => <li {...flippedProps}>
+                            <ProductListElement name={prod.productName} checked={prod.checked} id={prod.id} />
+                        </li>}
+                    </Flipped>
+                );
             });
-        } else {
-            list = 'Add product to your shopping list'
-        }
+        } 
+
+
         return (
             <div className="productsList">
                 <div className="productsList__top">
@@ -43,9 +59,17 @@ class ProductList extends Component {
                         clicked={this.props.removeCheckedProducts}
                         >Remove checked</Button>
                 </div>
-                <ul className="productsList__list">
-                    {list}
-                </ul>
+                {list ? 
+                    <Flipper flipKey={listData.map(({ dateAdd }) => dateAdd).join('')}>
+                        <ul className="productsList__list">
+                            {list}
+                        </ul>
+                    </Flipper >
+                    
+                :
+                    information
+                }
+                
             </div>
         )
     }

@@ -2,6 +2,35 @@
     $self: &;
     &__container {
         display: flex;
+        position: relative;
+        border-radius: $border-radius;
+        padding: .5rem .9rem;
+        background: #fff;
+        transition: .4s cubic-bezier(0.39, 0.575, 0.565, 1);
+        box-shadow: $light-shadow-drop;
+        overflow: hidden;
+        &:before {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 2px;
+            background: $brand-primary;
+            opacity: 0;
+            transition: .4s cubic-bezier(0.39, 0.575, 0.565, 1);
+            transform: translateY(100%);
+        }
+        &--focused {
+            &:before {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        &--checked {
+            opacity: .6;
+            box-shadow: none;
+        }
     }
 
     &__customCheckbox {
@@ -9,9 +38,9 @@
         height: 2.4rem;
         flex: 0 0 2.4rem;
         max-width: 2.4rem;
-        margin-right: 1.5rem;
         border-radius: $border-radius;
         border: 2px solid $border-color;
+        margin: .5rem 1.5rem 0 0;
         &--checked {
             #{$self}__checkIcon {
                 display: block;
@@ -23,9 +52,9 @@
         position: absolute;
         display: none;
         color: $gray-80;
-        font-size: 2.4rem;
-        left: .4rem;
-        top: -.5rem;
+        font-size: 2.2rem;
+        left: .3rem;
+        top: -.3rem;
     }
 
     &__checkbox {
@@ -39,8 +68,37 @@
         z-index: 1;
     }
 
+    &__inputContainer {
+        flex: 1 1 auto;
+        padding: .5rem 3.5rem .5rem 0;
+    }
+
+    &__input {
+        width: 100%;
+        resize: none;
+        appearance: none;
+        font-size: 1.5rem;
+        font-family: $font-family;
+        border: 0;
+        padding: 0;
+        line-height: 2.4rem;
+        height: auto;
+        background: none;
+        &:focus {
+            outline: none;
+            box-shadow: none;
+        }
+    }
+
     &__remove {
         @extend %button-reset;
+        position: absolute;
+        top: .9rem;
+        right: .5rem;
+        font-size: 2rem;
+        width: 1.2em;
+        text-align: center;
+        color: $gray-80;
     }
 
     &__submit {

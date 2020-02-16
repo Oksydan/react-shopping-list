@@ -3,8 +3,7 @@ import { connect } from 'react-redux';
 import * as action from '../../../store/actions';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrashAlt } from '@fortawesome/pro-regular-svg-icons';
-import { faCheck } from '@fortawesome/pro-light-svg-icons';
+import { faTrashAlt, faCheck } from '@fortawesome/pro-regular-svg-icons';
 
 class ProductListElement extends Component {
 
@@ -18,7 +17,8 @@ class ProductListElement extends Component {
             touched: false,
             isEditing: false,
             editingState: '',
-            prevValue: ''
+            prevValue: '',
+            height: 0
         }
     }
 
@@ -34,11 +34,12 @@ class ProductListElement extends Component {
     }
 
     handleInputSubmit = (e = false) => {
-        console.log('sub');
         if(e) {
             e.preventDefault();
         }
-        const { value, prevValue } = { ...this.state };
+        const   state = { ...this.state },
+                value = state.value.trim(),
+                prevValue = state.prevValue;
 
         if (value !== prevValue) {
             if (value.length > 0) {
@@ -59,6 +60,8 @@ class ProductListElement extends Component {
                     this.input.current.blur();
                 })
             }
+        } else {
+            this.input.current.blur();
         }
        
     }
@@ -72,11 +75,17 @@ class ProductListElement extends Component {
                 value: prevValue,
                 prevValue: ''
             });
+        } else {
+            this.setState({
+                isEditing: false
+            });
         }
+        this.setTextAreaHeight();
     }
 
     handleElementSubmit = (e) => {
         if(e.which === 13) {
+            e.preventDefault();
             this.handleInputSubmit();
         }
     }
@@ -85,6 +94,7 @@ class ProductListElement extends Component {
         this.setState({
             value: this.input.current.value
         })
+        this.setTextAreaHeight();
     }
 
     handeDeleteElement = (e) => {
@@ -100,23 +110,45 @@ class ProductListElement extends Component {
         }
     }
 
+    componentDidMount() {
+        this.setTextAreaHeight();
+    }
+
+    setTextAreaHeight = () => {
+        const input = this.input.current;
+
+        this.setState({
+            height: 0 // FIRST RESET HEIGHT TO REDUCE SIZE ON REMOVING TEXT
+        }, () => {
+            this.setState({
+                height: input.scrollHeight
+            });
+        });
+    }
+
     render() {
         const id = this.props.id,
             checked = this.props.checked;
 
 
         let inputClasses = ['productBlock__input'],
-            labelClasses = ['productBlock__customCheckbox'];
+            labelClasses = ['productBlock__customCheckbox'],
+            containerClasses = ['productBlock__container'];
 
         if(checked) {
             inputClasses = [...inputClasses, 'productBlock__input--checked'];
             labelClasses = [...labelClasses, 'productBlock__customCheckbox--checked'];
+            containerClasses = [...containerClasses, 'productBlock__container--checked'];
+        }
+
+        if (this.state.isEditing) {
+            containerClasses = [...containerClasses, 'productBlock__container--focused'];
         }
 
 
         return (
             <li className="productsList__elem productBlock">
-                <form onSubmit={this.handleInputSubmit} className="productBlock__container" ref={this.form}>
+                <form onSubmit={this.handleInputSubmit} className={containerClasses.join(' ')} ref={this.form}>
                     <label htmlFor={'checkbox' + id} className={labelClasses.join(' ')}>
                         <input
                             className="productBlock__checkbox"
@@ -126,17 +158,22 @@ class ProductListElement extends Component {
                             type="checkbox" />
                         <FontAwesomeIcon icon={faCheck} className="productBlock__checkIcon" />
                     </label>
-                    <textarea 
-                        ref={this.input}
-                        className={inputClasses.join(' ')}
-                        type='text'
-                        value={this.state.value}
-                        onKeyUp={this.handleElementSubmit}
-                        onBlur={this.hanldeInputBlur}
-                        onFocus={this.handleElementEdit}
-                        onChange={this.handleInputChange}>
-                    ></textarea>
-                    <input className="productBlock__submit" type="submit"/>
+                    <div className="productBlock__inputContainer">
+                        <textarea 
+                            ref={this.input}
+                            rows="1"
+                            className={inputClasses.join(' ')}
+                            type='text'
+                            value={this.state.value}
+                            onKeyDown={this.handleElementSubmit}
+                            onBlur={this.hanldeInputBlur}
+                            onFocus={this.handleElementEdit}
+                            onChange={this.handleInputChange}
+                            style={{height: this.state.height}}
+                            >
+                        ></textarea>
+                        <input className="productBlock__submit" type="submit"/>
+                    </div>
                     <button className="productBlock__remove" onClick={this.handeDeleteElement}>
                         <FontAwesomeIcon icon={faTrashAlt} />
                     </button>

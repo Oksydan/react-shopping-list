@@ -4,6 +4,7 @@ import ShoppingListElement from './ProductListElement/ProductListElement';
 import * as action from '../../store/actions';
 import PropTypes from 'prop-types';
 import { withRouter } from "react-router";
+import Button from '../../components/UI/Button/Button';
 
 
 
@@ -34,9 +35,15 @@ class ProductList extends Component {
             list = 'Add product to your shopping list'
         }
         return (
-            <div>
-                <button onClick={this.props.removeCheckedProducts}>Remove checked</button>
-                <ul>
+            <div className="productsList">
+                <div className="productsList__top">
+                    <Button
+                        classes={['productsList__btn']}
+                        displayType="secondary"
+                        clicked={this.props.removeCheckedProducts}
+                        >Remove checked</Button>
+                </div>
+                <ul className="productsList__list">
                     {list}
                 </ul>
             </div>

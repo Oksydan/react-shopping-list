@@ -1,0 +1,49 @@
+.productBlock {
+    $self: &;
+    &__container {
+        display: flex;
+    }
+
+    &__customCheckbox {
+        position: relative;
+        height: 2.4rem;
+        flex: 0 0 2.4rem;
+        max-width: 2.4rem;
+        margin-right: 1.5rem;
+        border-radius: $border-radius;
+        border: 2px solid $border-color;
+        &--checked {
+            #{$self}__checkIcon {
+                display: block;
+            }
+        }
+    }
+
+    &__checkIcon {
+        position: absolute;
+        display: none;
+        color: $gray-80;
+        font-size: 2.4rem;
+        left: .4rem;
+        top: -.5rem;
+    }
+
+    &__checkbox {
+        position: absolute;
+        margin: 0;
+        left: 0;
+        top: 0;
+        width: 2.4rem;
+        height: 2.4rem;
+        opacity: 0;
+        z-index: 1;
+    }
+
+    &__remove {
+        @extend %button-reset;
+    }
+
+    &__submit {
+        display: none;
+    }
+}

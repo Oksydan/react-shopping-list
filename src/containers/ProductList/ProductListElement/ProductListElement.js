@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as action from '../../../store/actions';
 import PropTypes from 'prop-types';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrashAlt } from '@fortawesome/pro-regular-svg-icons';
+import { faCheck } from '@fortawesome/pro-light-svg-icons';
 
 class ProductListElement extends Component {
 
@@ -9,6 +12,7 @@ class ProductListElement extends Component {
         super(props);
 
         this.input = React.createRef();
+        this.form = React.createRef();
         this.state = {
             value: this.props.name,
             touched: false,
@@ -29,8 +33,11 @@ class ProductListElement extends Component {
         });
     }
 
-    handleInputSubmit = (e) => {
-        e.preventDefault();
+    handleInputSubmit = (e = false) => {
+        console.log('sub');
+        if(e) {
+            e.preventDefault();
+        }
         const { value, prevValue } = { ...this.state };
 
         if (value !== prevValue) {
@@ -68,6 +75,12 @@ class ProductListElement extends Component {
         }
     }
 
+    handleElementSubmit = (e) => {
+        if(e.which === 13) {
+            this.handleInputSubmit();
+        }
+    }
+
     handleInputChange = () => {
         this.setState({
             value: this.input.current.value
@@ -88,22 +101,45 @@ class ProductListElement extends Component {
     }
 
     render() {
+        const id = this.props.id,
+            checked = this.props.checked;
+
+
+        let inputClasses = ['productBlock__input'],
+            labelClasses = ['productBlock__customCheckbox'];
+
+        if(checked) {
+            inputClasses = [...inputClasses, 'productBlock__input--checked'];
+            labelClasses = [...labelClasses, 'productBlock__customCheckbox--checked'];
+        }
+
+
         return (
-            <li>
-                <form onSubmit={this.handleInputSubmit}>
-                    <input
-                        checked={this.props.checked}
-                        onChange={this.handleProductCheck}
-                        type="checkbox" />
-                    <input 
+            <li className="productsList__elem productBlock">
+                <form onSubmit={this.handleInputSubmit} className="productBlock__container" ref={this.form}>
+                    <label htmlFor={'checkbox' + id} className={labelClasses.join(' ')}>
+                        <input
+                            className="productBlock__checkbox"
+                            id={'checkbox' + id}
+                            checked={checked}
+                            onChange={this.handleProductCheck}
+                            type="checkbox" />
+                        <FontAwesomeIcon icon={faCheck} className="productBlock__checkIcon" />
+                    </label>
+                    <textarea 
                         ref={this.input}
+                        className={inputClasses.join(' ')}
                         type='text'
                         value={this.state.value}
+                        onKeyUp={this.handleElementSubmit}
                         onBlur={this.hanldeInputBlur}
                         onFocus={this.handleElementEdit}
-                        onChange={this.handleInputChange} />
-                    <input type="submit"/>
-                    <button onClick={this.handeDeleteElement}>remove</button>
+                        onChange={this.handleInputChange}>
+                    ></textarea>
+                    <input className="productBlock__submit" type="submit"/>
+                    <button className="productBlock__remove" onClick={this.handeDeleteElement}>
+                        <FontAwesomeIcon icon={faTrashAlt} />
+                    </button>
                 </form>
             </li>
         )

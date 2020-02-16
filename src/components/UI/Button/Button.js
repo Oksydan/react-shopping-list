@@ -23,7 +23,7 @@ const button = (props) => {
     return (
         <button
             className={classes.join(' ')}
-            type={props.type}
+            type={props.type ? props.type : null}
             onClick={props.clicked}
             disabled={props.disabled}
             >
@@ -39,7 +39,7 @@ button.propTypes = {
     clicked: PropTypes.func,
     disabled: PropTypes.bool,
     displayType: PropTypes.string.isRequired,
-    type: PropTypes.string.isRequired,
+    type: PropTypes.string,
     children: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.node

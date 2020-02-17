@@ -11,11 +11,6 @@ import { Flipper, Flipped } from "react-flip-toolkit";
 
 class ProductList extends Component {
 
-    state = {
-        assd: 'asdsda'
-    }
-
-
     componentDidMount() {
         const id = this.props.match.params.id;
         if (id) {

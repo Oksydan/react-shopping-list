@@ -13,7 +13,7 @@ class ProductList extends Component {
 
     componentDidMount() {
         const id = this.props.match.params.id;
-        if (id) {
+        if (id && this.props.shoppingList.length > 0) {
             this.props.fetchProductsList(id);
         } else {
             this.props.history.push('/');
@@ -31,8 +31,8 @@ class ProductList extends Component {
         const information = 'Add product to your shopping list';
 
 
-        if (this.props.shopList.length > 0) {
-            listData = this.props.shopList.sort((a, b) => a.dateAdd - b.dateAdd).sort((a, b) => a.checked - b.checked);
+        if (this.props.productList.length > 0) {
+            listData = this.props.productList.sort((a, b) => a.dateAdd - b.dateAdd).sort((a, b) => a.checked - b.checked);
             list = listData.map((prod) => {
                 return (
                     <Flipped key={prod.id} flipId={prod.id}>
@@ -73,7 +73,8 @@ class ProductList extends Component {
 
 const mapStateToProps = state => {
     return {
-        shopList: state.productList.list
+        productList: state.productList.list,
+        shoppingList: state.shoppingList.shoppingLists
     }
 }
 
@@ -86,7 +87,6 @@ const mapDispatchToProps = dispatch => {
 }
 
 ProductList.propTypes = {
-    shopList: PropTypes.array.isRequired,
     removeCheckedProducts: PropTypes.func,
     fetchProductsList: PropTypes.func
 };

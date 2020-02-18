@@ -67,6 +67,8 @@ class ShoppingList extends Component {
                 key={list.id}
                 id={list.id}
                 date={list.dateAdd}
+                listElemes={list.listElems}
+                checkedElemes={list.checkedElems}
                 handleDelete={() => this.removeList(list.id)}
                 handleEdit={() => this.editListTitle(list.id, list.listName)}
         />);

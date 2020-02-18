@@ -11,7 +11,9 @@ export const addList = (listName, id, authorID) => {
             id,
             dateAdd,
             dateEdit,
-            authorID
+            authorID,
+            listElems: 0,
+            checkedElems: 0
         })
             .then(() => {
                 dispatch(listAdded(listName, id, dateAdd, dateEdit, authorID));

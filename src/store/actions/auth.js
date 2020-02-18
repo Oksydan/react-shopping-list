@@ -24,7 +24,6 @@ export const authError = error => {
 
 
 export const authSuccessfully = (uid, displayName) => {
-    console.log(displayName);
     return {
         type: actionTypes.AUTH_SUCCESSFULLY,
         uid,

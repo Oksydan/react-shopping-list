@@ -99,7 +99,7 @@ class ProductListElement extends Component {
 
     handeDeleteElement = (e) => {
         e.preventDefault();
-        this.props.listElementDelete(this.props.id);
+        this.props.listElementDelete(this.props.id, this.props.checked);
     }
 
     handleProductCheck = (e) => {
@@ -186,7 +186,7 @@ class ProductListElement extends Component {
 const mapDispatchToProps = dispatch => {
     return {
         listElementUpdate: (name, id) => dispatch(action.updateProduct(name, id)),
-        listElementDelete: (id) => dispatch(action.deleteProduct(id)),
+        listElementDelete: (id, checked) => dispatch(action.deleteProduct(id, checked)),
         listElementCheck: (id) => dispatch(action.checkProduct(id)),
         listElementUncheck: (id) => dispatch(action.uncheckProduct(id)),
     }

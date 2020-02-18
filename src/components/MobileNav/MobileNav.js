@@ -1,8 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import MobileNavElemenent from './MobileNavElemenent/MobileNavElement';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faStoreAlt, faUserFriends } from '@fortawesome/pro-regular-svg-icons';
+import { faUser, faStoreAlt, faUserFriends, faArrowAltLeft } from '@fortawesome/pro-regular-svg-icons';
 
 const mobileNav = props => {
 
@@ -10,7 +11,7 @@ const mobileNav = props => {
         {
             path: '/',
             title: 'Back to home page',
-            icon: faStoreAlt
+            icon: props.location.pathname === '/' ? faStoreAlt : faArrowAltLeft
         },
         {
             path: props.userID != null ? '/myaccount' : '/auth',
@@ -46,4 +47,4 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps)(mobileNav);
+export default connect(mapStateToProps)(withRouter(mobileNav));

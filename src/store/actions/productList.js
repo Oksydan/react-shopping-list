@@ -286,8 +286,6 @@ export const removeCheckedProducts = () => {
             checkListElemsDec = relatedShoppingList.checkedElems - checkedLength,
             ListElemsDec = relatedShoppingList.listElems - checkedLength;
 
-        console.log(checkedLength);
-        console.log(relatedShoppingList.checkedElems);
 
         const listData = firestore.collection("shoppingList").doc(listId);
 

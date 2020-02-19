@@ -3,9 +3,9 @@ export const getUniqueId = () => {
 };
 
 export const getDateByTimestamp = timestamp => {
-    const a = new Date(timestamp * 1000);
-    const month = a.getMonth();
+    const a = new Date(timestamp);
+    const month = a.getMonth() + 1;
     const date = a.getDate();
-    const time = date + '.' + month;
+    const time = (date < 10 ? '0' + date : date) + '.' + (month < 10 ? '0' + month : month);
     return time;
 }

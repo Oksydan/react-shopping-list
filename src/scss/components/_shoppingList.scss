@@ -3,37 +3,79 @@
     &__elem {
         position: relative;
         margin: 1.5rem 0;
-    }
-    &__link {
-        padding: 1.5rem 2rem 1.5rem 1.5rem;
-        display: block;
+        padding: 1.5rem 1.5rem .5rem;
         box-shadow: $light-shadow-drop;
         border-radius: $border-radius;
         background: #fff;
     }
+    &__link {
+        display: block;
+    }
     &__title {
-        font-size: 16px;
+        font-size: 1.7rem;
         font-weight: 500;
-        color: $gray-80;
+        color: $gray-100;
         margin: 0 0 .5rem;
     }
-    &__date {
-        font-size: 13px;
+    &__info {
+        font-size: 1.4rem;
         font-weight: 400;
         color: $gray-60;
-        margin: 0;
+        margin: 0 0 2px;
+        &--textRight {
+            text-align: right;
+        }
+        &--success {
+            color: $success;
+        }
     }
+    &__infoIcon {
+        margin-right: .4rem;
+    }
+
+    &__btns {
+        padding: .5rem 0 0;
+        display: flex;
+    }
+
     &__btn {
         @extend %button-reset;
-        position: absolute;
-        right: 15px;
-        width: 20px;
+        flex: 0 0 50%;
+        text-align: center;
+        color: $gray-80;
+        padding: 1rem 0;
+        font-size: 1.5rem;
         &--edit {
-            top: 10px;
+            position: relative;
+            &:after {
+                content: '';
+                position: absolute;
+                right: 0;
+                top: 50%;
+                height: 20px;
+                margin-top: -10px;
+                border-right: 1px solid $gray-40;
+            }
         }
-        &--delete {
-            top: 35px;
-        }
+    }
+
+    &__btnIcon {
+        margin-right: 3px;
+        color: $gray-80;
+    }
+
+    &__progressBar {
+        width: 100%;
+        height: 1rem;
+        margin: .8rem 0 0;
+        background: $gray-20;
+        border-radius: $border-radius-minor;
+    }
+    &__progressBarInner {
+        height: 100%;
+        border-radius: $border-radius-minor;
+        background: $brand-secondary;
+        transition: .4s ease;
     }
 
 }

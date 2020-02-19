@@ -156,7 +156,11 @@ class RegisterFrom extends Component {
 
         return (
             <div className="formBlock">
-                <h1>Create new account</h1>
+                <h1 className="pageHeading">
+                    <span className="pageHeading__inner">
+                        Create new account
+                    </span>
+                </h1>
                 <Form handleSubmit={this.handleSubmit} submitText="Register">
                     {fields}
                 </Form>

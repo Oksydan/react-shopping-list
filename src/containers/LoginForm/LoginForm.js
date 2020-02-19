@@ -144,7 +144,11 @@ class LoginForm extends Component {
 
         return (
             <div className="formBlock">
-                <h1>Login to your account</h1>
+                <h1 className="pageHeading">
+                    <span className="pageHeading__inner">
+                        Login to your account
+                    </span>
+                </h1>
                 <Form handleSubmit={this.handleSubmit} submitText="Sign in">
                     {fields}
                 </Form>

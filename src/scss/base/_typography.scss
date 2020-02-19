@@ -22,7 +22,16 @@ h3 {
     font-size: 2.6rem;
     font-weight: 600;
     margin: 0 0 3rem;
-    text-align: center;
+    color: $gray-100;
+}
+
+.h4,
+.h5,
+h4,
+h5 {
+    font-size: 2rem;
+    font-weight: 600;
+    margin: 0 0 2rem;
     color: $gray-100;
 }
 
@@ -31,4 +40,23 @@ p {
     line-height: 1.45;
     color: $gray-60;
     margin: 0 0 2rem;
+}
+
+.pageHeading {
+    text-align: center;
+    font-size: 2.8rem;
+    padding: 0 0 1.5rem;
+    position: relative;
+    &:after {
+        content: '';
+        position: absolute;
+        bottom: -3px;
+        left: 50%;
+        margin-left: -2.5rem;
+        height: .6rem;
+        width: 5rem;
+        background: $brand-primary;
+        border-radius: $border-radius-minor;
+        box-shadow: $primary-light-shadow-drop;
+    }
 }

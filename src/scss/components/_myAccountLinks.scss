@@ -1,6 +1,7 @@
 .myAccountLinks {
     $self: &;
-    margin: 0;
+    margin: -1.5rem 0 0;
+    overflow: hidden;
     &__elem {
         margin: 4.5rem 0 2.5rem;
     }
@@ -40,7 +41,7 @@
     }
 
     &__title {
-        font-size: 19px;
+        font-size: 1.9rem;
         font-weight: 600;
         line-height: 1.4;
         color: $gray-100;

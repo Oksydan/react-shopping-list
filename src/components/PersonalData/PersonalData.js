@@ -1,11 +1,15 @@
-import React from 'react';
+import React,{ Fragment } from 'react';
 
 const personalData = () => {
 
     return (
-        <div>
-            Personal data
-        </div>
+        <Fragment>
+            <h1 className="pageHeading">
+                <span className="pageHeading__inner">
+                    Personal data
+                </span>
+            </h1>
+        </Fragment>
     )
 }
 

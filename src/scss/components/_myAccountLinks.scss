@@ -1,0 +1,49 @@
+.myAccountLinks {
+    $self: &;
+    margin: 0;
+    &__elem {
+        margin: 4.5rem 0 2.5rem;
+    }
+
+    &__link {
+        display: block;
+        background: #fff;
+        border-radius: $border-radius;
+        box-shadow: $light-shadow-drop;
+        position: relative;
+        padding: 4rem 1rem 2rem;
+        text-align: center;
+        &:hover,
+        &:focus {
+            #{$self}__icon {
+                transform: translateY(-3px);
+            }
+        }
+    }
+
+    &__icon {
+        position: absolute;
+        font-size: 2.5rem;
+        width: 2.2em;
+        height: 2.2em;
+        line-height: 2.2em;
+        text-align: center;
+        left: 50%;
+        top: 0;
+        margin-top: -1.1em;
+        margin-left: -1.1em;
+        color: #fff;
+        background: $brand-secondary;
+        border-radius: 50%;
+        box-shadow: $secondary-light-shadow-drop;
+        transition: .4s ease;
+    }
+
+    &__title {
+        font-size: 19px;
+        font-weight: 600;
+        line-height: 1.4;
+        color: $gray-100;
+    }
+
+}

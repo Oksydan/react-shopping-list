@@ -10,6 +10,7 @@ import SignOut from './components/Authentication/SignOut/SignOut';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import MobileNav from './components/MobileNav/MobileNav';
 import MyAccount from './components/MyAccount/MyAccount';
+import PersonalData from './components/PersonalData/PersonalData';
 import FriendsList from './components/FriendsList/FriendsList';
 import Spinner from './components/UI/Spinner/Spinner';
 
@@ -66,6 +67,11 @@ class App extends Component {
           path: '/myaccount',
           exact: true,
           component: MyAccount
+        },
+        {
+          path: '/personal-data',
+          exact: true,
+          component: PersonalData
         },
         ...routers
       ]

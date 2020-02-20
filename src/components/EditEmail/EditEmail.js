@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import EditEmailForm from '../../containers/EditEmailForm/EditEmailForm';
+import EditEmailForm from './EditEmailForm/EditEmailForm';
 
 const editEmail = () => {
 

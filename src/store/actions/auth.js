@@ -57,9 +57,16 @@ export const auth = (data, type) => {
                 const { email, password, name} = data;
 
                 if (type === 'register') {
-                    return dispatch(register(email, password, name));
+                    return dispatch(register(
+                        email.value,
+                        password.value,
+                        name.value
+                        ));
                 } else {
-                    return dispatch(login(email, password));
+                    return dispatch(login(
+                        email.value,
+                        password.value
+                        ));
                 }
             })
             .catch(error => {
@@ -72,16 +79,17 @@ export const updateUserData = (newName) => {
 
     return dispatch => {
         const user = firebaseAuth.currentUser,
-            { displayName } = user;
+            { displayName } = user,
+            name = newName.value;
 
 
-        if (newName !== displayName) {
+        if (name !== displayName) {
             dispatch(authStart());
             user.updateProfile({
-                displayName: newName
+                displayName: name
             })
             .then(() => {
-                dispatch(userDataUpdated(newName));
+                dispatch(userDataUpdated(name));
             })
             .catch(error => {
                 console.log(error);
@@ -99,11 +107,12 @@ export const userDataUpdated = (displayName) => {
     }
 }
 
-export const updateUserEmail = (newEmail) => {
+export const updateUserEmail = (emailField) => {
 
     return dispatch => {
         const user = firebaseAuth.currentUser,
-            { email } = user;
+            { email } = user,
+            newEmail = emailField.value;
 
 
         if (newEmail !== email) {
@@ -131,12 +140,13 @@ export const userEmailUpdated = (email) => {
 export const updateUserPassword = (newPassword) => {
 
     return dispatch => {
-        const user = firebaseAuth.currentUser;
+        const user = firebaseAuth.currentUser,
+            password = newPassword.value;
 
         dispatch(authStart());
-        user.updatePassword(newPassword)
+        user.updatePassword(password)
         .then(() => {
-            dispatch(userEmailUpdated(newPassword));
+            dispatch(userEmailUpdated(password));
         })
         .catch(error => {
             console.log(error);

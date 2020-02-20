@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import EditPasswordForm from '../../containers/EditPasswordForm/EditPasswordForm';
+import EditPasswordForm from './EditPasswordForm/EditPasswordForm';
 
 const editPassword = () => {
 

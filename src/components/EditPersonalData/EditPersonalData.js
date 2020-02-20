@@ -1,5 +1,5 @@
 import React,{ Fragment } from 'react';
-import PersonalDataForm from '../../containers/EditPersonalDataForm/EditPersonalDataForm';
+import PersonalDataForm from './EditPersonalDataForm/EditPersonalDataForm';
 
 const personalData = () => {
 

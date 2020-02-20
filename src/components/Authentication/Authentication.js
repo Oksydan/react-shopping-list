@@ -1,6 +1,6 @@
 import React from 'react';
-import RegisterForm from '../../containers/RegisterForm/RegisterForm';
-import LoginForm from '../../containers/LoginForm/LoginForm';
+import RegisterForm from './RegisterForm/RegisterForm';
+import LoginForm from './LoginForm/LoginForm';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 

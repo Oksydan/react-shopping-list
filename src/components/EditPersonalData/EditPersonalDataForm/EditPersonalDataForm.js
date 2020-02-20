@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Form from '../../Form/Form';
-import FormField from '../../Form/FormField/FormField'; 
 import * as actions from '../../../store/actions/index';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/pro-light-svg-icons';

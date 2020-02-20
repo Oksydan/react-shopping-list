@@ -1,9 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Form from '../../Form/Form';
-import FormField from '../../Form/FormField/FormField';
 import * as actions from '../../../store/actions/index';
-import { isEmail } from '../../../utils/validation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLockAlt } from '@fortawesome/pro-light-svg-icons';
 
@@ -49,12 +47,7 @@ const editPasswordForm = props => {
     )
 }
 
-const mapStateToProps = state => {
-    return {
-        uName: state.auth.displayName,
-        uEmail: state.auth.email
-    }
-}
+
 const mapDispatchToProps = dispatch => {
     return {
         updateData: ({ newPassword }) => dispatch(actions.updateUserPassword(newPassword))
@@ -62,4 +55,4 @@ const mapDispatchToProps = dispatch => {
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(editPasswordForm);
+export default connect(null, mapDispatchToProps)(editPasswordForm);

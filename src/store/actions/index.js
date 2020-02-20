@@ -20,5 +20,8 @@ export {
 export {
     auth,
     signOut,
+    updateUserData,
+    updateUserPassword,
+    updateUserEmail,
     loginIfUserDataPersist
 } from './auth';

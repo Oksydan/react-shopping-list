@@ -13,12 +13,11 @@
         font-family: $font-family;
         font-size: 1.5rem;
         background: #fff;
-        &:focus {
+        &:not(#{$self}__input--hasError):focus {
             outline: none;
             border-color: $gray-60;
         }
         &--hasError {
-            background: rgba($error, .1);
             border-color: $error;
         }
     }

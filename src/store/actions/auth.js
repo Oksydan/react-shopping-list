@@ -23,11 +23,12 @@ export const authError = error => {
 }
 
 
-export const authSuccessfully = (uid, displayName) => {
+export const authSuccessfully = (uid, displayName, email) => {
     return {
         type: actionTypes.AUTH_SUCCESSFULLY,
         uid,
-        displayName
+        displayName,
+        email
     }
 }
 
@@ -36,8 +37,9 @@ export const authSuccessfully = (uid, displayName) => {
 export const loginIfUserDataPersist = () => {
     return dispatch => {
         firebaseAuth.onAuthStateChanged(user => {
+            console.log(user);
             if (user) {
-                dispatch(authSuccessfully(user.uid, user.displayName));
+                dispatch(authSuccessfully(user.uid, user.displayName, user.email));
             } else {
                 dispatch(authEnd());
             }
@@ -66,6 +68,90 @@ export const auth = (data, type) => {
         }
 }
 
+export const updateUserData = (newName) => {
+
+    return dispatch => {
+        const user = firebaseAuth.currentUser,
+            { displayName } = user;
+
+
+        if (newName !== displayName) {
+            dispatch(authStart());
+            user.updateProfile({
+                displayName: newName
+            })
+            .then(() => {
+                dispatch(userDataUpdated(newName));
+            })
+            .catch(error => {
+                console.log(error);
+                dispatch(authEnd());
+            })
+            
+        }
+    }
+}
+
+export const userDataUpdated = (displayName) => {
+    return {
+        type: actionTypes.AUTH_USER_DATA_UPDATED,
+        displayName
+    }
+}
+
+export const updateUserEmail = (newEmail) => {
+
+    return dispatch => {
+        const user = firebaseAuth.currentUser,
+            { email } = user;
+
+
+        if (newEmail !== email) {
+            dispatch(authStart());
+            user.updateEmail(newEmail)
+            .then(() => {
+                dispatch(userEmailUpdated(newEmail));
+            })
+            .catch(error => {
+                console.log(error);
+                dispatch(authEnd());
+            })
+            
+        }
+    }
+}
+
+export const userEmailUpdated = (email) => {
+    return {
+        type: actionTypes.AUTH_USER_EMAIL_UPDATED,
+        email
+    }
+}
+
+export const updateUserPassword = (newPassword) => {
+
+    return dispatch => {
+        const user = firebaseAuth.currentUser;
+
+        dispatch(authStart());
+        user.updatePassword(newPassword)
+        .then(() => {
+            dispatch(userEmailUpdated(newPassword));
+        })
+        .catch(error => {
+            console.log(error);
+            dispatch(authEnd());
+        })
+        
+    }
+}
+
+export const userPasswordUpdated = (email) => {
+    return {
+        type: actionTypes.AUTH_USER_PASSWORD_UPDATED
+    }
+}
+
 export const register = (email, password, name) => {
     return dispatch => {
         dispatch(authStart());
@@ -77,7 +163,7 @@ export const register = (email, password, name) => {
                     user.updateProfile({
                         displayName: name
                     }).then(function () {
-                        dispatch(authSuccessfully(res.user.uid, name));
+                        dispatch(authSuccessfully(res.user.uid, name, email));
                     }).catch(function (error) {
                         console.log(error);
                     });
@@ -99,7 +185,7 @@ export const login = (email, password) => {
 
         firebaseAuth.signInWithEmailAndPassword(email, password)
             .then(res => {
-                dispatch(authSuccessfully(res.user.uid, res.user.displayName));
+                dispatch(authSuccessfully(res.user.uid, res.user.displayName, email));
             })
             .catch(error => {
                 console.log(error);

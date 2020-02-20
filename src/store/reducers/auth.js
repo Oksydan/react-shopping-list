@@ -4,7 +4,8 @@ const initialState = {
     uId: null,
     loading: true,
     error: '',
-    displayName: ''
+    displayName: '',
+    email: ''
 }
 
 
@@ -34,6 +35,7 @@ const reducer = (state = initialState, actions) => {
                 error: '',
                 uId: actions.uid,
                 displayName: actions.displayName,
+                email: actions.email
             }
         case (actionTypes.SIGN_OUT_SUCCESSFULLY):
             return {
@@ -41,7 +43,28 @@ const reducer = (state = initialState, actions) => {
                 loading: false,
                 error: '',
                 uId: null,
-                displayName: ''
+                displayName: '',
+                email: ''
+            }
+        case (actionTypes.AUTH_USER_DATA_UPDATED):
+            return {
+                ...state,
+                loading: false,
+                error: '',
+                displayName: actions.displayName
+            }
+        case (actionTypes.AUTH_USER_EMAIL_UPDATED):
+            return {
+                ...state,
+                loading: false,
+                error: '',
+                email: actions.email
+            }
+        case (actionTypes.AUTH_USER_PASSWORD_UPDATED):
+            return {
+                ...state,
+                loading: false,
+                error: ''
             }
         default: 
             return state;

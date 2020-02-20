@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const myAccountLink = (props) => (
-    <li class="myAccountLinks__elem">
+    <li className="myAccountLinks__elem">
         <Link className="myAccountLinks__link" to={props.to}>
             <div className="myAccountLinks__icon">
                 <FontAwesomeIcon icon={props.icon} />

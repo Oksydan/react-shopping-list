@@ -1,4 +1,5 @@
 import React,{ Fragment } from 'react';
+import PersonalDataForm from '../../containers/EditPersonalDataForm/EditPersonalDataForm';
 
 const personalData = () => {
 
@@ -6,9 +7,10 @@ const personalData = () => {
         <Fragment>
             <h1 className="pageHeading">
                 <span className="pageHeading__inner">
-                    Personal data
+                    Edit personal data
                 </span>
             </h1>
+            <PersonalDataForm />
         </Fragment>
     )
 }

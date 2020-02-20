@@ -7,9 +7,12 @@ import { faUser, faStoreAlt, faUserFriends, faArrowAltLeft } from '@fortawesome/
 
 const mobileNav = props => {
 
+    const arrayOfLocation = props.location.pathname.split('/'),
+        isDeeperPage =  arrayOfLocation.length > 2;
+
     const navLinks = [
         {
-            path: '/',
+            path: isDeeperPage ? `/${arrayOfLocation[1]}` : '/',
             title: 'Back to home page',
             icon: props.location.pathname === '/' ? faStoreAlt : faArrowAltLeft
         },

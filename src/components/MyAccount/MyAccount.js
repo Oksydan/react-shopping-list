@@ -1,12 +1,22 @@
 import React, { Fragment } from 'react';
 import MyAccountLink from './MyAccountLink/MyAccountLink';
-import { faSignOut, faUserCog } from '@fortawesome/pro-regular-svg-icons';
+import { faSignOut, faUserCog, faUserLock, faUserEdit } from '@fortawesome/pro-regular-svg-icons';
 
 const myAccount = () => {
     const links = [
         {
-            title: 'My personal data',
-            to: '/personal-data',
+            title: 'Edit my personal data',
+            to: '/myaccount/personal-data',
+            icon: faUserEdit
+        },
+        {
+            title: 'Edit my password',
+            to: '/myaccount/edit-password',
+            icon: faUserLock
+        },
+        {
+            title: 'Edit my email address',
+            to: '/myaccount/edit-email',
             icon: faUserCog
         },
         {
@@ -16,7 +26,8 @@ const myAccount = () => {
         }
     ];
 
-    const userElems = links.map(elem => <MyAccountLink 
+    const userElems = links.map((elem, i) => <MyAccountLink 
+        key={i}
         title={elem.title}
         to={elem.to}
         icon={elem.icon}
@@ -24,7 +35,7 @@ const myAccount = () => {
 
     return (
         <Fragment>
-            <h1 class="pageHeading">
+            <h1 className="pageHeading">
                 <span className="pageHeading__inner">
                     My account   
                 </span>

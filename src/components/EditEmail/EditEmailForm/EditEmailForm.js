@@ -27,7 +27,9 @@ const editEmailForm = props =>  {
         <Form 
             onFormSubmit={props.updateData}
             submitText="Edit"
-            fields={fields}>
+            fields={fields}
+            error={props.error}
+            >
             <p>Change your account email. Be aware to type right email address.</p>
         </Form>
     )
@@ -36,9 +38,11 @@ const editEmailForm = props =>  {
 
 const mapStateToProps = state => {
     return {
-        uEmail: state.auth.email
+        uEmail: state.auth.email,
+        error: state.auth.error
     }
 }
+
 const mapDispatchToProps = dispatch => {
     return {
         updateData: ({ email }) => dispatch(actions.updateUserEmail(email))

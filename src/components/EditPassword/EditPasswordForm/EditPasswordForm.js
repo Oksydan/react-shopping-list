@@ -41,6 +41,7 @@ const editPasswordForm = props => {
             onFormSubmit={props.updateData}
             submitText="Edit"
             fields={fields}
+            error={props.error}
             >
             <p>Edit your account your password. Fields data must be equal.</p>
         </Form>
@@ -54,5 +55,11 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
+const mapStateToProps = state => {
+    return {
+        error: state.auth.error
+    }
+}
 
-export default connect(null, mapDispatchToProps)(editPasswordForm);
+
+export default connect(mapStateToProps, mapDispatchToProps)(editPasswordForm);

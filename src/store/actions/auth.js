@@ -70,7 +70,7 @@ export const auth = (data, type) => {
                 }
             })
             .catch(error => {
-                console.log(error);
+                dispatch(authError(error.message))
             });
         }
 }
@@ -92,8 +92,7 @@ export const updateUserData = (newName) => {
                 dispatch(userDataUpdated(name));
             })
             .catch(error => {
-                console.log(error);
-                dispatch(authEnd());
+                    dispatch(authError(error.message))
             })
             
         }
@@ -122,8 +121,7 @@ export const updateUserEmail = (emailField) => {
                 dispatch(userEmailUpdated(newEmail));
             })
             .catch(error => {
-                console.log(error);
-                dispatch(authEnd());
+                dispatch(authError(error.message))
             })
             
         }
@@ -149,8 +147,7 @@ export const updateUserPassword = (newPassword) => {
             dispatch(userEmailUpdated(password));
         })
         .catch(error => {
-            console.log(error);
-            dispatch(authEnd());
+                dispatch(authError(error.message))
         })
         
     }
@@ -175,14 +172,12 @@ export const register = (email, password, name) => {
                     }).then(function () {
                         dispatch(authSuccessfully(res.user.uid, name, email));
                     }).catch(function (error) {
-                        console.log(error);
+                        dispatch(authError(error.message))
                     });
                 }
             })
             .catch(error => {
-                console.log(error);
-                
-                dispatch(authError());
+                dispatch(authError(error.message))
             });
 
     }
@@ -198,9 +193,7 @@ export const login = (email, password) => {
                 dispatch(authSuccessfully(res.user.uid, res.user.displayName, email));
             })
             .catch(error => {
-                console.log(error);
-                
-                dispatch(authError());
+                dispatch(authError(error.message))
             });
 
     }

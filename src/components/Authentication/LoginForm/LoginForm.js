@@ -48,7 +48,9 @@ const loginForm = props => {
             <Form 
                 onFormSubmit={props.auth}
                 submitText="Sign in"
-                fields={fields}>
+                fields={fields}
+                error={props.error}
+                >
             </Form>
             <div className="formBlock__footer">
                 <Link to="/auth?newaccount=1">Don't have an account? Create one!</Link>
@@ -64,5 +66,11 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
+const mapStateToProps = state => {
+    return {
+        error: state.auth.error
+    }
+}
 
-export default connect(null, mapDispatchToProps)(loginForm);
+
+export default connect(mapStateToProps, mapDispatchToProps)(loginForm);

@@ -28,6 +28,7 @@ const personalDataForm = props => {
             onFormSubmit={props.updateData}
             submitText="Edit"
             fields={fields}
+            error={props.error}
             >
             <p>Edit your user name</p>
         </Form>
@@ -36,7 +37,8 @@ const personalDataForm = props => {
 
 const mapStateToProps = state => {
     return {
-        uName: state.auth.displayName
+        uName: state.auth.displayName,
+        error: state.auth.error
     }
 }
 const mapDispatchToProps = dispatch => {

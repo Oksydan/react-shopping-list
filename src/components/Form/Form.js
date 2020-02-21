@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Button from '../../components/UI/Button/Button';
 import FormField from './FormField/FormField';
+import Alert from '../UI/Alert/Alert';
 import { isEmail } from '../../utils/validation';
 
 
@@ -104,8 +105,11 @@ class Form extends Component {
                 icon={field.icon || false}
             />;
         });
+
+        const alert = this.props.error ? <Alert type="danger" text={this.props.error} /> : null;
         return (
             <form onSubmit={this.handleSubmit} className="form">
+                {alert}
                 {this.props.children}
                 {fields}
                 <div className="form__submit">

@@ -60,7 +60,9 @@ const registerFrom = props => {
             <Form 
                 onFormSubmit={props.auth}
                 submitText="Register"
-                fields={fields}>
+                fields={fields}
+                error={props.error}
+                >
             </Form>
             <div className="formBlock__footer">
                 <Link to="/auth">Already have an account? Log in!</Link>
@@ -76,5 +78,11 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
+const mapStateToProps = state => {
+    return {
+        error: state.auth.error
+    }
+}
 
-export default connect(null, mapDispatchToProps)(registerFrom);
+
+export default connect(mapStateToProps, mapDispatchToProps)(registerFrom);

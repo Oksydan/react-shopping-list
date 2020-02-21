@@ -1,38 +1,46 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Form from '../../Form/Form';
 import * as actions from '../../../store/actions/index';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/pro-light-svg-icons';
 
-const personalDataForm = props => {
 
 
-    const fields = {
-        name: {
-            name: 'name',
-            type: 'text',
-            label: 'Your name',
-            value: props.uName,
-            validation: {
-                minLength: 3,
-                isRequired: true
-            },
-            hasError: false,
-            icon: <FontAwesomeIcon icon={faUser} />
-        }
+class PersonalDataForm extends Component {
+
+    componentWillUnmount() {
+        this.props.clearError();
     }
 
-    return (
-        <Form 
-            onFormSubmit={props.updateData}
-            submitText="Edit"
-            fields={fields}
-            error={props.error}
+    render() {
+        const fields = {
+            name: {
+                name: 'name',
+                type: 'text',
+                label: 'Your name',
+                value: this.props.uName,
+                validation: {
+                    minLength: 3,
+                    isRequired: true
+                },
+                hasError: false,
+                icon: <FontAwesomeIcon icon={faUser} />
+            }
+        }
+
+        return (
+            <Form
+                onFormSubmit={this.props.updateData}
+                submitText="Edit"
+                fields={fields}
+                error={this.props.error}
             >
-            <p>Edit your user name</p>
-        </Form>
-    )
+                <p>Edit your user name</p>
+            </Form>
+        )
+    }
+    
 }
 
 const mapStateToProps = state => {
@@ -43,9 +51,10 @@ const mapStateToProps = state => {
 }
 const mapDispatchToProps = dispatch => {
     return {
-        updateData: ({name}) => dispatch(actions.updateUserData(name))
+        updateData: ({ name }) => dispatch(actions.updateUserData(name)),
+        clearError: () => dispatch(actions.eraseError())
     }
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(personalDataForm);
+export default connect(mapStateToProps, mapDispatchToProps)(PersonalDataForm);

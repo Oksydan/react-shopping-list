@@ -1,38 +1,46 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Form from '../../Form/Form';
 import * as actions from '../../../store/actions/index';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope } from '@fortawesome/pro-light-svg-icons';
 
-const editEmailForm = props =>  {
+class EditEmailForm extends Component {
 
-    const fields = {
-        email: {
-            name: 'email',
-            type: 'email',
-            label: 'Your email',
-            value: props.uEmail,
-            validation: {
-                isEmail: true,
-                isRequired: true
-            },
-            hasError: false,
-            icon: <FontAwesomeIcon icon = { faEnvelope } />
-        }
+    componentWillUnmount() {
+        this.props.clearError();
     }
 
+    render() {
+        const fields = {
+            email: {
+                name: 'email',
+                type: 'email',
+                label: 'Your email',
+                value: this.props.uEmail,
+                validation: {
+                    isEmail: true,
+                    isRequired: true
+                },
+                hasError: false,
+                icon: <FontAwesomeIcon icon={faEnvelope} />
+            }
+        }
 
-    return (
-        <Form 
-            onFormSubmit={props.updateData}
-            submitText="Edit"
-            fields={fields}
-            error={props.error}
+
+        return (
+            <Form
+                onFormSubmit={this.props.updateData}
+                submitText="Edit"
+                fields={fields}
+                error={this.props.error}
             >
-            <p>Change your account email. Be aware to type right email address.</p>
-        </Form>
-    )
+                <p>Change your account email. Be aware to type right email address.</p>
+            </Form>
+        )
+    }
+
+ 
 }
 
 
@@ -45,9 +53,10 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        updateData: ({ email }) => dispatch(actions.updateUserEmail(email))
+        updateData: ({ email }) => dispatch(actions.updateUserEmail(email)),
+        clearError: () => dispatch(actions.eraseError())
     }
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(editEmailForm);
+export default connect(mapStateToProps, mapDispatchToProps)(EditEmailForm);

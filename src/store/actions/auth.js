@@ -22,6 +22,12 @@ export const authError = error => {
     }
 }
 
+export const eraseError = () => {
+    return {
+        type: actionTypes.AUTH_ERASE_ERROR
+    }
+}
+
 
 export const authSuccessfully = (uid, displayName, email) => {
     return {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import * as actions from '../../../store/actions/index';
@@ -8,73 +8,82 @@ import { faEnvelope, faLockAlt, faUser } from '@fortawesome/pro-light-svg-icons'
 
 
  
-const registerFrom = props => {
+class RegisterFrom extends Component {
 
-    const fields = {
-        name: {
-            name: 'name',
-            type: 'text',
-            label: 'Your name',
-            value: '',
-            validation: {
-                minLength: 3,
-                isRequired: true
+    componentWillUnmount() {
+        this.props.clearError();
+    }
+
+    render() {
+        const fields = {
+            name: {
+                name: 'name',
+                type: 'text',
+                label: 'Your name',
+                value: '',
+                validation: {
+                    minLength: 3,
+                    isRequired: true
+                },
+                hasError: false,
+                icon: <FontAwesomeIcon icon={faUser} />
             },
-            hasError: false,
-            icon: <FontAwesomeIcon icon={faUser} />
-        },
-        email: {
-            name: 'email',
-            type: 'email',
-            label: 'Your email',
-            value: '',
-            validation: {
-                isEmail: true,
-                isRequired: true
+            email: {
+                name: 'email',
+                type: 'email',
+                label: 'Your email',
+                value: '',
+                validation: {
+                    isEmail: true,
+                    isRequired: true
+                },
+                hasError: false,
+                icon: <FontAwesomeIcon icon={faEnvelope} />
             },
-            hasError: false,
-            icon: <FontAwesomeIcon icon={faEnvelope} />
-        },
-        password: {
-            name: 'password',
-            type: 'password',
-            label: 'Your passowrd',
-            value: '',
-            validation: {
-                minLength: 6,
-                isRequired: true
-            },
-            hasError: false,
-            icon: <FontAwesomeIcon icon={faLockAlt} />
-        }
-    };
+            password: {
+                name: 'password',
+                type: 'password',
+                label: 'Your passowrd',
+                value: '',
+                validation: {
+                    minLength: 6,
+                    isRequired: true
+                },
+                hasError: false,
+                icon: <FontAwesomeIcon icon={faLockAlt} />
+            }
+        };
 
 
-    return (
-        <div className="formBlock">
-            <h1 className="pageHeading">
-                <span className="pageHeading__inner">
-                    Create new account
+        return (
+            <div className="formBlock">
+                <h1 className="pageHeading">
+                    <span className="pageHeading__inner">
+                        Create new account
                 </span>
-            </h1>
-            <Form 
-                onFormSubmit={props.auth}
-                submitText="Register"
-                fields={fields}
-                error={props.error}
+                </h1>
+                <Form
+                    onFormSubmit={this.props.auth}
+                    submitText="Register"
+                    fields={fields}
+                    error={this.props.error}
                 >
-            </Form>
-            <div className="formBlock__footer">
-                <Link to="/auth">Already have an account? Log in!</Link>
+                </Form>
+                <div className="formBlock__footer">
+                    <Link to="/auth">Already have an account? Log in!</Link>
+                </div>
             </div>
-        </div>
-        
-    )
+
+        )
+    }
+
+    
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        auth: (data) => dispatch(actions.auth(data, 'register'))
+        auth: (data) => dispatch(actions.auth(data, 'register')),
+        clearError: () => dispatch(actions.eraseError())
     }
 }
 
@@ -85,4 +94,4 @@ const mapStateToProps = state => {
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(registerFrom);
+export default connect(mapStateToProps, mapDispatchToProps)(RegisterFrom);

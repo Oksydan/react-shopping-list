@@ -66,6 +66,11 @@ const reducer = (state = initialState, actions) => {
                 loading: false,
                 error: ''
             }
+        case (actionTypes.AUTH_ERASE_ERROR):
+            return {
+                ...state,
+                error: ''
+            }
         default: 
             return state;
     }

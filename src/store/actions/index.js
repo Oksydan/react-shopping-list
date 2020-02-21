@@ -20,6 +20,7 @@ export {
 export {
     auth,
     signOut,
+    eraseError,
     updateUserData,
     updateUserPassword,
     updateUserEmail,

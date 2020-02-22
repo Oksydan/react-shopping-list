@@ -1,11 +1,13 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
+import Alert from '../../UI/Alert/Alert';
 
 
 const formFiled = props => {
 
     let field,
         formGroup = [],
+        validationError = null,
         label = props.label ? <label className='formField__label' htmlFor={props.name}>{props.label}</label> : null,
         fieldClasses = ['formField'];
 
@@ -20,6 +22,15 @@ const formFiled = props => {
             inputClass = [...inputClass, 'formField__input--hasError'];
         }
 
+        if (props.validationError && props.displayValidationError) {
+            validationError = <Alert 
+                text={props.validationError}
+                showIcon={false} 
+                type="danger"
+                className="alert--smaller"
+                />;
+        }
+
         field = <input
             className={inputClass.join(' ')}
             type={props.type}
@@ -29,7 +40,7 @@ const formFiled = props => {
             onChange={props.fieldChange} 
             />;
         
-        formGroup = [field, label];
+        formGroup = [field, label, validationError];
 
     } else if (props.type === 'select') {
 
@@ -75,6 +86,8 @@ formFiled.propTypes = {
     fieldChange: PropTypes.func.isRequired,
     checked: PropTypes.bool,
     hasError: PropTypes.bool,
+    displayValidationError: PropTypes.bool.isRequired,
+    validationError: PropTypes.string,
     options: PropTypes.array,
     icon: PropTypes.node
 }

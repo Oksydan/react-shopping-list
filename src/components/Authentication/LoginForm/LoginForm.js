@@ -25,6 +25,8 @@ class LoginForm extends Component {
                     isEmail: true,
                     isRequired: true
                 },
+                validationInfo: 'Value is not valid email adress',
+                validationInfoDisplayed: false,
                 hasError: false,
                 icon: <FontAwesomeIcon icon={faEnvelope} />
             },
@@ -37,6 +39,8 @@ class LoginForm extends Component {
                     minLength: 6,
                     isRequired: true
                 },
+                validationInfo: 'Password must contains at least 6 characters',
+                validationInfoDisplayed: false,
                 hasError: false,
                 icon: <FontAwesomeIcon icon={faLockAlt} />
             }

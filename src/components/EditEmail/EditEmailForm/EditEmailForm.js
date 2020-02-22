@@ -22,6 +22,8 @@ class EditEmailForm extends Component {
                     isEmail: true,
                     isRequired: true
                 },
+                validationInfo: 'Value is not valid email adress',
+                validationInfoDisplayed: false,
                 hasError: false,
                 icon: <FontAwesomeIcon icon={faEnvelope} />
             }

@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInfoCircle, faExclamationCircle, faCheckCircle, faTimesCircle } from '@fortawesome/pro-regular-svg-icons';
 
 
-const alert = ({type, text, className, ...rest}) => {
+const alert = ({type, text, className, showIcon, ...rest}) => {
 
     let iconType;
 
@@ -26,11 +26,19 @@ const alert = ({type, text, className, ...rest}) => {
             break;
     }
 
-    const classes = ['alert', `alert--${type}`, ...(className && className.length > 0 ? className.split(' ') : [])];
+    const iconDisplayed = showIcon === undefined ? true : showIcon,
+        icon = iconDisplayed ? <FontAwesomeIcon className="alert__icon" icon={iconType} /> : null;
+
+
+    let classes = ['alert', `alert--${type}`, ...(className && className.length > 0 ? className.split(' ') : [])];
+
+    if (iconDisplayed) {
+        classes = [...classes, 'alert--iconDisplayed']
+    }
     
     return (
         <div className={classes.join(' ')} {...rest}>
-            <FontAwesomeIcon className="alert__icon" icon={iconType} />{text}
+            {icon}{text}
         </div>
     )
 }

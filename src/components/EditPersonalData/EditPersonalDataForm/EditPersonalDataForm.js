@@ -24,6 +24,8 @@ class PersonalDataForm extends Component {
                     minLength: 3,
                     isRequired: true
                 },
+                validationInfo: 'Name must contains at least 3 characters',
+                validationInfoDisplayed: false,
                 hasError: false,
                 icon: <FontAwesomeIcon icon={faUser} />
             }

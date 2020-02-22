@@ -14,18 +14,33 @@ class Form extends Component {
         }
     }
 
-    handleSubmit = (e) => {
+    handleSubmit = e => {
         e.preventDefault();
 
-        const fields = this.state.fields;
-        let areInputsValid = true;
+        for(const field in this.state.fields) {
+            this.handleFieldValidation(field);
+        }
 
-        for (const i in fields) {
-            areInputsValid = areInputsValid && !fields[i].hasError;
+        const fields = this.state.fields;
+        let areInputsValid = true,
+            invalidFields = [];
+
+        for (const name in fields) {
+            areInputsValid = areInputsValid && !fields[name].hasError;
+            if (fields[name].hasError) {
+                invalidFields = [...invalidFields, name];
+            }
         }
 
         if (areInputsValid) {
             this.props.onFormSubmit(this.state.fields);
+        } else {
+            this.setState(state => {
+                for (const i in invalidFields) {
+                    state.fields[invalidFields[i]].validationInfoDisplayed = true;
+                }
+                return state;
+            })
         }
 
     }
@@ -52,40 +67,53 @@ class Form extends Component {
                 return isEmail(elem.value);
             case 'isRequired':
                 return elem.value.length > 0;
+            case 'isEqualTo':
+                return this.areFieldsEqual(elem);
             default:
                 return true;
         }
 
     }
 
-    handleFieldChange = (e) => {
-        const target = e.target,
-            value = target.value,
-            name = target.attributes.name.value;
+    areFieldsEqual = elem => {
+        const relatedFieldName = elem.validation.isEqualTo,
+            relatedField = this.state.fields[relatedFieldName],
+            relatedFieldValue = relatedField.value,
+            result = elem.value === relatedFieldValue;
+   
 
-        const state = {
-            ...this.state,
-            fields: {
-                ...this.state.fields
-            }
-        };
-
-
-        const field = { ...state.fields[name] };
-
-        field.value = value;
-        field.hasError = this.validateField(field);
-
-        state.fields[name] = {
-            ...state.fields[name],
-            ...field
+        if (result && relatedField.hasError) {
+            this.setState(state => {
+                state.fields[relatedFieldName].hasError = false;
+                return state;
+            });
+        } else {
+            this.setState(state => {
+                state.fields[relatedFieldName].hasError = true;
+                return state;
+            });
         }
 
-        this.setState({
-            fields: {
-                ...state.fields
-            }
-        })
+        return result;
+    }
+
+    handleFieldValidation = name => {
+        this.setState(state => {
+            state.fields[name].hasError = this.validateField({...state.fields[name]});
+            return state;
+        });
+    }
+
+    handleFieldChange = (e) => {
+        const target = e.target,
+            name = target.attributes.name.value,
+            value = target.value;
+            
+        this.setState(state => {
+            state.fields[name].value = value;
+            state.fields[name].validationInfoDisplayed = false;
+            return state;
+        }, () => this.handleFieldValidation(name));
 
     }
 
@@ -103,6 +131,8 @@ class Form extends Component {
                 hasError={field.hasError}
                 checked={field.chekcked}
                 icon={field.icon || false}
+                validationError={field.validationInfo}
+                displayValidationError={field.validationInfoDisplayed}
             />;
         });
 

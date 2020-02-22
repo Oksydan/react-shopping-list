@@ -21,8 +21,11 @@ class EditPasswordForm extends Component {
                 value: '',
                 validation: {
                     minLength: 6,
-                    isRequired: false
+                    isRequired: true,
+                    isEqualTo: 'confirmPassword'
                 },
+                validationInfo: 'Password must contains at least 6 characters and passwords must be euqal',
+                validationInfoDisplayed: false,
                 hasError: false,
                 icon: <FontAwesomeIcon icon={faLockAlt} />
             },
@@ -33,9 +36,11 @@ class EditPasswordForm extends Component {
                 value: '',
                 validation: {
                     minLength: 6,
-                    isRequired: false,
+                    isRequired: true,
                     isEqualTo: 'newPassword'
                 },
+                validationInfo: 'Password must contains at least 6 characters and passwords must be euqal',
+                validationInfoDisplayed: false,
                 hasError: false,
                 icon: <FontAwesomeIcon icon={faLockAlt} />
             },

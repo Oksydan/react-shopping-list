@@ -25,6 +25,8 @@ class RegisterFrom extends Component {
                     minLength: 3,
                     isRequired: true
                 },
+                validationInfo: 'Name must contains at least 3 characters',
+                validationInfoDisplayed: false,
                 hasError: false,
                 icon: <FontAwesomeIcon icon={faUser} />
             },
@@ -37,6 +39,8 @@ class RegisterFrom extends Component {
                     isEmail: true,
                     isRequired: true
                 },
+                validationInfo: 'Value is not valid email adress',
+                validationInfoDisplayed: false,
                 hasError: false,
                 icon: <FontAwesomeIcon icon={faEnvelope} />
             },
@@ -49,6 +53,8 @@ class RegisterFrom extends Component {
                     minLength: 6,
                     isRequired: true
                 },
+                validationInfo: 'Password must contains at least 6 characters',
+                validationInfoDisplayed: false,
                 hasError: false,
                 icon: <FontAwesomeIcon icon={faLockAlt} />
             }

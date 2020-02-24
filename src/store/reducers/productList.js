@@ -1,83 +1,79 @@
 import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
-    list: [],
+    list: {},
     loading: false,
     listId: null
 }
 
-const addListElement = (productName, id, dateAdd, dateEdit) => ({
-    productName,
-    id,
-    dateAdd,
-    dateEdit,
-    checked: false
-});
-
-const updateListElement = (productName, id, dateEdit, list) => {
-    const elemIndex = list.findIndex(elem => elem.id === id ? true : false);
-
-    const listUpdated = list;
-
-    listUpdated[elemIndex] = {
-        ...listUpdated[elemIndex],
-        productName,
-        dateEdit
-    };
-    
+const addListElement = (productName, id, dateAdd, dateEdit, list) => {
 
     return [
-        ...listUpdated
+        ...list,
+        {
+            productName,
+            id,
+            dateAdd,
+            dateEdit,
+            checked: false
+        }
     ]
+
+};
+
+const updateListElement = (productName, id, dateEdit, list) => {
+
+    const elemIndex = list.findIndex(elem => elem.id === id ? true : false);
+   
+    list[elemIndex] = {
+        ...list[elemIndex],
+        productName,
+        dateEdit
+    }
+    
+
+    return list;
 }
 
 const deleteListElement = (id, list) => {
+
     const elemIndex = list.findIndex(elem => elem.id === id ? true : false);
 
-    list.splice(elemIndex, 1);
-    
-    
-    return [
-        ...list
-    ]
+    if (elemIndex >= 0) {
+        list.splice(elemIndex, 1);
+    }
+
+    return list;
 }
 
 const checkListElement = (id, list) => {
     const elemIndex = list.findIndex(elem => elem.id === id ? true : false);
 
-    const listUpdated = list;
-
-    listUpdated[elemIndex] = {
-        ...listUpdated[elemIndex],
+    list[elemIndex] = {
+        ...list[elemIndex],
         checked: true
-    };
+    }
 
 
-    return [
-        ...listUpdated
-    ]
+    return list;
 }
 
 const uncheckListElement = (id, list) => {
     const elemIndex = list.findIndex(elem => elem.id === id ? true : false);
 
-    const listUpdated = list;
-
-    listUpdated[elemIndex] = {
-        ...listUpdated[elemIndex],
+    list[elemIndex] = {
+        ...list[elemIndex],
         checked: false
-    };
+    }
 
 
-    return [
-        ...listUpdated
-    ]
+    return list;
 }
 
 const removeCheckedProducts = (list) => {
-    const filteredList = list.filter(prod => !prod.checked);
+    list = list.filter(prod => !prod.checked);
 
-    return filteredList;
+    return list;
 }
 
 
@@ -86,40 +82,59 @@ const reducer = (state = initialState, actions) => {
         case (actionTypes.PRODUCT_ADDED):
             return {
                 ...state,
-                list: [
+                list: {
                     ...state.list,
-                    addListElement(actions.productName, actions.id, actions.dateAdd, actions.dateEdit)
-                ]
+                    [state.listId]: addListElement(actions.productName, actions.id, actions.dateAdd, actions.dateEdit, [...state.list[state.listId]])
+                }
             };
         case (actionTypes.UPDATE_PRODUCT_DATA):
             return {
                 ...state,
-                list: updateListElement(actions.productName, actions.id, actions.dateEdit, [...state.list])
+                list: {
+                    ...state.list,
+                    [state.listId]: updateListElement(actions.productName, actions.id, actions.dateEdit, [...state.list[state.listId]])
+                }
+                
             };
         case (actionTypes.REMOVE_PRODUCT):
             return {
                 ...state,
-                list: deleteListElement(actions.id, [...state.list])
+                list: {
+                    ...state.list,
+                    [state.listId]: deleteListElement(actions.id, [...state.list[state.listId]])
+                }
             };
         case (actionTypes.CHECK_PRODUCT_ELEM):
             return {
                 ...state,
-                list: checkListElement(actions.id, [...state.list])
+                list: {
+                    ...state.list,
+                    [state.listId]: checkListElement(actions.id, [...state.list[state.listId]])
+                }
             };
         case (actionTypes.UNCHECK_PRODUCT_ELEM):
             return {
                 ...state,
-                list: uncheckListElement(actions.id, [...state.list])
+                list: {
+                    ...state.list,
+                    [state.listId]: uncheckListElement(actions.id, [...state.list[state.listId]])
+                }
             };
         case (actionTypes.REMOVE_CHECKED):
             return {
                 ...state,
-                list: removeCheckedProducts([...state.list])
+                list: {
+                    ...state.list,
+                    [state.listId]: removeCheckedProducts([...state.list[state.listId]])
+                }
             };
         case (actionTypes.UPDATE_PRODUCTS_LIST):
             return {
                 ...state,
-                list: actions.list,
+                list: {
+                    ...state.list,
+                    [actions.id]: actions.list
+                },
                 listId: actions.id
             };
         case (actionTypes.FETCH_PRODUCTS_START):
@@ -134,7 +149,7 @@ const reducer = (state = initialState, actions) => {
             };
         case (actionTypes.ERASE_LIST):
             return {
-                list: [],
+                list: {},
                 loading: false,
                 listId: null
             };

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import ProductListElement from './ProductListElement/ProductListElement';
 import * as action from '../../store/actions';
-import PropTypes from 'prop-types';
 import { withRouter } from "react-router";
 import Button from '../../components/UI/Button/Button';
 import { Flipper, Flipped } from "react-flip-toolkit";
@@ -21,29 +20,36 @@ class ProductList extends Component {
     }
 
     componentWillUnmount() {
-        this.props.clearList();
+        
     }
 
 
     render() {
         let list = null,
             listData;
-        const information = 'Add product to your shopping list';
+        const information = 'Add product to your shopping list',
+            listId = this.props.match.params.id;
 
 
-        if (this.props.productList.length > 0) {
-            listData = this.props.productList.sort((a, b) => a.dateAdd - b.dateAdd).sort((a, b) => a.checked - b.checked);
-            list = listData.map((prod) => {
-                return (
-                    <Flipped key={prod.id} flipId={prod.id}>
-                        {flippedProps => <li {...flippedProps}>
-                            <ProductListElement name={prod.productName} checked={prod.checked} id={prod.id} />
-                        </li>}
-                    </Flipped>
-                );
-            });
+        if (listId) {
+            listData = this.props.productList[listId];
+            if (typeof listData !== 'undefined') {
+                listData = this.props.productList[listId];
+                if (listData.length > 0) {
+                    listData = listData.sort((a, b) => a.dateAdd - b.dateAdd).sort((a, b) => a.checked - b.checked);
+                    list = listData.map((prod) => {
+                        return (
+                            <Flipped key={prod.id} flipId={prod.id}>
+                                {flippedProps => <li {...flippedProps}>
+                                    <ProductListElement name={prod.productName} checked={prod.checked} id={prod.id} />
+                                </li>}
+                            </Flipped>
+                        );
+                    });
+                }
+            }
+            
         } 
-
 
         return (
             <div className="productsList">
@@ -81,15 +87,10 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         removeCheckedProducts: () => dispatch(action.removeCheckedProducts()),
-        fetchProductsList: (id) => dispatch(action.fetchProducts(id)),
-        clearList: () => dispatch(action.eraseList())
+        fetchProductsList: (id) => dispatch(action.fetchProducts(id))
     }
 }
 
-ProductList.propTypes = {
-    removeCheckedProducts: PropTypes.func,
-    fetchProductsList: PropTypes.func
-};
 
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ProductList));

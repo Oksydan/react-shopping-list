@@ -248,10 +248,11 @@ export const uncheckProductElem = (id, listId) => {
 
 export const removeCheckedProducts = () => {
     return (dispatch, getState) => {
-        const checkedElementsId = getState().productList.list.filter(prod => prod.checked).map(prod => prod.id),
-            batch = firestore.batch(),
+        const
             state = getState(),
             listId = state.productList.listId,
+            checkedElementsId = state.productList.list[listId].filter(prod => prod.checked).map(prod => prod.id),
+            batch = firestore.batch(),
             checkedLength = checkedElementsId.length,
             shoppingLists = state.shoppingList.shoppingLists,
             relatedShoppingList = getShoppingListById(listId, shoppingLists),

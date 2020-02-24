@@ -8,7 +8,7 @@ import { faUser, faStoreAlt, faUserFriends, faArrowAltLeft } from '@fortawesome/
 const mobileNav = props => {
 
     const arrayOfLocation = props.location.pathname.split('/'),
-        isDeeperPage =  arrayOfLocation.length > 2;
+        isDeeperPage = arrayOfLocation.length > 2 && arrayOfLocation[1] !== 'list';
 
     const navLinks = [
         {

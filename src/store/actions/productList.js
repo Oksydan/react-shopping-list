@@ -39,27 +39,6 @@ export const fetchProducts = (id) => {
 }
 
 
-// ADDED FOR FUTURE USE
-export const setupListenToChanges = () => {
-    firestore.collection("list")
-        .onSnapshot(snapshot => {
-            snapshot.docChanges().forEach(function (change) {
-                // if (change.type === "added") {
-                //     console.log("New product element: ", change.doc.data());
-                // }
-                // if (change.type === "modified") {
-                //     console.log("Modified product element: ", change.doc.data());
-                // }
-                // if (change.type === "removed") {
-                //     console.log("Removed product element: ", change.doc.data());
-                // }
-            });
-            // return dispatch => {
-
-            // }
-        });
-
-}
 
 export const updateProductsList = (list, id) => {
     return {
@@ -69,13 +48,6 @@ export const updateProductsList = (list, id) => {
     }
 }
 
-// ADDED FOR FUTURE USE
-export const updateProductsListElement = (product) => {
-    return {
-        type: actionTypes.UPDATE_PRODUCTS_LIST_ELEMENT,
-        product
-    }
-}
 
 const getShoppingListById = (id, list) => {
     const index = list.findIndex(elem => elem.id === id ? true : false);

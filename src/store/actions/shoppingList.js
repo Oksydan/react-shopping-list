@@ -16,7 +16,7 @@ export const addList = (listName, id, authorID) => {
             checkedElems: 0
         })
             .then(() => {
-                dispatch(listAdded(listName, id, dateAdd, dateEdit, authorID));
+                dispatch(listAdded(listName, id, dateAdd, dateEdit, authorID, 0, 0));
             })
             .catch(error => {
                 console.error(error);
@@ -24,14 +24,16 @@ export const addList = (listName, id, authorID) => {
     }
 };
 
-export const listAdded = (listName, id, dateAdd, dateEdit, authorID) => {
+export const listAdded = (listName, id, dateAdd, dateEdit, authorID, listElems, checkedElems) => {
     return {
         type: actionTypes.ADD_LIST,
         listName,
         id,
         dateAdd,
         dateEdit,
-        authorID
+        authorID,
+        listElems,
+        checkedElems
     }
 }
 
@@ -64,7 +66,7 @@ export const fetchList = () => {
                     }
                 }
                 
-                dispatch(setList(listArry));
+                dispatch(setupListenToChanges(userid));
                 dispatch(fetchListEnd());
             })
             .catch(error => {
@@ -75,9 +77,52 @@ export const fetchList = () => {
     }
 }
 
-export const setList = (list) => {
+
+
+// ADDED FOR FUTURE USE
+export const setupListenToChanges = (uID) => {
+    console.log('LISTEN FOR CHANGES ')
+    return dispatch => {
+        firestore.collection("shoppingList").where("authorID", "==", uID)
+            .onSnapshot({ includeMetadataChanges: false }, snapshot => {
+
+                snapshot.docChanges().forEach(change => {
+                    const data = change.doc.data(),
+                        { id, authorID, dateAdd, dateEdit, listName, checkedElems, listElems } = data,
+                        source = change.doc._hasPendingWrites ? 'local' : 'server';
+
+                    if (source !== 'local') {
+                        console.log(source);
+                        if (change.type === "added") {
+                            dispatch(listAdded(
+                                listName,
+                                id,
+                                dateAdd,
+                                dateEdit,
+                                authorID,
+                                listElems,
+                                checkedElems
+                            ))
+                        }
+                        if (change.type === "modified") {
+                            dispatch(updateShoppingListElement(data));
+                        }
+                        if (change.type === "removed") {
+                            dispatch(removeListData(id));
+                        }
+                    }
+                   
+                });
+
+            });
+    }
+
+}
+
+
+export const updateShoppingListElement = (list) => {
     return {
-        type: actionTypes.SET_LIST,
+        type: actionTypes.UPDATE_SHOPPING_LIST_ELEMENT,
         list
     }
 }

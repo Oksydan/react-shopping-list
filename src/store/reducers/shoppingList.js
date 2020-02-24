@@ -23,8 +23,9 @@ const getListIndexById = (id, list) => {
 const deleteListElement = (id, list) => {
     const elemIndex = list.findIndex(elem => elem.id === id ? true : false);
 
-    list.splice(elemIndex, 1);
-
+    if (elemIndex >= 0) {
+        list.splice(elemIndex, 1);
+    }
 
     return [
         ...list
@@ -152,6 +153,15 @@ const removeChecked = (id, qty, list) => {
     ]
 }
 
+const updateShoppingListElem = (updatedList, prevList) => {
+    const id = updatedList.id,
+        elemIndex = getListIndexById(id, prevList);
+
+    prevList[elemIndex] = updatedList;
+
+    return prevList;
+}
+
 
 const reducer = (state = initialState, actions) => {
     switch (actions.type) {
@@ -160,14 +170,7 @@ const reducer = (state = initialState, actions) => {
                 ...state,
                 shoppingLists: [
                     ...state.shoppingLists, 
-                    addList(actions.listName, actions.id, actions.dateAdd, actions.dateEdit, actions.authorID)
-                ]
-            };
-        case (actionTypes.SET_LIST):
-            return {
-                ...state,
-                shoppingLists: [
-                    ...actions.list
+                    addList(actions.listName, actions.id, actions.dateAdd, actions.dateEdit, actions.authorID, actions.listElems, actions.checkedElems)
                 ]
             };
         case (actionTypes.REMOVE_LIST):
@@ -195,6 +198,11 @@ const reducer = (state = initialState, actions) => {
                 ...state,
                 loading: false,
                 dataFetched: true
+            };
+        case (actionTypes.UPDATE_SHOPPING_LIST_ELEMENT):
+            return {
+                ...state,
+                shoppingLists: updateShoppingListElem(actions.list, [...state.shoppingLists])
             };
         case (actionTypes.PRODUCT_ADDED):
             return {

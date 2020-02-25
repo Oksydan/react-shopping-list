@@ -79,9 +79,7 @@ export const fetchList = () => {
 
 
 
-// ADDED FOR FUTURE USE
 export const setupListenToChanges = (uID) => {
-    console.log('LISTEN FOR CHANGES ')
     return dispatch => {
         firestore.collection("shoppingList").where("authorID", "==", uID)
             .onSnapshot({ includeMetadataChanges: false }, snapshot => {
@@ -92,7 +90,6 @@ export const setupListenToChanges = (uID) => {
                         source = change.doc._hasPendingWrites ? 'local' : 'server';
 
                     if (source !== 'local') {
-                        console.log(source);
                         if (change.type === "added") {
                             dispatch(listAdded(
                                 listName,

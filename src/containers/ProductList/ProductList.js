@@ -19,11 +19,6 @@ class ProductList extends Component {
         }
     }
 
-    componentWillUnmount() {
-        
-    }
-
-
     render() {
         let list = null,
             listData;
@@ -41,7 +36,7 @@ class ProductList extends Component {
                         return (
                             <Flipped key={prod.id} flipId={prod.id}>
                                 {flippedProps => <li {...flippedProps}>
-                                    <ProductListElement name={prod.productName} checked={prod.checked} id={prod.id} />
+                                    <ProductListElement name={prod.productName} checked={prod.checked} id={prod.id} listId={listId} />
                                 </li>}
                             </Flipped>
                         );
@@ -57,11 +52,11 @@ class ProductList extends Component {
                     <Button
                         classes={['productsList__btn','button--smaller']}
                         displayType="secondary"
-                        clicked={this.props.removeCheckedProducts}
+                        clicked={() => this.props.removeCheckedProducts(listId)}
                         >Remove checked</Button>
                 </div>
                 {list ? 
-                    <Flipper flipKey={listData.map(({ dateAdd }) => dateAdd).join('')}>
+                    <Flipper flipKey={listData.map(({ dateEdit, dateAdd }) => dateEdit + dateAdd).join('')}>
                         <ul className="productsList__list">
                             {list}
                         </ul>
@@ -86,7 +81,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        removeCheckedProducts: () => dispatch(action.removeCheckedProducts()),
+        removeCheckedProducts: (id) => dispatch(action.removeCheckedProducts(id)),
         fetchProductsList: (id) => dispatch(action.fetchProducts(id))
     }
 }

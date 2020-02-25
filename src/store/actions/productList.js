@@ -12,10 +12,10 @@ export const fetchProductsEnd = () => {
     }
 }
 
-export const fetchProducts = (id) => {
+export const fetchProducts = (listId) => {
    return dispatch => {
        dispatch(fetchProductsStart());
-       firestore.collection("shoppingList").doc(id).collection("list").get()
+       firestore.collection("shoppingList").doc(listId).collection("list").get()
            .then(doc => {
                const   data = doc.docs;
                let dataList = [];
@@ -26,9 +26,9 @@ export const fetchProducts = (id) => {
                        dataList = [...dataList, product];
                    }
                }
-               dispatch(updateProductsList(dataList, id));
+               dispatch(updateProductsList(dataList, listId));
                dispatch(fetchProductsEnd());
-            //    setupListenToChanges();
+               dispatch(setupListenToChanges(listId));
            })
            .catch(error => {
                console.error(error);
@@ -38,13 +38,65 @@ export const fetchProducts = (id) => {
    }
 }
 
+export const setupListenToChanges = listId => {
+    return dispatch=> {
+
+        console.log('asdsadassda');
+
+        firestore.collection("shoppingList").doc(listId).collection("list")
+            .onSnapshot({ includeMetadataChanges: false }, snapshot => {
+
+                snapshot.docChanges().forEach(change => {
+                    const data = change.doc.data(),
+                        { id, productName, dateAdd, dateEdit, checked } = data,
+                        source = change.doc.metadata.hasPendingWrites ? 'local' : 'server';
 
 
-export const updateProductsList = (list, id) => {
+                    console.log(source);
+                    if (source !== 'local') {
+                        if (change.type === "added") {
+                            dispatch(productAdded(
+                                productName,
+                                id,
+                                listId,
+                                dateAdd,
+                                dateEdit,
+                                checked
+                            ));
+                        }
+                        if (change.type === "modified") {
+                            console.log('modified');
+   
+                            dispatch(updateProductsListElem(data ,listId));
+                        }
+                        if (change.type === "removed") {
+                            console.log('removed');
+                            dispatch(deleteProductData(id, listId, checked));
+                        }
+                    }
+
+                });
+
+            });
+    }
+
+}
+
+
+
+export const updateProductsList = (list, listId) => {
     return {
         type: actionTypes.UPDATE_PRODUCTS_LIST,
         list,
-        id
+        listId
+    }
+}
+
+export const updateProductsListElem = (list, listId) => {
+    return {
+        type: actionTypes.UPDATE_PRODUCTS_LIST_ELEM,
+        list,
+        listId
     }
 }
 
@@ -56,13 +108,12 @@ const getShoppingListById = (id, list) => {
 }
 
 
-export const addProduct = (productName, id) => {
+export const addProduct = (productName, id, listId) => {
     return (dispatch, getState) => {
         const   dateAdd = Date.now(),
             dateEdit = Date.now(),
             checked = false,
             state = getState(),
-            listId = state.productList.listId,
             shoppingLists = state.shoppingList.shoppingLists,
             relatedShoppingList = getShoppingListById(listId ,shoppingLists),
             listElemsInc = relatedShoppingList.listElems + 1,
@@ -104,17 +155,16 @@ const productAdded = (productName, id, listId, dateAdd, dateEdit, checked) => {
     }
 }
 
-export const updateProduct = (productName, id) => {
-    return (dispatch, getState) => {
-        const   dateEdit = Date.now(),
-                listId = getState().productList.listId;
+export const updateProduct = (productName, id, listId) => {
+    return dispatch => {
+        const  dateEdit = Date.now();
 
         firestore.collection("shoppingList").doc(listId).collection("list").doc(id).set({
             productName,
             dateEdit
         }, { merge: true })
         .then(() => {
-            dispatch(updateProductData(productName, id, dateEdit));
+            dispatch(updateProductData(productName, id, dateEdit, listId));
         })
         .catch(error => {
             console.error(error);
@@ -122,12 +172,13 @@ export const updateProduct = (productName, id) => {
     }
 }
 
-export const updateProductData = (productName, id, dateEdit) => {
+export const updateProductData = (productName, id, dateEdit, listId) => {
     return {
         type: actionTypes.UPDATE_PRODUCT_DATA,
         productName,
         id,
-        dateEdit
+        dateEdit,
+        listId
     }
 }
 
@@ -140,10 +191,9 @@ export const deleteProductData = (id, listId, checked) => {
     }
 }
 
-export const deleteProduct = (id, checked) => {
+export const deleteProduct = (id, checked, listId) => {
     return (dispatch, getState) => {
         const state = getState(),
-            listId = state.productList.listId,
             shoppingLists = state.shoppingList.shoppingLists,
             relatedShoppingList = getShoppingListById(listId, shoppingLists),
             listElemsDec = relatedShoppingList.listElems - 1,
@@ -172,10 +222,9 @@ export const deleteProduct = (id, checked) => {
     }
 }
 
-export const checkProduct = (id) => {
+export const checkProduct = (id, listId) => {
     return (dispatch, getState) => {
         const state = getState(),
-            listId = state.productList.listId,
             shoppingLists = state.shoppingList.shoppingLists,
             relatedShoppingList = getShoppingListById(listId, shoppingLists),
             checkListElemsInc = relatedShoppingList.checkedElems + 1,
@@ -209,10 +258,9 @@ export const checkProductElem = (id, listId) => {
     }
 }
 
-export const uncheckProduct = (id) => {
+export const uncheckProduct = (id, listId) => {
     return (dispatch, getState) => {
         const state = getState(),
-            listId = state.productList.listId,
             shoppingLists = state.shoppingList.shoppingLists,
             relatedShoppingList = getShoppingListById(listId, shoppingLists),
             checkListElemsDec = relatedShoppingList.checkedElems - 1,
@@ -246,11 +294,10 @@ export const uncheckProductElem = (id, listId) => {
     }
 }
 
-export const removeCheckedProducts = () => {
+export const removeCheckedProducts = listId => {
     return (dispatch, getState) => {
         const
             state = getState(),
-            listId = state.productList.listId,
             checkedElementsId = state.productList.list[listId].filter(prod => prod.checked).map(prod => prod.id),
             batch = firestore.batch(),
             checkedLength = checkedElementsId.length,

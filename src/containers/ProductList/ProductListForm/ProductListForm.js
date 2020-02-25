@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as action from '../../../store/actions/index';
 import { getUniqueId } from '../../../utils/utils';
-import PropTypes from 'prop-types';
+import { withRouter } from "react-router";
 import AddElementForm from '../../../components/AddElementForm/AddElementForm';
 
 
@@ -28,7 +28,7 @@ class ProductListForm extends Component {
         const state = {...this.state};
         const valueFormated = state.inputVal.trim();
         if (valueFormated.length > 0) {
-            this.props.onProductAdd(this.state.inputVal, getUniqueId());
+            this.props.onProductAdd(this.state.inputVal, getUniqueId(), this.props.match.params.id);
         } 
         this.setState({
             inputVal: '',
@@ -53,12 +53,9 @@ class ProductListForm extends Component {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onProductAdd: (name, id) => dispatch(action.addProduct(name, id))
+        onProductAdd: (name, id, listId) => dispatch(action.addProduct(name, id, listId))
     }
 }
 
-ProductListForm.propTypes = {
-    onProductAdd: PropTypes.func,
-}
 
-export default connect(null, mapDispatchToProps)(ProductListForm);
+export default withRouter(connect(null, mapDispatchToProps)(ProductListForm));

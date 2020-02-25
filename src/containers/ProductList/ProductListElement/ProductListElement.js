@@ -47,7 +47,7 @@ class ProductListElement extends Component {
                     isEditing: false,
                     prevValue: value
                 }, () => {
-                    this.props.listElementUpdate(value, this.props.id);
+                    this.props.listElementUpdate(value, this.props.id, this.props.listId);
                     this.input.current.blur();
                 });
 
@@ -99,14 +99,14 @@ class ProductListElement extends Component {
 
     handeDeleteElement = (e) => {
         e.preventDefault();
-        this.props.listElementDelete(this.props.id, this.props.checked);
+        this.props.listElementDelete(this.props.id, this.props.checked, this.props.listId);
     }
 
     handleProductCheck = (e) => {
         if(e.target.checked) {
-            this.props.listElementCheck(this.props.id);
+            this.props.listElementCheck(this.props.id, this.props.listId);
         } else {
-            this.props.listElementUncheck(this.props.id);
+            this.props.listElementUncheck(this.props.id, this.props.listId);
         }
     }
 
@@ -185,21 +185,18 @@ class ProductListElement extends Component {
 
 const mapDispatchToProps = dispatch => {
     return {
-        listElementUpdate: (name, id) => dispatch(action.updateProduct(name, id)),
-        listElementDelete: (id, checked) => dispatch(action.deleteProduct(id, checked)),
-        listElementCheck: (id) => dispatch(action.checkProduct(id)),
-        listElementUncheck: (id) => dispatch(action.uncheckProduct(id)),
+        listElementUpdate: (name, id, listId) => dispatch(action.updateProduct(name, id, listId)),
+        listElementDelete: (id, checked, listId) => dispatch(action.deleteProduct(id, checked, listId)),
+        listElementCheck: (id, listId) => dispatch(action.checkProduct(id, listId)),
+        listElementUncheck: (id, listId) => dispatch(action.uncheckProduct(id, listId)),
     }
 }
 
 ProductListElement.propTypes = {
-    listElementUpdate: PropTypes.func,
-    listElementDelete: PropTypes.func,
-    listElementCheck: PropTypes.func,
-    listElementUncheck: PropTypes.func,
     checked: PropTypes.bool.isRequired,
     name: PropTypes.string.isRequired,
-    id: PropTypes.string.isRequired
+    id: PropTypes.string.isRequired,
+    listId: PropTypes.string.isRequired
 }
 
 export default connect(null, mapDispatchToProps)(ProductListElement);

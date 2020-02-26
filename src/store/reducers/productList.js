@@ -5,7 +5,7 @@ const initialState = {
     loading: false
 }
 
-const addListElement = (productName, id, dateAdd, dateEdit, list) => {
+const addListElement = (productName, id, dateAdd, dateEdit, checked = false, list) => {
 
     return [
         ...list,
@@ -14,7 +14,7 @@ const addListElement = (productName, id, dateAdd, dateEdit, list) => {
             id,
             dateAdd,
             dateEdit,
-            checked: false
+            checked
         }
     ]
 
@@ -58,6 +58,7 @@ const reducer = (state = initialState, actions) => {
                         actions.id,
                         actions.dateAdd,
                         actions.dateEdit,
+                        actions.checked,
                         [...(state.list[actions.listId] ? state.list[actions.listId] : [])])
                 }
             };

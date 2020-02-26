@@ -22,6 +22,8 @@ export const fetchProducts = (listId) => {
                    const data = change.doc.data(),
                        { id, productName, dateAdd, dateEdit, checked } = data;
 
+                   console.log(data)
+
 
                     if (change.type === "added") {
                         dispatch(productAdded(productName, id, listId, dateAdd, dateEdit, checked));
@@ -30,7 +32,7 @@ export const fetchProducts = (listId) => {
                         dispatch(updateProductsListElem(data, listId));
                     }
                     if (change.type === "removed") {
-                        dispatch(deleteProductData(id, listId, checked));
+                        dispatch(deleteProductData(id, listId));
                     }
 
                });
@@ -117,12 +119,11 @@ export const updateProduct = (productName, id, listId) => {
 }
 
 
-export const deleteProductData = (id, listId, checked) => {
+export const deleteProductData = (id, listId) => {
     return {
         type: actionTypes.REMOVE_PRODUCT,
         id,
-        listId,
-        checked
+        listId
     }
 }
 

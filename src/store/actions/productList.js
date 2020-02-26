@@ -14,7 +14,20 @@ export const fetchProductsEnd = () => {
 
 export const fetchProducts = listId => {
    return dispatch => {
-    //    dispatch(fetchProductsStart());
+       dispatch(fetchProductsStart());
+
+       let hasToStopLoading = true;
+
+       firestore.collection("shoppingList").doc(listId).collection("list").get()
+           .then(querySnapshot => {
+               const data = querySnapshot.docs;
+               if (data.length === 0) {
+                   hasToStopLoading = false;
+                   dispatch(fetchProductsEnd());
+               }
+           });
+
+
        firestore.collection("shoppingList").doc(listId).collection("list")
            .onSnapshot({ includeMetadataChanges: true }, snapshot => {
 
@@ -34,6 +47,11 @@ export const fetchProducts = listId => {
                     }
 
                });
+
+               if (hasToStopLoading) {
+                   hasToStopLoading = false;
+                   dispatch(fetchProductsEnd());
+               }
 
            });
    }

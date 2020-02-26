@@ -43,7 +43,6 @@ export const authSuccessfully = (uid, displayName, email) => {
 export const loginIfUserDataPersist = () => {
     return dispatch => {
         firebaseAuth.onAuthStateChanged(user => {
-            console.log(user);
             if (user) {
                 dispatch(authSuccessfully(user.uid, user.displayName, user.email));
             } else {

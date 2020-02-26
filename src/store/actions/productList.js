@@ -12,7 +12,7 @@ export const fetchProductsEnd = () => {
     }
 }
 
-export const fetchProducts = (listId) => {
+export const fetchProducts = listId => {
    return dispatch => {
     //    dispatch(fetchProductsStart());
        firestore.collection("shoppingList").doc(listId).collection("list")
@@ -21,8 +21,6 @@ export const fetchProducts = (listId) => {
                snapshot.docChanges().forEach(change => {
                    const data = change.doc.data(),
                        { id, productName, dateAdd, dateEdit, checked } = data;
-
-                   console.log(data)
 
 
                     if (change.type === "added") {

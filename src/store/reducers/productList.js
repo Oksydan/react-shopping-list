@@ -7,38 +7,19 @@ const initialState = {
 
 const addListElement = (productName, id, dateAdd, dateEdit, list) => {
 
-    const elemIndex = list.findIndex(elem => elem.id === id ? true : false);
-
-    if (elemIndex >= 0) {
-        return list;
-    } else {
-        return [
-            ...list,
-            {
-                productName,
-                id,
-                dateAdd,
-                dateEdit,
-                checked: false
-            }
-        ]
-    }
+    return [
+        ...list,
+        {
+            productName,
+            id,
+            dateAdd,
+            dateEdit,
+            checked: false
+        }
+    ]
 
 };
 
-const updateListElement = (productName, id, dateEdit, list) => {
-
-    const elemIndex = list.findIndex(elem => elem.id === id ? true : false);
-   
-    list[elemIndex] = {
-        ...list[elemIndex],
-        productName,
-        dateEdit
-    }
-    
-
-    return list;
-}
 
 const deleteListElement = (id, list) => {
 
@@ -51,31 +32,8 @@ const deleteListElement = (id, list) => {
     return list;
 }
 
-const checkListElement = (id, list) => {
-    const elemIndex = list.findIndex(elem => elem.id === id ? true : false);
 
-    list[elemIndex] = {
-        ...list[elemIndex],
-        checked: true
-    }
-
-
-    return list;
-}
-
-const uncheckListElement = (id, list) => {
-    const elemIndex = list.findIndex(elem => elem.id === id ? true : false);
-
-    list[elemIndex] = {
-        ...list[elemIndex],
-        checked: false
-    }
-
-
-    return list;
-}
-
-const updateElementFromServer = (updatedList, list) => {
+const updateListElem = (updatedList, list) => {
     const { id } = updatedList,
         elemIndex = list.findIndex(elem => elem.id === id ? true : false);
 
@@ -86,11 +44,6 @@ const updateElementFromServer = (updatedList, list) => {
     return list;
 }
 
-const removeCheckedProducts = (list) => {
-    list = list.filter(prod => !prod.checked);
-
-    return list;
-}
 
 
 const reducer = (state = initialState, actions) => {
@@ -100,17 +53,13 @@ const reducer = (state = initialState, actions) => {
                 ...state,
                 list: {
                     ...state.list,
-                    [actions.listId]: addListElement(actions.productName, actions.id, actions.dateAdd, actions.dateEdit, [...state.list[actions.listId]])
+                    [actions.listId]: addListElement(
+                        actions.productName,
+                        actions.id,
+                        actions.dateAdd,
+                        actions.dateEdit,
+                        [...(state.list[actions.listId] ? state.list[actions.listId] : [])])
                 }
-            };
-        case (actionTypes.UPDATE_PRODUCT_DATA):
-            return {
-                ...state,
-                list: {
-                    ...state.list,
-                    [actions.listId]: updateListElement(actions.productName, actions.id, actions.dateEdit, [...state.list[actions.listId]])
-                }
-                
             };
         case (actionTypes.REMOVE_PRODUCT):
             return {
@@ -120,44 +69,12 @@ const reducer = (state = initialState, actions) => {
                     [actions.listId]: deleteListElement(actions.id, [...state.list[actions.listId]])
                 }
             };
-        case (actionTypes.CHECK_PRODUCT_ELEM):
-            return {
-                ...state,
-                list: {
-                    ...state.list,
-                    [actions.listId]: checkListElement(actions.id, [...state.list[actions.listId]])
-                }
-            };
-        case (actionTypes.UNCHECK_PRODUCT_ELEM):
-            return {
-                ...state,
-                list: {
-                    ...state.list,
-                    [actions.listId]: uncheckListElement(actions.id, [...state.list[actions.listId]])
-                }
-            };
-        case (actionTypes.REMOVE_CHECKED):
-            return {
-                ...state,
-                list: {
-                    ...state.list,
-                    [actions.listId]: removeCheckedProducts([...state.list[actions.listId]])
-                }
-            };
-        case (actionTypes.UPDATE_PRODUCTS_LIST):
-            return {
-                ...state,
-                list: {
-                    ...state.list,
-                    [actions.listId]: actions.list
-                }
-            };
         case (actionTypes.UPDATE_PRODUCTS_LIST_ELEM):
             return {
                 ...state,
                 list: {
                     ...state.list,
-                    [actions.listId]: updateElementFromServer(actions.list, [...state.list[actions.listId]])
+                    [actions.listId]: updateListElem(actions.list, [...state.list[actions.listId]])
                 }
             };
         case (actionTypes.FETCH_PRODUCTS_START):

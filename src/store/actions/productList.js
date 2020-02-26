@@ -14,83 +14,32 @@ export const fetchProductsEnd = () => {
 
 export const fetchProducts = (listId) => {
    return dispatch => {
-       dispatch(fetchProductsStart());
-       firestore.collection("shoppingList").doc(listId).collection("list").get()
-           .then(doc => {
-               const   data = doc.docs;
-               let dataList = [];
-               
-               if (data && data.length > 0) {
-                   for (let doc in data) {
-                       const product = data[doc].data();
-                       dataList = [...dataList, product];
-                   }
-               }
-               dispatch(updateProductsList(dataList, listId));
-               dispatch(fetchProductsEnd());
-               dispatch(setupListenToChanges(listId));
-           })
-           .catch(error => {
-               console.error(error);
-               dispatch(fetchProductsEnd());
-           });
+    //    dispatch(fetchProductsStart());
+       firestore.collection("shoppingList").doc(listId).collection("list")
+           .onSnapshot({ includeMetadataChanges: true }, snapshot => {
 
+               snapshot.docChanges().forEach(change => {
+                   const data = change.doc.data(),
+                       { id, productName, dateAdd, dateEdit, checked } = data;
+
+
+                    if (change.type === "added") {
+                        dispatch(productAdded(productName, id, listId, dateAdd, dateEdit, checked));
+                    }
+                    if (change.type === "modified") {
+                        dispatch(updateProductsListElem(data, listId));
+                    }
+                    if (change.type === "removed") {
+                        dispatch(deleteProductData(id, listId, checked));
+                    }
+
+               });
+
+           });
    }
 }
 
-export const setupListenToChanges = listId => {
-    return dispatch=> {
 
-        console.log('asdsadassda');
-
-        firestore.collection("shoppingList").doc(listId).collection("list")
-            .onSnapshot({ includeMetadataChanges: false }, snapshot => {
-
-                snapshot.docChanges().forEach(change => {
-                    const data = change.doc.data(),
-                        { id, productName, dateAdd, dateEdit, checked } = data,
-                        source = change.doc.metadata.hasPendingWrites ? 'local' : 'server';
-
-
-                    console.log(source);
-                    if (source !== 'local') {
-                        if (change.type === "added") {
-                            dispatch(productAdded(
-                                productName,
-                                id,
-                                listId,
-                                dateAdd,
-                                dateEdit,
-                                checked
-                            ));
-                        }
-                        if (change.type === "modified") {
-                            console.log('modified');
-   
-                            dispatch(updateProductsListElem(data ,listId));
-                        }
-                        if (change.type === "removed") {
-                            console.log('removed');
-                            dispatch(deleteProductData(id, listId, checked));
-                        }
-                    }
-
-                });
-
-            });
-    }
-
-}
-
-
-
-export const updateProductsList = (list, listId) => {
-    return {
-        type: actionTypes.UPDATE_PRODUCTS_LIST,
-        list,
-        listId
-    }
-}
 
 export const updateProductsListElem = (list, listId) => {
     return {
@@ -133,9 +82,7 @@ export const addProduct = (productName, id, listId) => {
             checked
         })
 
-        batch.commit().then(() => {
-            dispatch(productAdded(productName, id, listId, dateAdd, dateEdit, checked));
-        })
+        batch.commit()
         .catch(error => {
             console.error(error);
         });
@@ -163,24 +110,12 @@ export const updateProduct = (productName, id, listId) => {
             productName,
             dateEdit
         }, { merge: true })
-        .then(() => {
-            dispatch(updateProductData(productName, id, dateEdit, listId));
-        })
         .catch(error => {
             console.error(error);
         });
     }
 }
 
-export const updateProductData = (productName, id, dateEdit, listId) => {
-    return {
-        type: actionTypes.UPDATE_PRODUCT_DATA,
-        productName,
-        id,
-        dateEdit,
-        listId
-    }
-}
 
 export const deleteProductData = (id, listId, checked) => {
     return {
@@ -213,9 +148,6 @@ export const deleteProduct = (id, checked, listId) => {
         batch.delete(productData);
 
         batch.commit()
-            .then(() => {
-                dispatch(deleteProductData(id, listId, checked));
-            })
             .catch(error => {
                 console.error(error);
             })
@@ -241,22 +173,12 @@ export const checkProduct = (id, listId) => {
         }, { merge: true });
 
         batch.commit()
-            .then(() => {
-                dispatch(checkProductElem(id, listId));
-            })
             .catch(error => {
                 console.error(error);
             });
     }
 }
 
-export const checkProductElem = (id, listId) => {
-    return {
-        type: actionTypes.CHECK_PRODUCT_ELEM,
-        id,
-        listId
-    }
-}
 
 export const uncheckProduct = (id, listId) => {
     return (dispatch, getState) => {
@@ -277,22 +199,12 @@ export const uncheckProduct = (id, listId) => {
         }, {merge: true});
 
         batch.commit()
-            .then(() => {
-                dispatch(uncheckProductElem(id, listId));
-            })
             .catch(error => {
                 console.error(error);
             });
     }
 }
 
-export const uncheckProductElem = (id, listId) => {
-    return {
-        type: actionTypes.UNCHECK_PRODUCT_ELEM,
-        id,
-        listId
-    }
-}
 
 export const removeCheckedProducts = listId => {
     return (dispatch, getState) => {
@@ -320,22 +232,13 @@ export const removeCheckedProducts = listId => {
         }
 
         batch.commit()
-            .then(() => {
-                dispatch(removeCheckedProductsElems(listId, checkedLength));
-            })
             .catch(error => {
                 console.log(error);
             })
     }
 }
 
-export const removeCheckedProductsElems = (listId, removedQty) => {
-    return {
-        type: actionTypes.REMOVE_CHECKED,
-        listId,
-        removedQty
-    }
-}
+
 
 export const eraseList = () => {
     return {

@@ -12,10 +12,10 @@ class ProductList extends Component {
 
     componentDidMount() {
         const id = this.props.match.params.id;
-        if (id && this.props.shoppingList.length > 0) {
-            this.props.fetchProductsList(id);
-        } else {
+        if (this.props.shoppingList.length === 0) {
             this.props.history.push('/');
+        } else if (!this.props.productList[id]) {
+            this.props.fetchProductsList(id);
         }
     }
 

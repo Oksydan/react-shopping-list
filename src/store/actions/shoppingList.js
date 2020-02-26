@@ -15,12 +15,9 @@ export const addList = (listName, id, authorID) => {
             listElems: 0,
             checkedElems: 0
         })
-            .then(() => {
-                dispatch(listAdded(listName, id, dateAdd, dateEdit, authorID, 0, 0));
-            })
-            .catch(error => {
-                console.error(error);
-            });
+        .catch(error => {
+            console.error(error);
+        });
     }
 };
 
@@ -54,67 +51,40 @@ export const fetchList = () => {
         dispatch(fetchListStart());
         const userid = firebaseAuth.currentUser.uid;
         
-        firestore.collection("shoppingList").where("authorID", "==", userid).get()
-            .then(querySnapshot => {
-                const data = querySnapshot.docs;
-                let listArry = [];
-
-                if (data.length > 0) {
-                    for (let doc in data) {
-                        const list = data[doc].data();
-                        listArry = [...listArry, list];
-                    }
-                }
-                
-                dispatch(setupListenToChanges(userid));
-                dispatch(fetchListEnd());
-            })
-            .catch(error => {
-                console.error(error);
-                dispatch(fetchListEnd());
-            });
-
-    }
-}
-
-
-
-export const setupListenToChanges = (uID) => {
-    return dispatch => {
-        firestore.collection("shoppingList").where("authorID", "==", uID)
-            .onSnapshot({ includeMetadataChanges: false }, snapshot => {
+        firestore.collection("shoppingList").where("authorID", "==", userid)
+            .onSnapshot({ includeMetadataChanges: true }, snapshot => {
 
                 snapshot.docChanges().forEach(change => {
                     const data = change.doc.data(),
-                        { id, authorID, dateAdd, dateEdit, listName, checkedElems, listElems } = data,
-                        source = change.doc._hasPendingWrites ? 'local' : 'server';
+                        { id, authorID, dateAdd, dateEdit, listName, checkedElems, listElems } = data;
+                        // source = change.doc._hasPendingWrites ? 'local' : 'server';
 
-                    if (source !== 'local') {
-                        if (change.type === "added") {
-                            dispatch(listAdded(
-                                listName,
-                                id,
-                                dateAdd,
-                                dateEdit,
-                                authorID,
-                                listElems,
-                                checkedElems
-                            ))
-                        }
-                        if (change.type === "modified") {
-                            dispatch(updateShoppingListElement(data));
-                        }
-                        if (change.type === "removed") {
-                            dispatch(removeListData(id));
-                        }
+                    if (change.type === "added") {
+                        dispatch(listAdded(
+                            listName,
+                            id,
+                            dateAdd,
+                            dateEdit,
+                            authorID,
+                            listElems,
+                            checkedElems
+                        ))
+                        dispatch(fetchListEnd());
                     }
-                   
+                    if (change.type === "modified") {
+                        dispatch(updateShoppingListElement(data));
+                    }
+                    if (change.type === "removed") {
+                        dispatch(removeListData(id));
+                    }
+
                 });
 
             });
     }
-
 }
+
+
 
 
 export const updateShoppingListElement = (list) => {
@@ -136,9 +106,6 @@ export const removeList = (id) => {
     return dispatch => {
 
         firestore.collection('shoppingList').doc(id).delete()
-            .then(() => {
-                dispatch(removeListData(id));
-            })
             .catch(error => {
                 console.error(error);
             })
@@ -154,23 +121,13 @@ export const editListTitle = (id, listName) => {
             listName,
             dateEdit
         }, { merge: true })
-            .then(() => {
-                dispatch(listTitleEdited(id, listName, dateEdit));
-            })
             .catch(error => {
                 console.error(error);
             });
     }
 };
 
-export const listTitleEdited = (id, listName, dateEdit) => {
-    return {
-        type: actionTypes.LIST_TITLE_EDITED,
-        listName,
-        id,
-        dateEdit
-    }
-}
+
 
 export const eraseShoppingLists = () => {
     return {

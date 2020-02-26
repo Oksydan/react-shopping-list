@@ -61,7 +61,7 @@ class ShoppingList extends Component {
     
 
     render() {
-        const shoppingLists = this.props.list.map(list => 
+        const shoppingLists = this.props.list.sort((a, b) => b.dateAdd - a.dateAdd).map(list => 
             <ShoppingListElem 
                 title={list.listName}
                 key={list.id}

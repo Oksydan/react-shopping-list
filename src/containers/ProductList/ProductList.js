@@ -31,7 +31,7 @@ class ProductList extends Component {
             if (typeof listData !== 'undefined') {
                 listData = this.props.productList[listId];
                 if (listData.length > 0) {
-                    listData = listData.sort((a, b) => a.dateAdd - b.dateAdd).sort((a, b) => a.checked - b.checked);
+                    listData = listData.sort((a, b) => b.dateAdd - a.dateAdd).sort((a, b) => a.checked - b.checked);
                     list = listData.map((prod) => {
                         return (
                             <Flipped key={prod.id} flipId={prod.id}>

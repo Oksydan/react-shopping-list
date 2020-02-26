@@ -50,6 +50,17 @@ export const fetchList = () => {
     return dispatch => {
         dispatch(fetchListStart());
         const userid = firebaseAuth.currentUser.uid;
+
+        let hasToStopLoading = true;
+
+        firestore.collection("shoppingList").where("authorID", "==", userid).get()
+            .then(querySnapshot => {
+                const data = querySnapshot.docs;
+                if(data.length === 0) {
+                    hasToStopLoading = false;
+                    dispatch(fetchListEnd());
+                }
+            });
         
         firestore.collection("shoppingList").where("authorID", "==", userid)
             .onSnapshot({ includeMetadataChanges: true }, snapshot => {
@@ -57,7 +68,6 @@ export const fetchList = () => {
                 snapshot.docChanges().forEach(change => {
                     const data = change.doc.data(),
                         { id, authorID, dateAdd, dateEdit, listName, checkedElems, listElems } = data;
-                        // source = change.doc._hasPendingWrites ? 'local' : 'server';
 
                     if (change.type === "added") {
                         dispatch(listAdded(
@@ -69,7 +79,6 @@ export const fetchList = () => {
                             listElems,
                             checkedElems
                         ))
-                        dispatch(fetchListEnd());
                     }
                     if (change.type === "modified") {
                         dispatch(updateShoppingListElement(data));
@@ -78,7 +87,13 @@ export const fetchList = () => {
                         dispatch(removeListData(id));
                     }
 
+
                 });
+
+                if (hasToStopLoading) {
+                    hasToStopLoading = false;
+                    dispatch(fetchListEnd())
+                }
 
             });
     }

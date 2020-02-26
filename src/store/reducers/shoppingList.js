@@ -66,7 +66,7 @@ const reducer = (state = initialState, actions) => {
         case (actionTypes.FETCH_LIST_START):
             return {
                 ...state,
-                // loading: true,
+                loading: true,
                 dataSubscribed: true
             };
         case (actionTypes.FETCH_LIST_END):

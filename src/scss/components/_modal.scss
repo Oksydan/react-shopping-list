@@ -51,4 +51,8 @@
         font-weight: 600;
         color: $gray-100;
     }
+    &__buttons {
+        display: flex;
+        justify-content: space-between;
+    }
 }

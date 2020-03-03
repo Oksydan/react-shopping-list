@@ -16,6 +16,9 @@ const button = (props) => {
         case 'secondary':
             classes = [...classes, 'button--secondary'];
             break;
+        case 'danger':
+            classes = [...classes, 'button--danger'];
+            break;
         default:
             break;
     }

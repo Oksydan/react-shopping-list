@@ -21,6 +21,13 @@
         lighten($brand-secondary, 5%),
         darken($brand-secondary, 5%)
     );
+    @include buttonStyled(
+        'danger',
+        #fff,
+        $error,
+        lighten($error, 5%),
+        darken($error, 5%)
+    );
 
     &--block {
         display: block;

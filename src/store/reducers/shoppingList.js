@@ -2,7 +2,6 @@ import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
     shoppingLists: [],
-    loading: false,
     dataSubscribed: false
 }
 
@@ -60,19 +59,12 @@ const reducer = (state = initialState, actions) => {
             };
         case (actionTypes.ERASE_SHOPPING_LISTS):
             return {
-                shoppingLists: [],
-                loading: false
+                shoppingLists: []
             };
         case (actionTypes.FETCH_LIST_START):
             return {
                 ...state,
-                loading: true,
                 dataSubscribed: true
-            };
-        case (actionTypes.FETCH_LIST_END):
-            return {
-                ...state,
-                loading: false
             };
         case (actionTypes.UPDATE_SHOPPING_LIST_ELEMENT):
             return {

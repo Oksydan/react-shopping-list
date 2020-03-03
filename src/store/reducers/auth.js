@@ -2,7 +2,6 @@ import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
     uId: null,
-    loading: true,
     error: '',
     displayName: '',
     email: ''
@@ -14,24 +13,20 @@ const reducer = (state = initialState, actions) => {
         case (actionTypes.AUTH_START):
             return {
                 ...state,
-                loading: true,
                 error: ''
             }
         case (actionTypes.AUTH_END):
             return {
-                ...state,
-                loading: false
+                ...state
             }
         case (actionTypes.AUTH_ERROR):
             return {
                 ...state,
-                loading: false,
                 error: actions.error
             }
         case (actionTypes.AUTH_SUCCESSFULLY):
             return {
                 ...state,
-                loading: false,
                 error: '',
                 uId: actions.uid,
                 displayName: actions.displayName,
@@ -40,7 +35,6 @@ const reducer = (state = initialState, actions) => {
         case (actionTypes.SIGN_OUT_SUCCESSFULLY):
             return {
                 ...state,
-                loading: false,
                 error: '',
                 uId: null,
                 displayName: '',
@@ -49,21 +43,18 @@ const reducer = (state = initialState, actions) => {
         case (actionTypes.AUTH_USER_DATA_UPDATED):
             return {
                 ...state,
-                loading: false,
                 error: '',
                 displayName: actions.displayName
             }
         case (actionTypes.AUTH_USER_EMAIL_UPDATED):
             return {
                 ...state,
-                loading: false,
                 error: '',
                 email: actions.email
             }
         case (actionTypes.AUTH_USER_PASSWORD_UPDATED):
             return {
                 ...state,
-                loading: false,
                 error: ''
             }
         case (actionTypes.AUTH_ERASE_ERROR):
@@ -74,8 +65,7 @@ const reducer = (state = initialState, actions) => {
         case (actionTypes.AUTH_PASSWORD_RESET_SUCCESSFULLY):
             return {
                 ...state,
-                error: '',
-                loading: false
+                error: ''
             }
         default: 
             return state;

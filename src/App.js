@@ -100,9 +100,7 @@ class App extends Component {
       component={component} 
       exact={exact}
       key={i}
-      />)
-
-    const loading = this.props.loadingAuth || this.props.shopplingListLoading || this.props.productListLoading; 
+      />);
 
     return (
       <BrowserRouter>
@@ -112,7 +110,7 @@ class App extends Component {
             <Switch>
               {routers}
             </Switch>
-            {loading ? <Spinner /> : null} 
+            {this.props.loading ? <Spinner /> : null} 
             
           </div>
           <MobileNav />
@@ -132,9 +130,7 @@ const mapDispatchToProps = dispatch => {
 const mapStateToProps = state => {
   return {
     userID: state.auth.uId,
-    loadingAuth: state.auth.loading,
-    shopplingListLoading: state.shoppingList.loading,
-    productListLoading: state.productList.loading
+    loading: state.general.loading
   }
 }
 

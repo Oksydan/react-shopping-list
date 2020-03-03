@@ -1,5 +1,12 @@
 import * as actionTypes from './actionTypes';
-import {firestore, firebaseAuth} from '../../config/fbConfig';
+import { firestore, firebaseAuth } from '../../config/fbConfig';
+import * as action from './index';
+
+export const fetchListStart = () => {
+    return {
+        type: actionTypes.FETCH_LIST_START
+    }
+}
 
 export const addList = (listName, id, authorID) => {
     return dispatch => {
@@ -34,21 +41,11 @@ export const listAdded = (listName, id, dateAdd, dateEdit, authorID, listElems, 
     }
 }
 
-export const fetchListStart = () => {
-    return {
-        type: actionTypes.FETCH_LIST_START
-    }
-}
-
-export const fetchListEnd = () => {
-    return {
-        type: actionTypes.FETCH_LIST_END
-    }
-}
 
 export const fetchList = () => {
     return dispatch => {
         dispatch(fetchListStart());
+        dispatch(action.loadingStart());
         const userid = firebaseAuth.currentUser.uid;
 
         let hasToStopLoading = true;
@@ -58,7 +55,7 @@ export const fetchList = () => {
                 const data = querySnapshot.docs;
                 if(data.length === 0) {
                     hasToStopLoading = false;
-                    dispatch(fetchListEnd());
+                    dispatch(action.loadingOver());
                 }
             });
         
@@ -92,7 +89,7 @@ export const fetchList = () => {
 
                 if (hasToStopLoading) {
                     hasToStopLoading = false;
-                    dispatch(fetchListEnd())
+                    dispatch(action.loadingOver());
                 }
 
             });

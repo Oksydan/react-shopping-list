@@ -82,6 +82,7 @@ export const auth = (data, type) => {
 export const updateUserData = (newName) => {
 
     return dispatch => {
+        dispatch(action.loadingStart());
         const user = firebaseAuth.currentUser,
             { displayName } = user,
             name = newName.value;
@@ -89,14 +90,17 @@ export const updateUserData = (newName) => {
 
         if (name !== displayName) {
             dispatch(authStart());
+            dispatch(action.loadingStart());
             user.updateProfile({
                 displayName: name
             })
             .then(() => {
                 dispatch(userDataUpdated(name));
+                dispatch(action.loadingOver());
             })
             .catch(error => {
-                    dispatch(authError(error.message))
+                dispatch(authError(error.message))
+                dispatch(action.loadingOver());
             })
             
         }
@@ -120,12 +124,15 @@ export const updateUserEmail = (emailField) => {
 
         if (newEmail !== email) {
             dispatch(authStart());
+            dispatch(action.loadingStart());
             user.updateEmail(newEmail)
             .then(() => {
                 dispatch(userEmailUpdated(newEmail));
+                dispatch(action.loadingOver());
             })
             .catch(error => {
-                dispatch(authError(error.message))
+                dispatch(authError(error.message));
+                dispatch(action.loadingOver());
             })
             
         }
@@ -146,12 +153,15 @@ export const updateUserPassword = (newPassword) => {
             password = newPassword.value;
 
         dispatch(authStart());
+        dispatch(action.loadingStart());
         user.updatePassword(password)
         .then(() => {
             dispatch(userEmailUpdated(password));
+            dispatch(action.loadingOver());
         })
         .catch(error => {
-                dispatch(authError(error.message))
+            dispatch(authError(error.message));
+            dispatch(action.loadingOver());
         })
         
     }
@@ -166,16 +176,18 @@ export const userPasswordUpdated = (email) => {
 export const resetPasswordEmail = (data) => {
     return dispatch => {
         dispatch(authStart());
+        dispatch(action.loadingStart());
 
         const email = data.email.value;
 
         firebaseAuth.sendPasswordResetEmail(email)
             .then(() => {
                 dispatch(passwordResetSuccessfully());
+                dispatch(action.loadingOver());
             })
             .catch(error => {
-                console.log(error);
-                dispatch(authError(error.message))
+                dispatch(authError(error.message));
+                dispatch(action.loadingOver());
             });
 
     }
@@ -192,6 +204,7 @@ export const passwordResetSuccessfully = () => {
 export const register = (email, password, name) => {
     return dispatch => {
         dispatch(authStart());
+        dispatch(action.loadingStart());
 
         firebaseAuth.createUserWithEmailAndPassword(email, password)
             .then(res => {
@@ -201,13 +214,16 @@ export const register = (email, password, name) => {
                         displayName: name
                     }).then(function () {
                         dispatch(authSuccessfully(res.user.uid, name, email));
+                        dispatch(action.loadingOver());
                     }).catch(function (error) {
-                        dispatch(authError(error.message))
+                        dispatch(authError(error.message));
+                        dispatch(action.loadingOver());
                     });
                 }
             })
             .catch(error => {
-                dispatch(authError(error.message))
+                dispatch(authError(error.message));
+                dispatch(action.loadingOver());
             });
 
     }
@@ -217,13 +233,16 @@ export const register = (email, password, name) => {
 export const login = (email, password) => {
     return dispatch => {
         dispatch(authStart());
+        dispatch(action.loadingStart());
 
         firebaseAuth.signInWithEmailAndPassword(email, password)
             .then(res => {
                 dispatch(authSuccessfully(res.user.uid, res.user.displayName, email));
+                dispatch(action.loadingOver());
             })
             .catch(error => {
-                dispatch(authError(error.message))
+                dispatch(authError(error.message));
+                dispatch(action.loadingOver());
             });
 
     }
@@ -232,16 +251,18 @@ export const login = (email, password) => {
 export const signOut = (email, password) => {
     return dispatch => {
         dispatch(authStart());
+        dispatch(action.loadingStart());
 
         firebaseAuth.signOut()
             .then(() => {
                 dispatch(signOutSuccessfully());
                 dispatch(action.eraseList());
                 dispatch(action.eraseShoppingLists());
+                dispatch(action.loadingOver());
             })
             .catch(error => {
-                console.log(error);
-                dispatch(authError());
+                dispatch(authError(error.message));
+                dispatch(action.loadingOver());
             });
 
     }

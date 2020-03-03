@@ -9,6 +9,7 @@ import thunk from 'redux-thunk';
 import authReducer from './store/reducers/auth';
 import productListReducer from './store/reducers/productList';
 import shoppingListReducer from './store/reducers/shoppingList';
+import generalReducer from './store/reducers/general';
 
 import './scss/main.scss';
 
@@ -16,6 +17,7 @@ import './scss/main.scss';
 const combinedReducers = combineReducers({
     productList: productListReducer,
     auth: authReducer,
+    general: generalReducer,
     shoppingList: shoppingListReducer
 });
 

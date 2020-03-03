@@ -1,20 +1,11 @@
 import * as actionTypes from './actionTypes';
-import {firestore} from  '../../config/fbConfig';
+import { firestore } from '../../config/fbConfig';
+import * as action from './index';
 
-export const fetchProductsStart = () => {
-    return {
-        type: actionTypes.FETCH_PRODUCTS_START
-    }
-}
-export const fetchProductsEnd = () => {
-    return {
-        type: actionTypes.FETCH_PRODUCTS_END
-    }
-}
 
 export const fetchProducts = listId => {
    return dispatch => {
-       dispatch(fetchProductsStart());
+       dispatch(action.loadingStart());
 
        let hasToStopLoading = true;
 
@@ -23,7 +14,7 @@ export const fetchProducts = listId => {
                const data = querySnapshot.docs;
                if (data.length === 0) {
                    hasToStopLoading = false;
-                   dispatch(fetchProductsEnd());
+                   dispatch(action.loadingOver());
                }
            });
 
@@ -50,7 +41,7 @@ export const fetchProducts = listId => {
 
                if (hasToStopLoading) {
                    hasToStopLoading = false;
-                   dispatch(fetchProductsEnd());
+                   dispatch(action.loadingOver());
                }
 
            });

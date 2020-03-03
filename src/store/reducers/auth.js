@@ -71,6 +71,12 @@ const reducer = (state = initialState, actions) => {
                 ...state,
                 error: ''
             }
+        case (actionTypes.AUTH_PASSWORD_RESET_SUCCESSFULLY):
+            return {
+                ...state,
+                error: '',
+                loading: false
+            }
         default: 
             return state;
     }

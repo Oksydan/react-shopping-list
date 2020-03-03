@@ -53,7 +53,6 @@ export const loginIfUserDataPersist = () => {
 }
 
 
-
 export const auth = (data, type) => {
 
     return dispatch => {
@@ -163,6 +162,32 @@ export const userPasswordUpdated = (email) => {
         type: actionTypes.AUTH_USER_PASSWORD_UPDATED
     }
 }
+
+export const resetPasswordEmail = (data) => {
+    return dispatch => {
+        dispatch(authStart());
+
+        const email = data.email.value;
+
+        firebaseAuth.sendPasswordResetEmail(email)
+            .then(() => {
+                dispatch(passwordResetSuccessfully());
+            })
+            .catch(error => {
+                console.log(error);
+                dispatch(authError(error.message))
+            });
+
+    }
+}
+
+export const passwordResetSuccessfully = () => {
+    return {
+        type: actionTypes.AUTH_PASSWORD_RESET_SUCCESSFULLY
+    }
+}
+
+
 
 export const register = (email, password, name) => {
     return dispatch => {

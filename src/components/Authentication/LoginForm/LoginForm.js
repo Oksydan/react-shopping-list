@@ -59,6 +59,7 @@ class LoginForm extends Component {
                     submitText="Sign in"
                     fields={fields}
                     error={this.props.error}
+                    afterFields={<Link to="/forgotpassword">Forgot your password?</Link>}
                 >
                 </Form>
                 <div className="formBlock__footer">

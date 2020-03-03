@@ -13,6 +13,7 @@ import MyAccount from './components/MyAccount/MyAccount';
 import PersonalData from './components/EditPersonalData/EditPersonalData';
 import EditPassword from './components/EditPassword/EditPassword';
 import EditEmail from './components/EditEmail/EditEmail';
+import ForgotPassword from './components/ForgotPassword/ForgotPassword';
 import FriendsList from './components/FriendsList/FriendsList';
 import Spinner from './components/UI/Spinner/Spinner';
 
@@ -39,6 +40,11 @@ class App extends Component {
         path: '/logout',
         exact: true,
         component: SignOut
+      },
+      {
+        path: '/forgotpassword',
+        exact: true,
+        component: ForgotPassword
       },
       {
         path: '/friendslist',

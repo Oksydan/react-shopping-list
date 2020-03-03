@@ -136,12 +136,26 @@ class Form extends Component {
             />;
         });
 
+        const beforeFields = this.props.beforeFields ? 
+            <div className="form__info form__info--before">
+                {this.props.beforeFields}
+            </div>
+            :
+            null;
+        const afterFields = this.props.afterFields ? 
+            <div className="form__info form__info--after">
+                {this.props.afterFields}
+            </div>
+            :
+            null;
+
         const alert = this.props.error ? <Alert type="danger" text={this.props.error} /> : null;
         return (
             <form onSubmit={this.handleSubmit} className="form">
                 {alert}
-                {this.props.children}
+                {beforeFields}
                 {fields}
+                {afterFields}
                 <div className="form__submit">
                     <Button
                         type='submit'
@@ -161,7 +175,11 @@ class Form extends Component {
 
 Form.propTypes = {
     onFormSubmit: PropTypes.func.isRequired,
-    children: PropTypes.oneOfType([
+    beforeFields: PropTypes.oneOfType([
+        PropTypes.arrayOf(PropTypes.node),
+        PropTypes.node
+    ]),
+    afterFiedls: PropTypes.oneOfType([
         PropTypes.arrayOf(PropTypes.node),
         PropTypes.node
     ]),

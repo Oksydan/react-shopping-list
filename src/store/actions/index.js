@@ -24,5 +24,6 @@ export {
     updateUserData,
     updateUserPassword,
     updateUserEmail,
+    resetPasswordEmail,
     loginIfUserDataPersist
 } from './auth';

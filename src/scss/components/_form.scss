@@ -2,4 +2,10 @@
     &__submit {
         margin: 0 0 2rem;
     }
+    &__info {
+        &--after {
+            text-align: center;
+            margin: 0 0 2rem;
+        }
+    }
 }

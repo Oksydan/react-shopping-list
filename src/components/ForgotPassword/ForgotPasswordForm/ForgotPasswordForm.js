@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Form from '../../Form/Form';
 import * as actions from '../../../store/actions/index';
+import Form from '../../Form/Form';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope } from '@fortawesome/pro-light-svg-icons';
 
-class EditEmailForm extends Component {
+
+
+class ForgtoPasswordForm extends Component {
 
     componentWillUnmount() {
         this.props.clearError();
@@ -17,7 +19,7 @@ class EditEmailForm extends Component {
                 name: 'email',
                 type: 'email',
                 label: 'Your email',
-                value: this.props.uEmail,
+                value: '',
                 validation: {
                     isEmail: true,
                     isRequired: true
@@ -27,38 +29,39 @@ class EditEmailForm extends Component {
                 hasError: false,
                 icon: <FontAwesomeIcon icon={faEnvelope} />
             }
-        }
+        };
 
 
         return (
-            <Form
-                onFormSubmit={this.props.updateData}
-                submitText="Edit"
-                fields={fields}
-                error={this.props.error}
-                beforeFields={<p>Change your account email. Be aware to type right email address.</p>}
-            >
-            </Form>
+            <div className="formBlock">
+                <Form
+                    onFormSubmit={this.props.resetPasssword}
+                    submitText="Reset your password"
+                    fields={fields}
+                    error={this.props.error}
+                    beforeFields={<p>Send an email with link to password reset</p>}
+                >
+                </Form>
+            </div>
+
         )
     }
 
- 
-}
 
-
-const mapStateToProps = state => {
-    return {
-        uEmail: state.auth.email,
-        error: state.auth.error
-    }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        updateData: ({ email }) => dispatch(actions.updateUserEmail(email)),
+        resetPasssword: (data) => dispatch(actions.resetPasswordEmail(data)),
         clearError: () => dispatch(actions.eraseError())
     }
 }
 
+const mapStateToProps = state => {
+    return {
+        error: state.auth.error
+    }
+}
 
-export default connect(mapStateToProps, mapDispatchToProps)(EditEmailForm);
+
+export default connect(mapStateToProps, mapDispatchToProps)(ForgtoPasswordForm);

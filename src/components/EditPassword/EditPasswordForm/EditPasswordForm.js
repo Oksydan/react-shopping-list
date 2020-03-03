@@ -53,8 +53,8 @@ class EditPasswordForm extends Component {
                 submitText="Edit"
                 fields={fields}
                 error={this.props.error}
+                beforeFields={<p>Edit your account your password. Fields data must be equal.</p>}
             >
-                <p>Edit your account your password. Fields data must be equal.</p>
             </Form>
         )
     }

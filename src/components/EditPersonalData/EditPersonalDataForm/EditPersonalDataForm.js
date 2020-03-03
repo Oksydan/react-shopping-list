@@ -37,8 +37,8 @@ class PersonalDataForm extends Component {
                 submitText="Edit"
                 fields={fields}
                 error={this.props.error}
+                beforeFields={<p>Edit your user name</p>}
             >
-                <p>Edit your user name</p>
             </Form>
         )
     }

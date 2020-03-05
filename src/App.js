@@ -16,6 +16,7 @@ import EditEmail from './components/EditEmail/EditEmail';
 import ForgotPassword from './components/ForgotPassword/ForgotPassword';
 import FriendsList from './components/FriendsList/FriendsList';
 import Spinner from './components/UI/Spinner/Spinner';
+import AppNotification from './components/AppNotification/AppNotification';
 
 class App extends Component {
   constructor(props) {
@@ -111,7 +112,8 @@ class App extends Component {
               {routers}
             </Switch>
             {this.props.loading ? <Spinner /> : null} 
-            
+
+            <AppNotification />
           </div>
           <MobileNav />
         </div>

@@ -5,7 +5,7 @@ import * as actions from '../../../store/actions/index';
 
 const signOut = props => {
     props.logOut();
-    return props.userID != null ? 'Logging out' :<Redirect to="/" />;
+    return <Redirect to="/" />;
 }
 
 const mapDispatchToProps = dispatch => {

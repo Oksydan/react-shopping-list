@@ -97,6 +97,10 @@ export const updateUserData = (newName) => {
             .then(() => {
                 dispatch(userDataUpdated(name));
                 dispatch(action.loadingOver());
+                dispatch(action.addNotification(
+                    'Your account has been changed successfully',
+                    'success'
+                ));
             })
             .catch(error => {
                 dispatch(authError(error.message))
@@ -129,6 +133,10 @@ export const updateUserEmail = (emailField) => {
             .then(() => {
                 dispatch(userEmailUpdated(newEmail));
                 dispatch(action.loadingOver());
+                dispatch(action.addNotification(
+                    'Your email adress has been changed successfully',
+                    'success'
+                ));
             })
             .catch(error => {
                 dispatch(authError(error.message));
@@ -158,6 +166,10 @@ export const updateUserPassword = (newPassword) => {
         .then(() => {
             dispatch(userEmailUpdated(password));
             dispatch(action.loadingOver());
+            dispatch(action.addNotification(
+                'Your password has been changed successfully',
+                'success'
+            ));
         })
         .catch(error => {
             dispatch(authError(error.message));
@@ -184,6 +196,10 @@ export const resetPasswordEmail = (data) => {
             .then(() => {
                 dispatch(passwordResetSuccessfully());
                 dispatch(action.loadingOver());
+                dispatch(action.addNotification(
+                    'Your password reset message has been sent to your email address',
+                    'success'
+                ));
             })
             .catch(error => {
                 dispatch(authError(error.message));
@@ -215,6 +231,10 @@ export const register = (email, password, name) => {
                     }).then(function () {
                         dispatch(authSuccessfully(res.user.uid, name, email));
                         dispatch(action.loadingOver());
+                        dispatch(action.addNotification(
+                            'New account has been created successfully',
+                            'success'
+                        ));
                     }).catch(function (error) {
                         dispatch(authError(error.message));
                         dispatch(action.loadingOver());
@@ -239,6 +259,10 @@ export const login = (email, password) => {
             .then(res => {
                 dispatch(authSuccessfully(res.user.uid, res.user.displayName, email));
                 dispatch(action.loadingOver());
+                dispatch(action.addNotification(
+                    'You has been logged in successfully',
+                    'success'
+                ));
             })
             .catch(error => {
                 dispatch(authError(error.message));
@@ -248,7 +272,7 @@ export const login = (email, password) => {
     }
 }
 
-export const signOut = (email, password) => {
+export const signOut = () => {
     return dispatch => {
         dispatch(authStart());
         dispatch(action.loadingStart());
@@ -259,6 +283,10 @@ export const signOut = (email, password) => {
                 dispatch(action.eraseList());
                 dispatch(action.eraseShoppingLists());
                 dispatch(action.loadingOver());
+                dispatch(action.addNotification(
+                    'You has been logged out successfully',
+                    'success'
+                ));
             })
             .catch(error => {
                 dispatch(authError(error.message));

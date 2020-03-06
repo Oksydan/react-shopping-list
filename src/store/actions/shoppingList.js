@@ -23,7 +23,7 @@ export const addList = (listName, id, authorID) => {
             checkedElems: 0
         })
         .catch(error => {
-            console.error(error);
+            dispatch(action.addNotification('Something went wrong', 'danger'));
         });
     }
 };
@@ -57,6 +57,9 @@ export const fetchList = () => {
                     hasToStopLoading = false;
                     dispatch(action.loadingOver());
                 }
+            })
+            .catch(error => {
+                dispatch(action.addNotification('Something went wrong', 'danger'));
             });
         
         firestore.collection("shoppingList").where("authorID", "==", userid)
@@ -116,10 +119,12 @@ export const removeListData = (id) => {
 
 export const removeList = (id) => {
     return dispatch => {
-
         firestore.collection('shoppingList').doc(id).delete()
+            .then(() => {
+                dispatch(action.addNotification('Shopping list has been removed successfully', 'success'));
+            })
             .catch(error => {
-                console.error(error);
+                dispatch(action.addNotification('Something went wrong', 'danger'));
             })
     }
 }
@@ -134,7 +139,7 @@ export const editListTitle = (id, listName) => {
             dateEdit
         }, { merge: true })
             .catch(error => {
-                console.error(error);
+                dispatch(action.addNotification('Something went wrong', 'danger'));
             });
     }
 };

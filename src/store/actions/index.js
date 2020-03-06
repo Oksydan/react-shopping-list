@@ -31,5 +31,6 @@ export {
 export {
     loadingStart,
     loadingOver,
-    addNotification
+    addNotification,
+    removeNotification
 } from './general';

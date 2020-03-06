@@ -2,7 +2,7 @@ import React from 'react';
 import NotificationElement from './NotificationElement/NotificationElement';
 import { Flipper, Flipped } from "react-flip-toolkit";
 
-const notifications = ({ notifications }) => {
+const notifications = ({ notifications, removeNotification }) => {
 
     const notifyList = notifications ? notifications.map(el => 
             (<Flipped key={el.id} flipId={el.id}>
@@ -11,12 +11,11 @@ const notifications = ({ notifications }) => {
                         id={el.id}
                         text={el.textContent}
                         type={el.notificationType}
+                        removeNotify={removeNotification}
                     />
                 </li>}
             </Flipped>)
         ) : null;
-
-    console.log(notifications.length);
     
     const notificationsContainer = notifyList ? (
         <Flipper flipKey={notifications.length}>

@@ -32,7 +32,7 @@ export const addNotification = (text, type) => {
             addedAt = Date.now(),
             timeoutId = setTimeout(() => {
                 dispatch(notificationRemoved(id));
-            }, 5000);
+            }, 10000);
 
         dispatch(notificationAdded(
             id,
@@ -42,7 +42,17 @@ export const addNotification = (text, type) => {
             timeoutId
         ))
     }
-   
+}
+
+export const removeNotification = (id) => {
+    return (dispatch, getState) => {
+        const notifyList = getState().general.notifications,
+            elementIndex = notifyList.findIndex(el => el.id === id ? true : false),
+            timeoutId = notifyList[elementIndex].timeoutId;
+
+        clearTimeout(timeoutId);
+        dispatch(notificationRemoved(id)); 
+    }
 }
 
 export const notificationRemoved = id => {

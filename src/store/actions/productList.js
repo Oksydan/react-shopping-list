@@ -93,7 +93,7 @@ export const addProduct = (productName, id, listId) => {
 
         batch.commit()
         .catch(error => {
-            console.error(error);
+            dispatch(action.addNotification('Something went wrong', 'danger'));
         });
     }
 
@@ -120,7 +120,7 @@ export const updateProduct = (productName, id, listId) => {
             dateEdit
         }, { merge: true })
         .catch(error => {
-            console.error(error);
+            dispatch(action.addNotification('Something went wrong', 'danger'));
         });
     }
 }
@@ -157,7 +157,7 @@ export const deleteProduct = (id, checked, listId) => {
 
         batch.commit()
             .catch(error => {
-                console.error(error);
+                dispatch(action.addNotification('Something went wrong', 'danger'));
             })
     }
 }
@@ -182,7 +182,7 @@ export const checkProduct = (id, listId) => {
 
         batch.commit()
             .catch(error => {
-                console.error(error);
+                dispatch(action.addNotification('Something went wrong', 'danger'));
             });
     }
 }
@@ -208,7 +208,7 @@ export const uncheckProduct = (id, listId) => {
 
         batch.commit()
             .catch(error => {
-                console.error(error);
+                dispatch(action.addNotification('Something went wrong', 'danger'));
             });
     }
 }
@@ -241,7 +241,7 @@ export const removeCheckedProducts = listId => {
 
         batch.commit()
             .catch(error => {
-                console.log(error);
+                dispatch(action.addNotification('Something went wrong', 'danger'));
             })
     }
 }

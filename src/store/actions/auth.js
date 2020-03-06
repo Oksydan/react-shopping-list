@@ -1,6 +1,6 @@
 import * as actionTypes from './actionTypes';
 import * as firebase from 'firebase';
-import {firebaseAuth} from '../../config/fbConfig';
+import { firebaseAuth, firestore} from '../../config/fbConfig';
 import * as action from './index';
 
 export const authStart = () => {
@@ -224,18 +224,32 @@ export const register = (email, password, name) => {
 
         firebaseAuth.createUserWithEmailAndPassword(email, password)
             .then(res => {
-                const user = firebaseAuth.currentUser;
+                const user = firebaseAuth.currentUser,
+                    uId = res.user.uid;
                 if (user) {
                     user.updateProfile({
                         displayName: name
-                    }).then(function () {
-                        dispatch(authSuccessfully(res.user.uid, name, email));
+                    }).then(() => {
+                        dispatch(authSuccessfully(uId, name, email));
                         dispatch(action.loadingOver());
                         dispatch(action.addNotification(
                             'New account has been created successfully',
                             'success'
                         ));
-                    }).catch(function (error) {
+                    })
+                    .then(() => {
+                        firestore.collection("users").doc(uId).set({
+                            id: uId,
+                            email
+                        })
+                        .catch(function (error) {
+                            dispatch(action.addNotification(
+                                'Something went wrong',
+                                'danger'
+                            ));
+                        });
+                    })
+                    .catch(function (error) {
                         dispatch(authError(error.message));
                         dispatch(action.loadingOver());
                     });

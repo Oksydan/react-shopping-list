@@ -7,6 +7,7 @@ import { Provider } from 'react-redux';
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import authReducer from './store/reducers/auth';
+import friendsReducer from './store/reducers/friends';
 import productListReducer from './store/reducers/productList';
 import shoppingListReducer from './store/reducers/shoppingList';
 import generalReducer from './store/reducers/general';
@@ -18,7 +19,8 @@ const combinedReducers = combineReducers({
     productList: productListReducer,
     auth: authReducer,
     general: generalReducer,
-    shoppingList: shoppingListReducer
+    shoppingList: shoppingListReducer,
+    friends: friendsReducer
 });
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

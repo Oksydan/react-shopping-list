@@ -34,3 +34,7 @@ export {
     addNotification,
     removeNotification
 } from './general';
+
+export {
+    addFriend
+} from './friends';

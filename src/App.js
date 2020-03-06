@@ -14,7 +14,7 @@ import PersonalData from './components/EditPersonalData/EditPersonalData';
 import EditPassword from './components/EditPassword/EditPassword';
 import EditEmail from './components/EditEmail/EditEmail';
 import ForgotPassword from './components/ForgotPassword/ForgotPassword';
-import FriendsList from './components/FriendsList/FriendsList';
+import Friends from './components/Friends/Friends';
 import Spinner from './components/UI/Spinner/Spinner';
 import AppNotification from './components/AppNotification/AppNotification';
 
@@ -48,9 +48,9 @@ class App extends Component {
         component: ForgotPassword
       },
       {
-        path: '/friendslist',
+        path: '/friends',
         exact: true,
-        component: FriendsList
+        component: Friends
       },
       {
         path: '/',

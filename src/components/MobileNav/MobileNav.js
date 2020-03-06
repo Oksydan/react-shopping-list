@@ -22,7 +22,7 @@ const mobileNav = props => {
             icon: faUser
         },
         {
-            path: '/friendslist',
+            path: '/friends',
             title: 'Manage my friends list',
             icon: faUserFriends
 

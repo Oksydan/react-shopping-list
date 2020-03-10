@@ -5,6 +5,7 @@ import * as action from './index';
 
 export const addFriend = (email) => {
     return dispatch => {
+        
         firestore.collection('users').where('email', '==', email).get()
             .then(query => {
                 let data;
@@ -18,6 +19,7 @@ export const addFriend = (email) => {
                             currentUser = firebaseAuth.currentUser,
                             currentUserId = currentUser.uid,
                             currentUserEmail = currentUser.email,
+                            currentUserName = currentUser.displayName,
                             addedAt = Date.now(),
                             friendRequestRef = firestore.collection('friendsrequest');
 
@@ -47,6 +49,7 @@ export const addFriend = (email) => {
                             friendRequestRef.doc().set({
                                 addedAt,
                                 reqauthor: currentUserId,
+                                reqauthorname: currentUserName,
                                 reqtarget: reqUid
                             })
                             .then(() => {
@@ -77,5 +80,73 @@ export const addFriend = (email) => {
                     ));
                 }
             })
+    }
+}
+
+
+export const fetchFriendsRequests = () => {
+    return (dispatch, getState) => {
+
+        dispatch(subscribedToFriendsReuqest());
+        const state = getState(),
+            userID = state.auth.uId,
+            requestRef = firestore.collection("friendsrequest").where('reqtarget', '==', userID);
+
+
+        requestRef.onSnapshot({ includeMetadataChanges: true }, snapshot => {
+
+            snapshot.docChanges().forEach(change => {
+                const data = change.doc.data(),
+                    requestId = change.doc.id,
+                    { addedAt, reqauthor, reqauthorname } = data;
+
+                if (change.type === "added") {
+                    dispatch(friendRequestAdded(requestId, reqauthor, reqauthorname, addedAt));
+                }
+                
+                if (change.type === "removed") {
+                    dispatch(friendRequestRemoved(requestId));
+                }
+
+
+            });
+
+        });
+    }
+}
+
+
+export const subscribedToFriendsReuqest = () => {
+    return {
+        type: actionTypes.SUBSCRIBE_TO_FRIENDS_REQUESTS
+    }
+}
+
+export const friendRequestAdded = (id, requestedUserId, requestedUserName, addedAt) => {
+    return {
+        type: actionTypes.FRIEND_REQUEST_ADDED,
+        id,
+        requestedUserId,
+        requestedUserName,
+        addedAt
+    }
+}
+
+export const friendRequestRemoved = (id) => {
+    return {
+        type: actionTypes.FRIEND_REQUEST_REMOVED,
+        id
+    }
+}
+
+export const friendRequestDecline = (id) => {
+    return dispatch => {
+        console.log('decline',id);
+    }
+}
+
+export const friendRequestApprove = (id) => {
+    return dispatch => {
+        console.log('approve', id);
     }
 }

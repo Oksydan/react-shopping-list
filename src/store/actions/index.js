@@ -36,5 +36,8 @@ export {
 } from './general';
 
 export {
-    addFriend
+    addFriend,
+    fetchFriendsRequests,
+    friendRequestDecline,
+    friendRequestApprove
 } from './friends';

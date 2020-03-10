@@ -26,6 +26,18 @@ class FriendsList extends Component {
 
 
     render() {
+        const friendsRequests = this.props.friendsRequests,
+            requestsList = friendsRequests.length > 0 ? 
+            friendsRequests.map(el => (
+                <div key={el.id}>
+                    {el.requestedUserName} send your friend request
+                    <div>
+                        <button onClick={() => this.props.approveFriend(el.id)}>Approve</button>
+                        <button onClick={() => this.props.declineFriend(el.id)}>Declie</button>
+                    </div>
+                </div>
+            )) : null;
+
         return (
             <Fragment>
                 <p>Type friend's email adress to add him to your friends list</p>
@@ -36,6 +48,7 @@ class FriendsList extends Component {
                     handleInputChange={this.handleInputChange}
                     inputVal={this.state.inputValue}
                 />
+                {requestsList}
             </Fragment>
         )
     }
@@ -43,8 +56,16 @@ class FriendsList extends Component {
 
 const mapDispatchToProps = dispatch => {
     return {
-        addFriend: email => dispatch(actions.addFriend(email))
+        addFriend: email => dispatch(actions.addFriend(email)),
+        approveFriend: id => dispatch(actions.friendRequestApprove(id)),
+        declineFriend: id => dispatch(actions.friendRequestDecline(id))
     }
 }
 
-export default connect(null, mapDispatchToProps)(FriendsList);
+const mapStateToProps = state => {
+    return {
+        friendsRequests: state.friends.friendsRequests
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(FriendsList);

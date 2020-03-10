@@ -84,7 +84,7 @@ export const updateUserData = (newName) => {
     return dispatch => {
         dispatch(action.loadingStart());
         const user = firebaseAuth.currentUser,
-            { displayName } = user,
+            { displayName, uid } = user,
             name = newName.value;
 
 
@@ -95,12 +95,17 @@ export const updateUserData = (newName) => {
                 displayName: name
             })
             .then(() => {
-                dispatch(userDataUpdated(name));
-                dispatch(action.loadingOver());
-                dispatch(action.addNotification(
-                    'Your account has been changed successfully',
-                    'success'
-                ));
+                firestore.collection("users").doc(uid).set({
+                    displayName
+                }, { merge: true }).then(() => {
+                    dispatch(userDataUpdated(name));
+                    dispatch(action.loadingOver());
+                    dispatch(action.addNotification(
+                        'Your account has been changed successfully',
+                        'success'
+                    ));
+                });
+                
             })
             .catch(error => {
                 dispatch(authError(error.message))
@@ -122,7 +127,7 @@ export const updateUserEmail = (emailField) => {
 
     return dispatch => {
         const user = firebaseAuth.currentUser,
-            { email } = user,
+            { email, uid } = user,
             newEmail = emailField.value;
 
 
@@ -131,12 +136,17 @@ export const updateUserEmail = (emailField) => {
             dispatch(action.loadingStart());
             user.updateEmail(newEmail)
             .then(() => {
-                dispatch(userEmailUpdated(newEmail));
-                dispatch(action.loadingOver());
-                dispatch(action.addNotification(
-                    'Your email adress has been changed successfully',
-                    'success'
-                ));
+                firestore.collection("users").doc(uid).set({
+                    email: newEmail
+                }, { merge: true }).then(() => {
+                    dispatch(userEmailUpdated(newEmail));
+                    dispatch(action.loadingOver());
+                    dispatch(action.addNotification(
+                        'Your email adress has been changed successfully',
+                        'success'
+                    ));
+                })
+               
             })
             .catch(error => {
                 dispatch(authError(error.message));
@@ -240,16 +250,17 @@ export const register = (email, password, name) => {
                     .then(() => {
                         firestore.collection("users").doc(uId).set({
                             id: uId,
-                            email
+                            email,
+                            displayName: name
                         })
-                        .catch(function (error) {
+                        .catch(error => {
                             dispatch(action.addNotification(
                                 'Something went wrong',
                                 'danger'
                             ));
                         });
                     })
-                    .catch(function (error) {
+                        .catch(error => {
                         dispatch(authError(error.message));
                         dispatch(action.loadingOver());
                     });

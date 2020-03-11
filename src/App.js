@@ -28,6 +28,9 @@ class App extends Component {
     if (this.props.userID != null && !this.props.freindsRequestFetching) {
       this.props.fetchFriendsRequests();
     }
+    if (this.props.userID != null && !this.props.freindsFetching) {
+      this.props.fetchFriends();
+    }
   }
  
 
@@ -133,14 +136,16 @@ class App extends Component {
 const mapDispatchToProps = dispatch => {
   return {
     loginUserIfDataExist: () =>  dispatch(action.loginIfUserDataPersist()),
-    fetchFriendsRequests: () => dispatch(action.fetchFriendsRequests())
+    fetchFriendsRequests: () => dispatch(action.fetchFriendsRequests()),
+    fetchFriends: () => dispatch(action.fetchFriends())
   }
 }
 const mapStateToProps = state => {
   return {
     userID: state.auth.uId,
     loading: state.general.loading,
-    freindsRequestFetching: state.friends.subscribeToFriendsRequests
+    freindsRequestFetching: state.friends.subscribeToFriendsRequests,
+    freindsFetching: state.friends.subscribeToFriends
   }
 }
 

@@ -32,7 +32,7 @@ class FriendsList extends Component {
                 <div key={el.id}>
                     {el.requestedUserName} send your friend request
                     <div>
-                        <button onClick={() => this.props.approveFriend(el.id)}>Approve</button>
+                        <button onClick={() => this.props.approveFriend(el.id, el.requestedUserId, el.requestedUserName)}>Approve</button>
                         <button onClick={() => this.props.declineFriend(el.id)}>Declie</button>
                     </div>
                 </div>
@@ -56,8 +56,8 @@ class FriendsList extends Component {
 
 const mapDispatchToProps = dispatch => {
     return {
-        addFriend: email => dispatch(actions.addFriend(email)),
-        approveFriend: id => dispatch(actions.friendRequestApprove(id)),
+        addFriend: email => dispatch(actions.addFriendRequest(email)),
+        approveFriend: (id, reqUserId, reqUserName) => dispatch(actions.friendRequestApprove(id, reqUserId, reqUserName)),
         declineFriend: id => dispatch(actions.friendRequestDecline(id))
     }
 }

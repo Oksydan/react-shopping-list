@@ -3,8 +3,8 @@ import { firebaseAuth, firestore } from '../../config/fbConfig';
 import * as action from './index';
 
 
-export const addFriend = (email) => {
-    return dispatch => {
+export const addFriendRequest = (email) => {
+    return (dispatch, getState) => {
         
         firestore.collection('users').where('email', '==', email).get()
             .then(query => {
@@ -14,9 +14,23 @@ export const addFriend = (email) => {
                 });
 
                 if (data) {
+
+                    const state = getState(),
+                        reqUid = data.id,
+                        friendsList = state.friends.friendsList,
+                        youAreAlreadyFriends = friendsList.findIndex(friend => friend.friendId === reqUid) >= 0 ? true : false;
+
+                    if (youAreAlreadyFriends) {
+                        dispatch(action.addNotification(
+                            'Your are already friends',
+                            'danger'
+                        ));
+                        return;
+                    }
+                    
+
                     (async () => {
-                        const reqUid = data.id,
-                            currentUser = firebaseAuth.currentUser,
+                        const currentUser = firebaseAuth.currentUser,
                             currentUserId = currentUser.uid,
                             currentUserEmail = currentUser.email,
                             currentUserName = currentUser.displayName,
@@ -30,7 +44,8 @@ export const addFriend = (email) => {
                             ));
                         }
 
-                        const firendRequestExists = await friendRequestRef.where('reqauthor', '==', currentUserId)
+                        const firendRequestExists = await friendRequestRef
+                            .where('reqauthor', '==', currentUserId)
                             .where('reqtarget', '==', reqUid).get()
                             .then(query => {
                                 let data;
@@ -141,12 +156,112 @@ export const friendRequestRemoved = (id) => {
 
 export const friendRequestDecline = (id) => {
     return dispatch => {
-        console.log('decline',id);
+        firestore.collection("friendsrequest").doc(id).delete()
+            .then(() => {
+                dispatch(action.addNotification(
+                    'Friend request has been declined successfully',
+                    'success'
+                ));
+            })
+            .catch(() => {
+                dispatch(action.addNotification(
+                    'Something went wrong',
+                    'danger'
+                ));
+            })
     }
 }
 
-export const friendRequestApprove = (id) => {
+export const friendRequestApprove = (id, requestedUserId, requestedUserName) => {
     return dispatch => {
-        console.log('approve', id);
+        const batch = firestore.batch(),
+            currentUser = firebaseAuth.currentUser,
+            { uid, displayName } = currentUser;
+
+        const freindshipRef = firestore.collection('friendship').doc();
+
+        batch.set(freindshipRef, {
+            user1: requestedUserId,
+            user2: uid,
+            user1name: requestedUserName,
+            user2name: displayName
+        });
+
+        const freindRequestRef = firestore.collection("friendsrequest").doc(id);
+
+        batch.delete(freindRequestRef);
+
+        batch.commit()
+            .catch(() => {
+                dispatch(action.addNotification('Something went wrong', 'danger'));
+            });
+    }
+}
+
+export const subscribedToFriends = () => {
+    return {
+        type: actionTypes.SUBSCRIBE_TO_FRIENDS
+    }
+}
+
+
+export const fetchFriends = () => {
+    return (dispatch, getState) => {
+        dispatch(subscribedToFriends());
+        const state = getState(),
+            userID = state.auth.uId,
+            friends1Ref = firestore.collection("friendship")
+                .where('user1', '==', userID),
+            friends2Ref = firestore.collection("friendship")
+                .where('user2', '==', userID);
+
+        dispatch(subscribeToFriend(friends1Ref));
+        dispatch(subscribeToFriend(friends2Ref));
+        
+    }
+}
+
+const subscribeToFriend = ref => {
+    return dispatch => {
+
+        const currentUser = firebaseAuth.currentUser,
+            currentUserId = currentUser.uid;
+
+        ref.onSnapshot({ includeMetadataChanges: true }, snapshot => {
+
+            snapshot.docChanges().forEach(change => {
+                const data = change.doc.data(),
+                    friendshipId = change.doc.id,
+                    whichUser = data.user1 === currentUserId ? '2' : '1',
+                    friendId = data[`user${whichUser}`],
+                    friendName = data[`user${whichUser}name`];
+
+
+                if (change.type === "added") {
+                    dispatch(friendAdded(friendshipId, friendId, friendName));
+                }
+
+                if (change.type === "removed") {
+                    dispatch(friendRemoved(friendshipId));
+                }
+
+            });
+        });
+    }
+}
+
+const friendAdded = (friendshipId, friendId, friendName) => {
+    return {
+        type: actionTypes.FRIEND_ADDED,
+        friendshipId,
+        friendId,
+        friendName
+    }
+}
+
+const friendRemoved = (friendshipId) => {
+    return {
+        type: actionTypes.FRIEND_REMOVED,
+        friendshipId
     }
 }

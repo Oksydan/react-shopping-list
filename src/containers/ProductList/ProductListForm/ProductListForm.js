@@ -1,52 +1,44 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import * as action from '../../../store/actions/index';
 import { getUniqueId } from '../../../utils/utils';
 import { withRouter } from "react-router";
-import AddElementForm from '../../../components/AddElementForm/AddElementForm';
+import Form from '../../../components/Form/Form';
 
 
 
-class ProductListForm extends Component {
-    state = {
-        isInputValid: false,
-        inputVal: ''
+const productListForm = props =>  {
+
+
+    const onSubmit = (data) => {
+        props.onProductAdd(data.productName.value, getUniqueId(), props.match.params.id);
     }
 
-
-    onInputChange = (e) => {
-        const inputVal = e.target.value;
-
-        this.setState({
-            inputVal,
-            isInputValid: inputVal.length > 0 ? true : false
-        });
-    }
-
-    onSubmit = (e) => {
-        e.preventDefault();
-        const state = {...this.state};
-        const valueFormated = state.inputVal.trim();
-        if (valueFormated.length > 0) {
-            this.props.onProductAdd(this.state.inputVal, getUniqueId(), this.props.match.params.id);
-        } 
-        this.setState({
-            inputVal: '',
-            isInputValid: false
-        })
-    }
+    const fields = {
+        productName: {
+            name: 'productName',
+            type: 'text',
+            value: '',
+            validation: {
+                isRequired: true,
+                minLength: 3
+            },
+            validationInfo: 'Product name have to contain at least 3 characters',
+            validationInfoDisplayed: false,
+            hasError: false
+        }
+    };
     
 
-    render() {
-        return (
-            <AddElementForm 
-                handleSubmit={this.onSubmit} 
-                handleInputChange={this.onInputChange} 
-                isInputValid={this.state.isInputValid}
-                inputVal={this.state.inputVal}
-                />
-        );
-    }
+    return (
+        <Form 
+            onFormSubmit={onSubmit}
+            submitText="Add"
+            fields={fields}
+            oneLineForm={true}
+            clearFieldsAfterSubmit={true}
+            />
+    );
 }
 
 
@@ -58,4 +50,4 @@ const mapDispatchToProps = dispatch => {
 }
 
 
-export default withRouter(connect(null, mapDispatchToProps)(ProductListForm));
+export default withRouter(connect(null, mapDispatchToProps)(productListForm));

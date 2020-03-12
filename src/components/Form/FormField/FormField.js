@@ -21,6 +21,11 @@ const formFiled = props => {
     }    
 
 
+    if (props.icon) {
+        fieldClasses = [...fieldClasses, 'formField--hasIcon']
+    }
+
+
     if (props.type === 'text' || props.type === 'email' || props.type === 'password') {
 
         fieldClasses = [...fieldClasses, 'formField--field'];
@@ -89,7 +94,7 @@ const formFiled = props => {
 
 formFiled.propTypes = {
     type: PropTypes.string.isRequired,
-    label: PropTypes.string.isRequired,
+    label: PropTypes.string,
     name: PropTypes.string.isRequired,
     value: PropTypes.string,
     fieldChange: PropTypes.func.isRequired,

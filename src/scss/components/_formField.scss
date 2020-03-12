@@ -7,7 +7,7 @@
         border: 1px solid $border-color;
         border-radius: $border-radius;
         display: block;
-        padding: 0 2rem 0 4.5rem;
+        padding: 0 2rem;
         width: 100%;
         appearance: none;
         font-family: $font-family;
@@ -54,6 +54,11 @@
                 }
             }
         }
-        
+    }
+
+    &--hasIcon {
+        #{$self}__input {
+            padding: 0 2rem 0 4.5rem;
+        }
     }
 }

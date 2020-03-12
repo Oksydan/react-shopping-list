@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import * as action from '../../store/actions/index';
 import ShoppingListElem from '../../components/ShoppingList/ShoppingListElem/ShoppingListsElem';
 import Modal from '../../components/UI/Modal/Modal';
-import Form from '../../components/AddElementForm/AddElementForm';
+import Form from '../../components/Form/Form';
 
 class ShoppingList extends Component {
 
@@ -40,23 +40,10 @@ class ShoppingList extends Component {
         })
     }
 
-    handleTitleChange = (e) => {
-        const inputVal = e.target.value;
 
-        this.setState({
-            editTitle: inputVal
-        });
-    }
-
-    handleTitleEditSubmit = (e) => {
-        e.preventDefault();
-        const state = { ...this.state };
-        const valueFormated = state.editTitle.trim();
-        if (valueFormated.length > 0) {
-            this.props.listTitleEdit(this.state.editListId, this.state.editTitle);
-            this.handleHideModal();
-        }
-        
+    handleTitleEditSubmit = (data) => {
+        this.props.listTitleEdit(this.state.editListId, data.listName.value);
+        this.handleHideModal();
     }
     
 
@@ -73,6 +60,20 @@ class ShoppingList extends Component {
                 handleEdit={() => this.editListTitle(list.id, list.listName)}
         />);
 
+        const fields = {
+            listName: {
+                name: 'listName',
+                type: 'text',
+                value: this.state.editTitle,
+                validation: {
+                    isRequired: true,
+                    minLength: 3
+                },
+                validationInfo: 'Shopping list name have to contain at least 3 characters',
+                validationInfoDisplayed: false,
+                hasError: false
+            }
+        };
 
         
         return (
@@ -87,12 +88,11 @@ class ShoppingList extends Component {
                     modalClosed={this.handleHideModal}
                     title='Edit shopping list'
                 >
-                    <Form 
-                        inputVal={this.state.editTitle}
-                        isInputValid={this.state.isTtileValid}
-                        handleInputChange={this.handleTitleChange}
-                        handleSubmit={this.handleTitleEditSubmit}
-                        btnText='Edit'
+                    <Form
+                        onFormSubmit={this.handleTitleEditSubmit}
+                        submitText="Edit"
+                        fields={fields}
+                        oneLineForm={true}
                     />
                 </Modal>
                 

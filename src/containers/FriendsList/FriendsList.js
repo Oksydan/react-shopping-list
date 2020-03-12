@@ -1,5 +1,4 @@
-import React, { Component, Fragment } from 'react';
-import AddElementForm from '../../components/AddElementForm/AddElementForm';
+import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../../store/actions/index';
 import Form from '../../components/Form/Form';

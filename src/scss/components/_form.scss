@@ -8,4 +8,16 @@
             margin: 0 0 2rem;
         }
     }
+    &__group {
+        position: relative;
+        .formField__input  {
+            padding-right: 10rem;
+        }
+        .button  {
+            border-radius: 0 $border-radius $border-radius 0;
+            position: absolute;
+            right: 0;
+            top: 0;
+        }
+    }
 }

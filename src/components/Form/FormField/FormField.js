@@ -11,6 +11,15 @@ const formFiled = props => {
         label = props.label ? <label className='formField__label' htmlFor={props.name}>{props.label}</label> : null,
         fieldClasses = ['formField'];
 
+    if (props.validationError && props.displayValidationError) {
+        validationError = <Alert
+            text={props.validationError}
+            showIcon={false}
+            type="danger"
+            className="alert--smaller"
+        />;
+    }    
+
 
     if (props.type === 'text' || props.type === 'email' || props.type === 'password') {
 
@@ -20,15 +29,6 @@ const formFiled = props => {
 
         if (props.hasError) {
             inputClass = [...inputClass, 'formField__input--hasError'];
-        }
-
-        if (props.validationError && props.displayValidationError) {
-            validationError = <Alert 
-                text={props.validationError}
-                showIcon={false} 
-                type="danger"
-                className="alert--smaller"
-                />;
         }
 
         field = <input
@@ -46,10 +46,19 @@ const formFiled = props => {
 
         fieldClasses = [...fieldClasses, 'formField--select'];
 
+        if (props.validationError && props.displayValidationError) {
+            validationError = <Alert 
+                text={props.validationError}
+                showIcon={false} 
+                type="danger"
+                className="alert--smaller"
+                />;
+        }
+
         field = <select className='formField__select' value={props.value} onChange={props.fieldChange} name={props.name} id={props.name}>
                     {props.options.map(option => <option value={option.value} checked={option.checked}>{option.name}</option>)}
                 </select>;
-        formGroup = [label, field];
+        formGroup = [label, field, validationError];
     } else if (props.type === 'checkbox' || props.type === 'radio') {
 
         fieldClasses = [...fieldClasses, `formField--${props.type}`];
@@ -61,7 +70,7 @@ const formFiled = props => {
             checked={props.checked}
             onChange={props.fieldChange} 
             />;
-        formGroup = [field, label];
+        formGroup = [field, label, validationError];
     }
 
 

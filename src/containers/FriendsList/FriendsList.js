@@ -2,56 +2,62 @@ import React, { Component, Fragment } from 'react';
 import AddElementForm from '../../components/AddElementForm/AddElementForm';
 import { connect } from 'react-redux';
 import * as actions from '../../store/actions/index';
+import Form from '../../components/Form/Form';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEnvelope } from '@fortawesome/pro-light-svg-icons';
 
 
-class FriendsList extends Component {
+const FriendsList = props =>  {
 
-    state = {
-        inputValid: true,
-        inputValue: ''
+
+    const handleSubmit = (data) => {
+        props.addFriend(data.email.value);
     }
 
-    handleInputChange = (e) => {
-        const inputValue = e.target.value;
-
-        this.setState({
-            inputValue
-        })
-    }
-
-    handleSubmit = (e) => {
-        e.preventDefault();
-        this.props.addFriend(this.state.inputValue);
-    }
-
-
-    render() {
-        const friendsRequests = this.props.friendsRequests,
-            requestsList = friendsRequests.length > 0 ? 
+    const friendsRequests = props.friendsRequests,
+        requestsList = friendsRequests.length > 0 ?
             friendsRequests.map(el => (
                 <div key={el.id}>
-                    {el.requestedUserName} send your friend request
+                    {el.requestedUserName} send you friend request
                     <div>
-                        <button onClick={() => this.props.approveFriend(el.id, el.requestedUserId, el.requestedUserName)}>Approve</button>
-                        <button onClick={() => this.props.declineFriend(el.id)}>Declie</button>
+                        <button onClick={() => props.approveFriend(el.id, el.requestedUserId, el.requestedUserName)}>Approve</button>
+                        <button onClick={() => props.declineFriend(el.id)}>Declie</button>
                     </div>
                 </div>
             )) : null;
 
-        return (
-            <Fragment>
-                <p>Type friend's email adress to add him to your friends list</p>
-                <AddElementForm 
-                    handleSubmit={this.handleSubmit}
-                    isInputValid={this.state.inputValid}
-                    btnText='Add'
-                    handleInputChange={this.handleInputChange}
-                    inputVal={this.state.inputValue}
-                />
-                {requestsList}
-            </Fragment>
-        )
+    const fields = {
+        email: {
+            name: 'email',
+            type: 'email',
+            label: 'Email address',
+            value: '',
+            validation: {
+                isEmail: true,
+                isRequired: true
+            },
+            validationInfo: 'Value is not valid email adress',
+            validationInfoDisplayed: false,
+            hasError: false,
+            icon: <FontAwesomeIcon icon={faEnvelope} />
+        }
     }
+
+
+    return (
+        <Fragment>
+            <Form
+                onFormSubmit={handleSubmit}
+                submitText="Add"
+                fields={fields}
+                beforeFields={<p>Type friend's email adress to add him to your friends list</p>}
+                oneLineForm={true}
+                clearFieldsAfterSubmit={true}
+            >
+            </Form>
+            {requestsList}
+        </Fragment>
+    )
 }
 
 const mapDispatchToProps = dispatch => {

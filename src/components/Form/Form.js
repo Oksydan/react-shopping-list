@@ -34,6 +34,14 @@ class Form extends Component {
 
         if (areInputsValid) {
             this.props.onFormSubmit(this.state.fields);
+            if (typeof this.props.clearFieldsAfterSubmit !== 'undefined' && this.props.clearFieldsAfterSubmit) {
+                this.setState(state => {
+                    for (const i in state.fields) {
+                        state.fields[i].value = '';
+                    }
+                    return state;
+                })
+            }
         } else {
             this.setState(state => {
                 for (const i in invalidFields) {
@@ -150,25 +158,49 @@ class Form extends Component {
             null;
 
         const alert = this.props.error ? <Alert type="danger" text={this.props.error} /> : null;
-        return (
-            <form onSubmit={this.handleSubmit} className="form">
-                {alert}
-                {beforeFields}
-                {fields}
-                {afterFields}
-                <div className="form__submit">
-                    <Button
-                        type='submit'
-                        clicked={this.handleSubmit}
-                        displayType='primary'
-                        classes={['button--block']}
-                    >
-                        {this.props.submitText ? this.props.submitText : 'Submit'}
-                    </Button>
-                </div>
 
-            </form>
-        );
+        let formContent;
+
+        if (this.props.oneLineForm) {
+            formContent = (
+                <form onSubmit={this.handleSubmit} className="form">
+                    {alert}
+                    {beforeFields}
+                    {afterFields}
+                    <div className="form__group">
+                        {fields}
+                        <Button
+                            type='submit'
+                            clicked={this.handleSubmit}
+                            displayType='primary'
+                        >
+                            {this.props.submitText ? this.props.submitText : 'Submit'}
+                        </Button>
+                    </div>
+                </form>
+            );
+        } else {
+            formContent = (
+                <form onSubmit={this.handleSubmit} className="form">
+                    {alert}
+                    {beforeFields}
+                    {fields}
+                    {afterFields}
+                    <div className="form__submit">
+                        <Button
+                            type='submit'
+                            clicked={this.handleSubmit}
+                            displayType='primary'
+                            classes={['button--block']}
+                        >
+                            {this.props.submitText ? this.props.submitText : 'Submit'}
+                        </Button>
+                    </div>
+                </form>
+            );
+        }
+
+        return formContent;
         
     }
 };
@@ -184,7 +216,9 @@ Form.propTypes = {
         PropTypes.node
     ]),
     fields: PropTypes.object.isRequired,
-    submitText: PropTypes.string
+    submitText: PropTypes.string,
+    oneLineForm: PropTypes.bool,
+    clearFieldsAfterSubmit: PropTypes.bool
 }
 
 

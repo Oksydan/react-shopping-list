@@ -27,23 +27,27 @@ export const addFriendRequest = (email) => {
                         ));
                         return;
                     }
-                    
+
+                    const currentUser = firebaseAuth.currentUser,
+                        currentUserId = currentUser.uid,
+                        currentUserEmail = currentUser.email;
+
+
+                    if (currentUserEmail === email) {
+                        dispatch(action.addNotification(
+                            'You can\'t send friend request on your email adress',
+                            'danger'
+                        ));
+                        return;
+                    }
+
 
                     (async () => {
-                        const currentUser = firebaseAuth.currentUser,
-                            currentUserId = currentUser.uid,
-                            currentUserEmail = currentUser.email,
-                            currentUserName = currentUser.displayName,
+                        const currentUserName = currentUser.displayName,
                             addedAt = Date.now(),
                             friendRequestRef = firestore.collection('friendsrequest');
 
-                        if (currentUserEmail === email) {
-                            dispatch(action.addNotification(
-                                'You can\'t send friend request on your email adress',
-                                'danger'
-                            ));
-                        }
-
+                       
                         const firendRequestExists = await friendRequestRef
                             .where('reqauthor', '==', currentUserId)
                             .where('reqtarget', '==', reqUid).get()

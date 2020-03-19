@@ -254,6 +254,18 @@ const subscribeToFriend = ref => {
     }
 }
 
+export const removeFriend = (friendId, friendName) => {
+    return dispatch => {
+        firestore.collection("friendship").doc(friendId).delete()
+            .then(() => {
+                dispatch(action.addNotification(`You and ${friendName} are not longer friends`, 'success'));
+            })
+            .catch(err => {
+                dispatch(action.addNotification('Something went wrong', 'danger'));
+            })
+    }
+}
+
 const friendAdded = (friendshipId, friendId, friendName) => {
     return {
         type: actionTypes.FRIEND_ADDED,

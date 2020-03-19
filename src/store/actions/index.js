@@ -38,6 +38,7 @@ export {
 export {
     addFriendRequest,
     fetchFriends,
+    removeFriend,
     fetchFriendsRequests,
     friendRequestDecline,
     friendRequestApprove

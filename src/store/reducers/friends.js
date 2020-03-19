@@ -84,7 +84,7 @@ const reducer = (state = initialState, actions) => {
         case (actionTypes.FRIEND_REMOVED):
             return {
                 ...state,
-                friendsList: removeFriend(actions.friendshipId, ...state.friendsList)
+                friendsList: removeFriend(actions.friendshipId, [...state.friendsList])
                 
             };
         default:

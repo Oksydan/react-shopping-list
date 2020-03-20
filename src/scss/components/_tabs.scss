@@ -1,0 +1,39 @@
+.tabs {
+    &__nav {
+        display: flex;
+        overflow-x: scroll;
+    }
+
+    &__navElem {
+        flex: 0 0 auto;
+    }
+
+    &__navLink {
+        padding: .8rem 2.5rem;
+        font-size: 1.6rem;
+        line-height: 1.3;
+        font-weight: 600;
+        color: $gray-40;
+        display: block;
+        white-space: nowrap;
+        border-radius: $border-radius $border-radius 0 0;
+        text-align: center;
+        &--selected {
+            color: $gray-100;
+            background: #fff;
+        }
+    }
+
+    &__content {
+        background: #fff;
+        border-radius: 0 0 $border-radius $border-radius;
+        padding: 2rem;
+        box-shadow: $light-shadow-drop;
+    }
+    &__panel {
+        display: none;
+        &--active {
+            display: block;
+        }
+    }
+}

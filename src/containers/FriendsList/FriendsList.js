@@ -6,6 +6,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope } from '@fortawesome/pro-light-svg-icons';
 import ConfirmationModal from '../../components/UI/ConfirmationModal/ConfirmationModal';
 import { timeAgo } from '../../utils/utils';
+import Tabs from '../../components/UI/Tabs/Tabs';
+import Tab from '../../components/UI/Tabs/Tab/Tab';
 
 
 class FriendsList extends Component  {
@@ -113,10 +115,19 @@ class FriendsList extends Component  {
                     clearFieldsAfterSubmit={true}
                 >
                 </Form>
-                {requestsList}
-                <ul>
-                    {friends}
-                </ul>
+                <Tabs selectedIndex={0}>
+                    <Tab title="Friends">
+                        <ul>
+                            {friends}
+                        </ul>
+                    </Tab>
+                    <Tab title="Friends requests">
+                        <ul>
+                            {requestsList}
+                        </ul>
+                    </Tab>
+                </Tabs>
+              
                 <ConfirmationModal 
                     show={this.state.showConfirmationModal}
                     handleClose={this.handleCloseModal}

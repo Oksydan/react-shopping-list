@@ -30,7 +30,6 @@ class Tabs extends Component {
         
         this.setState(state => {
             state.tabs = state.tabs.map((el, i) => {
-                console.log(i, index === i)
                 return {
                     ...el,
                     selected: index === i

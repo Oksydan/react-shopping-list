@@ -4,6 +4,7 @@ import * as action from '../../store/actions/index';
 import ShoppingListElem from '../../components/ShoppingList/ShoppingListElem/ShoppingListsElem';
 import Modal from '../../components/UI/Modal/Modal';
 import Form from '../../components/Form/Form';
+import Alert from '../../components/UI/Alert/Alert';
 
 class ShoppingList extends Component {
 
@@ -81,7 +82,9 @@ class ShoppingList extends Component {
                 {shoppingLists.length > 0 ? 
                     <ul className="shoppingList">
                         {shoppingLists}
-                    </ul> : null
+                    </ul>
+                    :
+                    <Alert type="info" text="Add your first shopping list" />
                 }
                 <Modal
                     show={this.state.modalVisible}

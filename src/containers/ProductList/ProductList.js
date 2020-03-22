@@ -5,6 +5,7 @@ import * as action from '../../store/actions';
 import { withRouter } from "react-router";
 import Button from '../../components/UI/Button/Button';
 import { Flipper, Flipped } from "react-flip-toolkit";
+import Alert from '../../components/UI/Alert/Alert';
 
 
 
@@ -22,7 +23,7 @@ class ProductList extends Component {
     render() {
         let list = null,
             listData;
-        const information = 'Add product to your shopping list',
+        const information = <Alert text='Add product to your shopping list' type='info' />,
             listId = this.props.match.params.id;
 
 
@@ -48,13 +49,18 @@ class ProductList extends Component {
 
         return (
             <div className="productsList">
-                <div className="productsList__top">
-                    <Button
-                        classes={['productsList__btn','button--smaller']}
-                        displayType="secondary"
-                        clicked={() => this.props.removeCheckedProducts(listId)}
+                {list ? 
+                    <div className="productsList__top">
+                        <Button
+                            className='productsList__btn button--smaller'
+                            displayType="secondary"
+                            clicked={() => this.props.removeCheckedProducts(listId)}
                         >Remove checked</Button>
-                </div>
+                    </div>
+                    :
+                    null
+                }
+                
                 {list ? 
                     <Flipper flipKey={listData.map(({ dateEdit, dateAdd }) => dateEdit + dateAdd).join('')}>
                         <ul className="productsList__list">

@@ -44,4 +44,16 @@
         cursor: not-allowed;
         opacity: .5;
     }
+
+    &--link {
+        text-align: center;
+        color: $gray-80;
+        padding: 1rem;
+        font-size: 1.5rem;
+        font-weight: 500;
+        &:hover,
+        &:focus {
+            color: $gray-100;
+        }
+    }
 }

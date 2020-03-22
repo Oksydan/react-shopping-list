@@ -1,15 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types'
 
-const button = (props) => {
+const button = ({ className, displayType, type, clicked, disabled, children }) => {
+
+    const additionalClasses = className ? className.split(' ') : null;
 
     let classes = ['button'];
 
-    if(props.classes) {
-        classes = [...classes, ...props.classes];
+    if (additionalClasses) {
+        classes = [...classes, ...additionalClasses]
     }
 
-    switch(props.displayType) {
+    switch(displayType) {
         case 'primary':
             classes = [...classes, 'button--primary'];
             break;
@@ -19,6 +21,9 @@ const button = (props) => {
         case 'danger':
             classes = [...classes, 'button--danger'];
             break;
+        case 'link':
+            classes = [...classes, 'button--link'];
+            break;
         default:
             break;
     }
@@ -26,11 +31,11 @@ const button = (props) => {
     return (
         <button
             className={classes.join(' ')}
-            type={props.type ? props.type : null}
-            onClick={props.clicked}
-            disabled={props.disabled}
+            type={type ? type : null}
+            onClick={clicked}
+            disabled={disabled}
             >
-            {props.children}
+            {children}
         </button>
     )
 }
@@ -38,7 +43,7 @@ const button = (props) => {
 export default button;
 
 button.propTypes = {
-    classes: PropTypes.array,
+    className: PropTypes.string,
     clicked: PropTypes.func,
     disabled: PropTypes.bool,
     displayType: PropTypes.string.isRequired,

@@ -4,10 +4,13 @@ import * as actions from '../../store/actions/index';
 import Form from '../../components/Form/Form';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope } from '@fortawesome/pro-light-svg-icons';
+import { faTrashAlt, faCheckCircle, faTimesCircle } from '@fortawesome/pro-regular-svg-icons';
 import ConfirmationModal from '../../components/UI/ConfirmationModal/ConfirmationModal';
 import { timeAgo } from '../../utils/utils';
 import Tabs from '../../components/UI/Tabs/Tabs';
 import Tab from '../../components/UI/Tabs/Tab/Tab';
+import Button from '../../components/UI/Button/Button';
+import Alert from '../../components/UI/Alert/Alert';
 
 
 class FriendsList extends Component  {
@@ -51,40 +54,61 @@ class FriendsList extends Component  {
     render() {
 
 
-        const friends = this.props.friendsList.map(el => (
-            <li key={el.id}>
-                <p>
-                    Friend {el.friendName}
-                </p>
-                <div>
-                    <button onClick={() => this.handleShowModal(
+        let friends = <Alert text="You do not have friends yet" type="info" />;
+
+        if (this.props.friendsList.length > 0) {
+            friends = this.props.friendsList.map(el => (
+                <li key={el.id} className="informationList__elem informationList__elem--oneLine">
+                    <p className="informationList__title">
+                        Friend: {el.friendName}
+                    </p>
+                    <Button
+                        displayType="link"
+                        className="informationList__actionIcon"
+                        clicked={() => this.handleShowModal(
                             `Are your sure your don't want to be friend with ${el.friendName}`,
                             () => this.handleDeleteFriend(el.id, el.friendName)
-                            )}>Remove</button>
-                </div>
-            </li>
-        ))
+                        )}>
+                        <FontAwesomeIcon icon={faTrashAlt} /></Button>
+                </li>
+            ));
+        }
+        
 
-        const friendsRequests = this.props.friendsRequests,
-            requestsList = friendsRequests.length > 0 ?
-                friendsRequests.map(el => (
-                    <div key={el.id}>
-                        <div>
-                            {el.requestedUserName} send you friend request<br></br>
-                            <small>The request was sent {timeAgo(el.addedAt)}</small>
-                            
-                        </div>
-                        <div>
-                            <button onClick={() => this.props.approveFriend(el.id, el.requestedUserId, el.requestedUserName)}>Approve</button>
-                            <button onClick={() => 
+        let requestsList = <Alert text="You do not have any friends requests" type="info" />;
+
+        const friendsRequests = this.props.friendsRequests;
+
+        if (friendsRequests.length > 0) {
+            requestsList = friendsRequests.map(el => (
+                <li key={el.id} className="informationList__elem">
+                    <p className="informationList__title">
+                        {el.requestedUserName} send you friend request
+                </p>
+                    <p className="informationList__desc">
+                        The request was sent {timeAgo(el.addedAt)}
+                    </p>
+                    <div className="informationList__footer">
+                        <Button
+                            displayType="link"
+                            className="informationList__btn"
+                            clicked={() =>
                                 this.handleShowModal(
                                     `Are your sure your want to decline friend request from ${el.requestedUserName}`,
                                     () => this.handleDeclineFriend(el.id)
                                 )
-                                }>Declie</button>
-                        </div>
+                            }><FontAwesomeIcon className="informationList__btnIcon" icon={faTimesCircle} /> declie</Button>
+                        <Button
+                            displayType="link"
+                            className="informationList__btn"
+                            clicked={() => this.props.approveFriend(el.id, el.requestedUserId, el.requestedUserName)}>
+                            <FontAwesomeIcon className="informationList__btnIcon" icon={faCheckCircle} /> approve</Button>
                     </div>
-                )) : null;
+                </li>
+            ));
+        }
+
+        
 
         const fields = {
             email: {
@@ -117,13 +141,13 @@ class FriendsList extends Component  {
                 </Form>
                 <Tabs selectedIndex={0}>
                     <Tab title="Friends">
-                        <ul>
-                            {friends}
+                        <ul className="informationList">
+                            {this.props.friendsLoaded ? friends : null}
                         </ul>
                     </Tab>
                     <Tab title="Friends requests">
-                        <ul>
-                            {requestsList}
+                        <ul className="informationList">
+                            {this.props.friendsRequestsLoaded ? requestsList : null}
                         </ul>
                     </Tab>
                 </Tabs>
@@ -156,7 +180,9 @@ const mapDispatchToProps = dispatch => {
 const mapStateToProps = state => {
     return {
         friendsRequests: state.friends.friendsRequests,
-        friendsList: state.friends.friendsList
+        friendsList: state.friends.friendsList,
+        friendsLoaded: state.friends.subscribeToFriends,
+        friendsRequestsLoaded: state.friends.subscribeToFriendsRequests
     }
 }
 

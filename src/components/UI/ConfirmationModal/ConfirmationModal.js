@@ -18,14 +18,14 @@ const confiramtionModal = props => {
                 <Button 
                     displayType="danger"
                     clicked={props.handleClose}
-                    classes={['button--smaller']}
+                    className="button--smaller"
                     >
                         Cancel
                 </Button>
                 <Button 
                     displayType="primary"
                     clicked={props.handleConfirmation}
-                    classes={['button--smaller']}
+                    className="button--smaller"
                     >
                     {props.confirmationButtonText}
                 </Button>

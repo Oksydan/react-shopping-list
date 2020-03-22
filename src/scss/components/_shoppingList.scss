@@ -39,12 +39,7 @@
     }
 
     &__btn {
-        @extend %button-reset;
         flex: 0 0 50%;
-        text-align: center;
-        color: $gray-80;
-        padding: 1rem 0;
-        font-size: 1.5rem;
         &--edit {
             position: relative;
             &:after {
@@ -52,8 +47,8 @@
                 position: absolute;
                 right: 0;
                 top: 50%;
-                height: 20px;
-                margin-top: -10px;
+                height: 2rem;
+                margin-top: -1rem;
                 border-right: 1px solid $gray-40;
             }
         }

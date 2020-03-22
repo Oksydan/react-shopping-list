@@ -106,11 +106,9 @@ export const addFriendRequest = (email) => {
 export const fetchFriendsRequests = () => {
     return (dispatch, getState) => {
 
-        dispatch(subscribedToFriendsReuqest());
         const state = getState(),
             userID = state.auth.uId,
             requestRef = firestore.collection("friendsrequest").where('reqtarget', '==', userID);
-
 
         requestRef.onSnapshot({ includeMetadataChanges: true }, snapshot => {
 
@@ -131,6 +129,7 @@ export const fetchFriendsRequests = () => {
             });
 
         });
+        dispatch(subscribedToFriendsReuqest());
     }
 }
 
@@ -211,7 +210,6 @@ export const subscribedToFriends = () => {
 
 export const fetchFriends = () => {
     return (dispatch, getState) => {
-        dispatch(subscribedToFriends());
         const state = getState(),
             userID = state.auth.uId,
             friends1Ref = firestore.collection("friendship")
@@ -221,7 +219,8 @@ export const fetchFriends = () => {
 
         dispatch(subscribeToFriend(friends1Ref));
         dispatch(subscribeToFriend(friends2Ref));
-        
+
+        dispatch(subscribedToFriends());
     }
 }
 

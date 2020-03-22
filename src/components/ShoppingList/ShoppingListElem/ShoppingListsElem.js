@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendarAlt } from '@fortawesome/pro-light-svg-icons';
 import { faEdit, faTrashAlt, faCheckSquare } from '@fortawesome/pro-regular-svg-icons';
 import { getDateByTimestamp } from '../../../utils/utils';
+import Button from '../../UI/Button/Button';
 import ConfirmationModal from '../../UI/ConfirmationModal/ConfirmationModal';
 
 class ShoppingListsElem extends Component { 
@@ -47,12 +48,12 @@ class ShoppingListsElem extends Component {
                     </div>
                 </Link>
                 <div className="shoppingList__btns">
-                    <button className="shoppingList__btn shoppingList__btn--edit" onClick={this.props.handleEdit}>
+                    <Button displayType="link" className="shoppingList__btn shoppingList__btn--edit" clicked={this.props.handleEdit}>
                         <FontAwesomeIcon className="shoppingList__btnIcon" icon={faEdit} /> edit
-                </button>
-                    <button className="shoppingList__btn shoppingList__btn--delete" onClick={this.handleOpenModal}>
+                    </Button>
+                    <Button displayType="link" className="shoppingList__btn shoppingList__btn--delete" clicked={this.handleOpenModal}>
                         <FontAwesomeIcon className="shoppingList__btnIcon" icon={faTrashAlt} /> remove
-                </button>
+                    </Button>
                 </div>
                 <ConfirmationModal
                     show={this.state.showConfirmationModal}

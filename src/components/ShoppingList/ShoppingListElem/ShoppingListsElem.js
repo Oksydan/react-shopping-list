@@ -7,11 +7,13 @@ import { faEdit, faTrashAlt, faCheckSquare } from '@fortawesome/pro-regular-svg-
 import { getDateByTimestamp } from '../../../utils/utils';
 import Button from '../../UI/Button/Button';
 import ConfirmationModal from '../../UI/ConfirmationModal/ConfirmationModal';
+import ShoppingListShare from '../../ShoppingListShare/ShoppingListShare';
 
 class ShoppingListsElem extends Component { 
 
     state = {
-        showConfirmationModal: false
+        showConfirmationModal: false,
+        showPermisionModal: false
     }
 
     handleCloseModal = () => {
@@ -34,6 +36,30 @@ class ShoppingListsElem extends Component {
             counterClasses = 'shoppingList__info shoppingList__info--textRight';
         }
 
+        const isCurrentUserOwner = this.props.ownerId === this.props.userId;
+
+        const listButtons = isCurrentUserOwner ? 
+            <div className="shoppingList__btns">
+                <Button displayType="link" className="shoppingList__btn shoppingList__btn--edit" clicked={this.props.handleEdit}>
+                    <FontAwesomeIcon className="shoppingList__btnIcon" icon={faEdit} /> edit
+                </Button>
+                <Button displayType="link" className="shoppingList__btn shoppingList__btn--delete" clicked={this.handleOpenModal}>
+                    <FontAwesomeIcon className="shoppingList__btnIcon" icon={faTrashAlt} /> remove
+                </Button>
+                <ConfirmationModal
+                    show={this.state.showConfirmationModal}
+                    handleClose={this.handleCloseModal}
+                    handleConfirmation={this.props.handleDelete}
+                    confirmationButtonText='Delete'
+                >
+                    <p>
+                        Are your sure your want to delete this shopping list
+                    </p>
+                </ConfirmationModal>
+            </div>
+            : null;
+
+
 
         return (
             <li className="shoppingList__elem">
@@ -47,24 +73,8 @@ class ShoppingListsElem extends Component {
                         <div style={{ width: progressWidth + '%' }} className="shoppingList__progressBarInner"></div>
                     </div>
                 </Link>
-                <div className="shoppingList__btns">
-                    <Button displayType="link" className="shoppingList__btn shoppingList__btn--edit" clicked={this.props.handleEdit}>
-                        <FontAwesomeIcon className="shoppingList__btnIcon" icon={faEdit} /> edit
-                    </Button>
-                    <Button displayType="link" className="shoppingList__btn shoppingList__btn--delete" clicked={this.handleOpenModal}>
-                        <FontAwesomeIcon className="shoppingList__btnIcon" icon={faTrashAlt} /> remove
-                    </Button>
-                </div>
-                <ConfirmationModal
-                    show={this.state.showConfirmationModal}
-                    handleClose={this.handleCloseModal}
-                    handleConfirmation={this.props.handleDelete}
-                    confirmationButtonText='Delete'
-                >
-                    <p>
-                        Are your sure your want to delete this shopping list
-                    </p>
-                </ConfirmationModal>
+                {listButtons}
+                
             </li>
         )
     }

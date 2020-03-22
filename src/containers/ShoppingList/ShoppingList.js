@@ -55,6 +55,9 @@ class ShoppingList extends Component {
                 key={list.id}
                 id={list.id}
                 date={list.dateAdd}
+                ownerId={list.authorID}
+                userId={this.props.userID}
+                permitedUsers={list.hasPermission}
                 listElemes={list.listElems}
                 checkedElemes={list.checkedElems}
                 handleDelete={() => this.removeList(list.id)}

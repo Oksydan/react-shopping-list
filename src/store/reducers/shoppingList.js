@@ -5,14 +5,15 @@ const initialState = {
     dataSubscribed: false
 }
 
-const addList = (listName, id, dateAdd, dateEdit, authorID, listElems = 0, checkedElems = 0) => ({
+const addList = (listName, id, dateAdd, dateEdit, authorID, listElems = 0, checkedElems = 0, hasPermission) => ({
     listName,
     id,
     dateAdd,
     dateEdit,
     authorID,
     listElems,
-    checkedElems
+    checkedElems,
+    hasPermission
 });
 
 const getListIndexById = (id, list) => {
@@ -49,7 +50,7 @@ const reducer = (state = initialState, actions) => {
                 ...state,
                 shoppingLists: [
                     ...state.shoppingLists, 
-                    addList(actions.listName, actions.id, actions.dateAdd, actions.dateEdit, actions.authorID, actions.listElems, actions.checkedElems)
+                    addList(actions.listName, actions.id, actions.dateAdd, actions.dateEdit, actions.authorID, actions.listElems, actions.checkedElems, actions.hasPermission)
                 ]
             };
         case (actionTypes.REMOVE_LIST):

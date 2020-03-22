@@ -10,8 +10,9 @@ export const fetchListStart = () => {
 
 export const addList = (listName, id, authorID) => {
     return dispatch => {
-        const   dateAdd = Date.now(),
-                dateEdit = Date.now();
+        const dateAdd = Date.now(),
+            dateEdit = Date.now(),
+            hasPermission = [authorID]
 
         firestore.collection("shoppingList").doc(id).set({
             listName,
@@ -19,6 +20,7 @@ export const addList = (listName, id, authorID) => {
             dateAdd,
             dateEdit,
             authorID,
+            hasPermission,
             listElems: 0,
             checkedElems: 0
         })
@@ -28,7 +30,7 @@ export const addList = (listName, id, authorID) => {
     }
 };
 
-export const listAdded = (listName, id, dateAdd, dateEdit, authorID, listElems, checkedElems) => {
+export const listAdded = (listName, id, dateAdd, dateEdit, authorID, listElems, checkedElems, hasPermission) => {
     return {
         type: actionTypes.ADD_LIST,
         listName,
@@ -37,7 +39,8 @@ export const listAdded = (listName, id, dateAdd, dateEdit, authorID, listElems, 
         dateEdit,
         authorID,
         listElems,
-        checkedElems
+        checkedElems,
+        hasPermission
     }
 }
 
@@ -50,7 +53,7 @@ export const fetchList = () => {
 
         let hasToStopLoading = true;
 
-        firestore.collection("shoppingList").where("authorID", "==", userid).get()
+        firestore.collection("shoppingList").where("hasPermission", "array-contains", userid).get()
             .then(querySnapshot => {
                 const data = querySnapshot.docs;
                 if(data.length === 0) {
@@ -62,12 +65,12 @@ export const fetchList = () => {
                 dispatch(action.addNotification('Something went wrong', 'danger'));
             });
         
-        firestore.collection("shoppingList").where("authorID", "==", userid)
+        firestore.collection("shoppingList").where("hasPermission", "array-contains", userid)
             .onSnapshot({ includeMetadataChanges: true }, snapshot => {
 
                 snapshot.docChanges().forEach(change => {
                     const data = change.doc.data(),
-                        { id, authorID, dateAdd, dateEdit, listName, checkedElems, listElems } = data;
+                        { id, authorID, dateAdd, dateEdit, listName, checkedElems, listElems, hasPermission } = data;
 
                     if (change.type === "added") {
                         dispatch(listAdded(
@@ -77,7 +80,8 @@ export const fetchList = () => {
                             dateEdit,
                             authorID,
                             listElems,
-                            checkedElems
+                            checkedElems,
+                            hasPermission
                         ))
                     }
                     if (change.type === "modified") {

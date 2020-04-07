@@ -3,25 +3,34 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendarAlt } from '@fortawesome/pro-light-svg-icons';
-import { faEdit, faTrashAlt, faCheckSquare } from '@fortawesome/pro-regular-svg-icons';
+import { faEdit, faTrashAlt, faCheckSquare, faShareAlt } from '@fortawesome/pro-regular-svg-icons';
 import { getDateByTimestamp } from '../../../utils/utils';
 import Button from '../../UI/Button/Button';
 import ConfirmationModal from '../../UI/ConfirmationModal/ConfirmationModal';
-import ShoppingListShare from '../../ShoppingListShare/ShoppingListShare';
+import Modal from '../../UI/Modal/Modal';
+import ShoppingListShare from '../../../containers/ShoppingListShare/ShoppingListShare';
 
 class ShoppingListsElem extends Component { 
 
     state = {
         showConfirmationModal: false,
-        showPermisionModal: false
+        showShareModal: false
     }
 
-    handleCloseModal = () => {
+    handleCloseDeleteModal = () => {
         this.setState({ showConfirmationModal: false });
     }
 
-    handleOpenModal = () => {
+    handleOpenDeleteModal = () => {
         this.setState({ showConfirmationModal: true });
+    }
+
+    handleCloseShareModal = () => {
+        this.setState({ showShareModal: false });
+    }
+
+    handleOpenShareModal = () => {
+        this.setState({ showShareModal: true });
     }
 
     render () {
@@ -43,12 +52,12 @@ class ShoppingListsElem extends Component {
                 <Button displayType="link" className="shoppingList__btn shoppingList__btn--edit" clicked={this.props.handleEdit}>
                     <FontAwesomeIcon className="shoppingList__btnIcon" icon={faEdit} /> edit
                 </Button>
-                <Button displayType="link" className="shoppingList__btn shoppingList__btn--delete" clicked={this.handleOpenModal}>
+                <Button displayType="link" className="shoppingList__btn shoppingList__btn--delete" clicked={this.handleOpenDeleteModal}>
                     <FontAwesomeIcon className="shoppingList__btnIcon" icon={faTrashAlt} /> remove
                 </Button>
                 <ConfirmationModal
                     show={this.state.showConfirmationModal}
-                    handleClose={this.handleCloseModal}
+                    handleClose={this.handleCloseDeleteModal}
                     handleConfirmation={this.props.handleDelete}
                     confirmationButtonText='Delete'
                 >
@@ -56,6 +65,16 @@ class ShoppingListsElem extends Component {
                         Are your sure your want to delete this shopping list
                     </p>
                 </ConfirmationModal>
+                <Button displayType="link" className="shoppingList__btn shoppingList__btn--share" clicked={this.handleOpenShareModal}>
+                    <FontAwesomeIcon className="shoppingList__btnIcon" icon={faShareAlt} />
+                </Button>
+                <Modal
+                    show={this.state.showShareModal}
+                    modalClosed={this.handleCloseShareModal}
+                    title="Share your shopping list"
+                >
+                    <ShoppingListShare permitedUsers={this.props.permitedUsers} />
+                </Modal>
             </div>
             : null;
 

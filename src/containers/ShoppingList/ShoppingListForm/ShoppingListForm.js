@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import * as action from '../../../store/actions/index';
 import { getUniqueId } from '../../../utils/utils';

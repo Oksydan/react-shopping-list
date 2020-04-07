@@ -191,7 +191,7 @@ class Form extends Component {
                             type='submit'
                             clicked={this.handleSubmit}
                             displayType='primary'
-                            classes={['button--block']}
+                            className='button--block'
                         >
                             {this.props.submitText ? this.props.submitText : 'Submit'}
                         </Button>
